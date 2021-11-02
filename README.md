@@ -45,6 +45,7 @@ This should normally not be required, but if:
 
     $ git submodule deinit opencpn-libs
     $ git rm --cached opencpn-libs
+    $ git rm .gitmodules
     $ git commit -m "Remove opencpn-libs submodule."
 
 
