@@ -11,16 +11,18 @@ if (TARGET ocpn::plugingl)
 endif ()
 
 set(SRC
-  src/pidc.cpp
   src/pi_shaders.cpp
   src/qtstylesheet.cpp
   src/TexFont.cpp
   include/linmath.h
-  include/pidc.h
   include/pi_shaders.h
   include/qtstylesheet.h
   include/TexFont.h
 )   
+
+if (NOT QT_ANDROID)
+  list(APPEND SRC src/pidc.cpp src/pidc.h)
+endif ()
 
 # Library is used also in the plugins, so:
 set(CMAKE_POSITION_INDEPENDENT_CODE "ON")
