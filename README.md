@@ -41,7 +41,7 @@ compile constants and libraries required when using the library.
 Removing the submodule.
 -----------------------
 
-Normally not be required, but if:
+Normally not required, but if:
 
     $ git submodule deinit opencpn-libs
     $ git rm --cached opencpn-libs
