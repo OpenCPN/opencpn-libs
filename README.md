@@ -26,7 +26,7 @@ Using it
 
 All libraries exports a link target named like ocpn::lz4. To find the exact
 name, check the file CMakeLists which is available in the top directory of 
-each library. Look for a line like `add_library(ocpn::sqlite ALIAS _SQLITE)`.
+each library. Look for a line like `add_library(ocpn::lz4 ALIAS _LZ4)`.
 
 A library is typically used like
 
@@ -41,23 +41,29 @@ compile constants and libraries required when using the library.
 Removing the submodule.
 -----------------------
 
-This should normally not be required, but if:
+Normally not be required, but if:
 
     $ git submodule deinit opencpn-libs
     $ git rm --cached opencpn-libs
-    $ git rm .gitmodules
     $ git commit -m "Remove opencpn-libs submodule."
+
+More: https://stackoverflow.com/questions/1260748
 
 
 Updating libraries
 ------------------
 
-The recommended way is to update https://github.com/leamas/opencpn-libs/,
-possibly by making a PR. However libraries in opencpn-libs can if necessary
-be updated locally.  The basic flow is
+Libraries in opencpn-libs can if necessary be updated locally. The basic
+flow is
 
     - `cd opencpn-libs/some-lib`
     - Edit some-file
     - `git commit -am "Why I changed this file"`
+    - `cd ../..`
+    - `git add opencpn-libs`
+    - `git commit -m "Adding local change to opencpn-libs"`
 
-The commit will be part of the submodule, not the main repo. Details are TBD.
+The commit will be part of the submodule, not the main repo. If the need of
+such a change is deemed necessary, please make a PR against
+https://github.com/leamas/opencpn-libs/ so it can be integrated in the main
+set of plugins.
