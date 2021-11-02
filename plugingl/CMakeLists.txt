@@ -21,7 +21,7 @@ set(SRC
 )   
 
 if (NOT QT_ANDROID)
-  list(APPEND SRC src/pidc.cpp src/pidc.h)
+  list(APPEND SRC src/pidc.cpp include/pidc.h)
 endif ()
 
 # Library is used also in the plugins, so:
