@@ -13,6 +13,6 @@ set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libs" FORCE)
 add_subdirectory(muparser)
 
 add_library(muparser_if INTERFACE)
-add_library(muparser:muparser ALIAS muparser_if)
+add_library(muparser::muparser ALIAS muparser_if)
 target_link_libraries(muparser_if INTERFACE muparser)
 target_include_directories(muparser_if INTERFACE ${MUPARSER_SRC}/include)
