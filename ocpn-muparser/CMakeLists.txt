@@ -6,9 +6,9 @@
 cmake_minimum_required (VERSION 3.1.0)
 project(ocpn_muparser)
 
-set(ENABLE_SAMPLES OFF)
-set(ENABLE_OPENMP OFF)
-set(BUILD_SHARED_LIBS OFF)
+set(ENABLE_SAMPLES OFF CACHE BOOL "Enable samples build" FORCE)
+set(ENABLE_OPENMP OFF CACHE BOOL "Use OpenMP multithreading" FORCE)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libs" FORCE)
 
 add_subdirectory(muparser)
 
