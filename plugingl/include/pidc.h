@@ -124,7 +124,7 @@ public:
      void DrawGLLineArray( int n, float *vertex_array, unsigned char *color_array,  bool b_hiqual );
      void DrawGLLineArray( int n, float *vertex_array, float *color_array,  bool b_hiqual );
 
-	 bool ConfigurePen();
+     bool ConfigurePen();
      bool ConfigureBrush();
      
 #ifdef ocpnUSE_GL     
