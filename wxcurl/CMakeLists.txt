@@ -4,57 +4,94 @@ if (TARGET ocpn::wxcurl)
     return ()
 endif ()
 
-if (POLICY CMP0077)
-    CMAKE_POLICY(SET CMP0077 OLD)
-endif ()
-
 if (NOT CMAKE_MODULE_PATH)
-  set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake)
+  set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 endif ()
 
+# Library is used also in the plugins, so:
+set(CMAKE_POSITION_INDEPENDENT_CODE "ON")
+
+add_library(WXCURL_IF INTERFACE)
+add_library(ocpn::wxcurl ALIAS WXCURL_IF)
+
+if (QT_ANDROID)
+  # Return an empty, no-op library -- assumes __OCPN_USE_CURL__ is undef.
+  return ()
+endif ()
+
+if (WIN32 OR MINGW)
+  option(OCPN_USE_PREBUILT_WXCURL "Use wxCurl libraries" ON)
+else ()
+  set(OCPN_USE_PREBUILT_WXCURL OFF)
+endif ()
+
+if (OCPN_USE_PREBUILT_WXCURL)
+  set(_implib ${CMAKE_CURRENT_LIST_DIR}/win/libcurl.dll)
+  add_library(CURL_LIBRARIES STATIC IMPORTED)
+  set_property(TARGET CURL_LIBRARIES
+    PROPERTY IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/win/libcurl.lib
+  )
+  set(CURL_LIBRARIES ${CMAKE_CURRENT_LIST_DIR}/win/libcurl.lib)
+  set(CURL_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/include)
+else ()
+  find_package(CURL REQUIRED)
+  target_link_libraries(WXCURL_IF INTERFACE CURL::libcurl)
+endif ()
 
 set(SRC
-    src/base.cpp
-    src/dav.cpp
-    src/davtool.cpp
-    src/dialog.cpp
-    src/ftp.cpp
-    src/http.cpp
-    src/include
-    src/panel.cpp
-    src/telnet.cpp
-    src/thread.cpp
-    src/utils.cpp
-    include/wx/curl/base.h
-    include/wx/curl/dav.h
-    include/wx/curl/davtool.h
-    include/wx/curl/dialog.h
-    include/wx/curl/ftp.h
-    include/wx/curl/http.h
-    include/wx/curl/panel.h
-    include/wx/curl/telnet.h
-    include/wx/curl/thread.h
-    include/wx/curl/utils.h
+  include/README
+  include/curl
+  include/curl/curlbuild.h
+  include/curl/curlrules.h
+  include/curl/easy.h
+  include/curl/curl.h
+  include/curl/curlbuild.h.in
+  include/curl/curlbuild.h.cmake
+  include/curl/typecheck-gcc.h
+  include/curl/curlver.h
+  include/curl/mprintf.h
+  include/curl/stdcheaders.h
+  include/curl/multi.h
+  src/wx/curl
+  src/wx/curl/utils.h
+  src/wx/curl/http.h
+  src/wx/curl/ftp.h
+  src/wx/curl/ftptool.h
+  src/wx/curl/dialog.h
+  src/wx/curl/thread.h
+  src/wx/curl/panel.h
+  src/wx/curl/base.h
+  src/wx/curl/telnet.h
+  src/wx/curl/davtool.h
+  src/wx/curl/dav.h
+  src/utils.cpp
+  src/davtool.cpp
+  src/ftpparse.cpp
+  src/panel.cpp
+  src/ftpparse.h
+  src/telnet.cpp
+  src/ftp.cpp
+  src/base.cpp
+  src/dialog.cpp
+  src/http.cpp
+  src/thread.cpp
+  src/ftptool.cpp
+  src/dav.cpp
 )
 
-if (NOT wxWidgets_INCLUDE_DIRS)
-    include(SimpleWxConfig)
-    SimpleWxConfig()
-endif ()
-
-include(Curl)
-
-add_library(WXCURL STATIC ${SRC})
-add_library(ocpn::wxcurl ALIAS WXCURL)
-set_property(TARGET WXCURL PROPERTY COMPILE_FLAGS "-fvisibility=default")
-target_include_directories(WXCURL
-    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
-    PUBLIC ${CURL_INCLUDE_DIRS}
+add_library(WXCURL_SRC STATIC ${SRC})
+target_include_directories(WXCURL_SRC
+  PUBLIC ${CURL_INCLUDE_DIRS} ${CMAKE_CURRENT_LIST_DIR}/src
 )
-target_link_libraries(WXCURL ${CURL_LIBRARIES})
-if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang|AppleClang|GNU")
-  target_compile_options(WXCURL  PRIVATE "-Wno-unknown-pragmas")
+target_include_directories(WXCURL_IF
+  INTERFACE ${CMAKE_CURRENT_LIST_DIR}/src
+)
+target_link_libraries(WXCURL_SRC PUBLIC ${CURL_LIBRARIES})
+
+if (WIN32)
+  target_link_libraries(WXCURL_IF INTERFACE WXCURL_SRC)
+endif (WIN32)
+
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+  set_property(TARGET WXCURL_SRC PROPERTY COMPILE_FLAGS "-fvisibility=hidden")
 endif ()
-if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang|AppleClang")
-    target_compile_options(WXCURL PRIVATE "-Wno-varargs")
-endif()
