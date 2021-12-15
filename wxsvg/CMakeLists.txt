@@ -1,23 +1,22 @@
 cmake_minimum_required(VERSION 3.1)
 
 if (TARGET ocpn::wxsvg)
-    return ()
+  return()
 endif ()
 
 #
 # Build wxsvg library. Primarely intended to be invoked fror the main
-# CMakeLists. The alternative uses a simplified configuration
-# requiring proper pkg-config setup and just using standard wxWidgets
-# options. It has only been tested on linux.
+# CMakeLists. The alternative uses a simplified configuration requiring proper
+# pkg-config setup and just using standard wxWidgets options. It has only been
+# tested on linux.
 
 if (NOT CMAKE_MODULE_PATH)
-  set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake)
+  set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake)
 endif ()
 
-if(UNIX AND NOT APPLE)
+if (UNIX AND NOT APPLE)
   include(FindGlib2)
-endif(UNIX AND NOT APPLE)
-
+endif ()
 
 set(SRC
     src/CSSStyleDeclaration.cpp
@@ -75,7 +74,7 @@ set(SRC
     src/SVGUseElement.cpp
     src/SVGVideoElement.cpp
     src/imagsvg.cpp
-#   src/mediadec_ffmpeg.cpp
+    # src/mediadec_ffmpeg.cpp
     src/svgctrl.cpp
     src/cairo/SVGCanvasCairo.cpp
     src/cairo/SVGCanvasCairo.h
@@ -93,85 +92,81 @@ add_library(WXSVG STATIC ${SRC})
 add_library(ocpn::wxsvg ALIAS WXSVG)
 set_property(TARGET WXSVG PROPERTY COMPILE_FLAGS "${OBJ_VISIBILITY}")
 
-
-   # CMake has trouble finding libgobject-2.0.so, as required for static wxsvg library.
-   # We look for and add it explicitely
+# CMake has trouble finding libgobject-2.0.so, as required for static wxsvg
+# library. We look for and add it explicitely
 if (NOT WIN32 AND NOT APPLE AND NOT QT_ANDROID)
+  # Assume pkg-config is available.
+  pkg_search_module(GOBJECT REQUIRED gobject-2.0)
+  # MESSAGE (STATUS "    GOBJECT: " ${GOBJECT_LDFLAGS})
+  target_link_libraries(WXSVG PRIVATE ${GOBJECT_LDFLAGS})
 
-        # Assume pkg-config is available.
-        pkg_search_module(GOBJECT REQUIRED gobject-2.0)
-        #MESSAGE (STATUS "    GOBJECT: " ${GOBJECT_LDFLAGS})
-        target_link_libraries(WXSVG PRIVATE ${GOBJECT_LDFLAGS})
-
-        find_library(PANGOCAIRO_LIBRARY NAMES pangocairo-1.0 PATHS ${LINUX_LIB_PATHS})
-        #MESSAGE (STATUS "    PANGOCAIRO: " ${PANGOCAIRO_LIBRARY})
-        target_link_libraries(WXSVG PRIVATE ${PANGOCAIRO_LIBRARY})
-
-endif (NOT WIN32 AND NOT APPLE AND NOT QT_ANDROID)
+  find_library(
+    PANGOCAIRO_LIBRARY
+    NAMES pangocairo-1.0
+    PATHS ${LINUX_LIB_PATHS}
+  )
+  # MESSAGE (STATUS "    PANGOCAIRO: " ${PANGOCAIRO_LIBRARY})
+  target_link_libraries(WXSVG PRIVATE ${PANGOCAIRO_LIBRARY})
+endif ()
 
 include(FindEXIF)
 if (EXIF_FOUND)
-    target_sources(WXSVG PRIVATE src/ExifHandler.cpp)
-    target_compile_definitions(WXSVG PRIVATE -DwxsvgUSE_EXIF)
-    target_include_directories(WXSVG PRIVATE ${EXIF_INCLUDE_DIRS})
-    target_link_libraries(WXSVG PRIVATE ${EXIF_LIBRARIES})
+  target_sources(WXSVG PRIVATE src/ExifHandler.cpp)
+  target_compile_definitions(WXSVG PRIVATE -DwxsvgUSE_EXIF)
+  target_include_directories(WXSVG PRIVATE ${EXIF_INCLUDE_DIRS})
+  target_link_libraries(WXSVG PRIVATE ${EXIF_LIBRARIES})
 endif ()
 
 target_compile_definitions(WXSVG PRIVATE -DUSE_RENDER_CAIRO)
 
 if (NOT wxWidgets_INCLUDE_DIRS)
-    include(SimpleWxConfig)
-    SimpleWxConfig()
+  include(SimpleWxConfig)
+  simplewxconfig()
 
-    include(FindPkgConfig)
-    pkg_search_module(GLIB2 glib-2.0)
-    pkg_search_module(CAIRO cairo libcairo)
-    find_package(EXPAT REQUIRED)
-    find_package(PANGO REQUIRED)
-    target_link_libraries(WXSVG_CAIRO PRIVATE ocpn::pango)
-endif (NOT wxWidgets_INCLUDE_DIRS)
+  include(FindPkgConfig)
+  pkg_search_module(GLIB2 glib-2.0)
+  pkg_search_module(CAIRO cairo libcairo)
+  find_package(EXPAT REQUIRED)
+  find_package(PANGO REQUIRED)
+  target_link_libraries(WXSVG_CAIRO PRIVATE ocpn::pango)
+endif ()
+
 add_library(WXSVG_CAIRO INTERFACE)
-
-
 target_include_directories(WXSVG_CAIRO INTERFACE
-    ${CAIRO_INCLUDE_DIRS}
-    ${EXPAT_INCLUDE_DIRS}
-    ${GLIB2_INCLUDE_DIRS}
+  ${CAIRO_INCLUDE_DIRS} ${EXPAT_INCLUDE_DIRS} ${GLIB2_INCLUDE_DIRS}
 )
 
 if (APPLE)
   target_include_directories(WXSVG_CAIRO INTERFACE ${CAIRO_INCLUDE_DIRS}/..)
 endif ()
 
-target_link_libraries(WXSVG_CAIRO INTERFACE
-    ${CAIRO_LIBRARIES}
-    ${EXPAT_LIBRARIES}
-    ${GLIB2_LIBRARIES}
+target_link_libraries(
+  WXSVG_CAIRO INTERFACE ${CAIRO_LIBRARIES} ${EXPAT_LIBRARIES}
+                        ${GLIB2_LIBRARIES}
 )
-if(UNIX AND NOT APPLE)
-    target_include_directories(WXSVG_CAIRO INTERFACE ${GLib_INCLUDE_DIRS})
-    target_link_libraries(WXSVG_CAIRO INTERFACE ${GLib_LIBRARY})
-endif(UNIX AND NOT APPLE)
+if (UNIX AND NOT APPLE)
+  target_include_directories(WXSVG_CAIRO INTERFACE ${GLib_INCLUDE_DIRS})
+  target_link_libraries(WXSVG_CAIRO INTERFACE ${GLib_LIBRARY})
+endif ()
 
 add_library(wxsvg::cairo ALIAS WXSVG_CAIRO)
 
-target_include_directories(WXSVG
-    PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/wxSVG
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/wxSVGXML
-        ${wxWidgets_INCLUDE_DIRS}
+target_include_directories(
+  WXSVG
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/wxSVG
+          ${CMAKE_CURRENT_SOURCE_DIR}/include/wxSVGXML
+          ${wxWidgets_INCLUDE_DIRS}
 )
 
 if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang|AppleClang")
-    target_compile_options(WXSVG PRIVATE
-        "-Wno-varargs" "-Wno-unknown-pragmas" "-Wno-overloaded-virtual"
-    )
-endif()
+  target_compile_options(WXSVG PRIVATE
+    "-Wno-varargs" "-Wno-unknown-pragmas" "-Wno-overloaded-virtual"
+  )
+endif ()
 target_link_libraries(WXSVG PRIVATE ocpn::expat wxsvg::cairo)
 if (TARGET ocpn::pango)
-    target_link_libraries(WXSVG PRIVATE ocpn::pango)
+  target_link_libraries(WXSVG PRIVATE ocpn::pango)
 endif ()
 if (TARGET ocpn::gtk)
   target_link_libraries(WXSVG PRIVATE ocpn::gtk)
