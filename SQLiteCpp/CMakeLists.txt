@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 # SQLite3 support required for MBTiles.
 
 if (TARGET ocpn::sqlite_cpp)
-    return ()
+  return()
 endif ()
 
 set(SRC
@@ -30,9 +30,10 @@ add_library(ocpn::sqlite_cpp ALIAS SQLITE_CPP)
 
 target_link_libraries(SQLITE_CPP PRIVATE ocpn::sqlite)
 
-target_include_directories(SQLITE_CPP
-    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/sqlite3
-    PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/include
+target_include_directories(
+  SQLITE_CPP
+  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/sqlite3
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
@@ -42,5 +43,5 @@ endif ()
 # We do not need extensions, and using them in a static library causes trouble
 # with libdl linking order.
 if (UNIX AND NOT APPLE)
-    add_definitions(" -DSQLITE_OMIT_LOAD_EXTENSION")
-endif (UNIX AND NOT APPLE)
+  target_compile_definitions(SQLITE_CPP PRIVATE "SQLITE_OMIT_LOAD_EXTENSION")
+endif ()
