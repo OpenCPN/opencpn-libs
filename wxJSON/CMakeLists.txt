@@ -7,7 +7,7 @@
 cmake_minimum_required(VERSION 3.1)
 
 if (TARGET ocpn::wxjson)
-    return ()
+  return ()
 endif ()
 
 if (NOT CMAKE_MODULE_PATH)
