@@ -15,23 +15,22 @@ Adding the submodule
 Updating to latest status
 -------------------------
 
-    $ cd opencpn-libs
-    $ git pull origin main
-    $ cd ..
-    $ git commit -m "Updating libraries"
+    $ git submodule update --remote --merge opencpn-libs
+    $ git add opencpn-libs
+    $ git commit -m "Updating opencpn-libs to latest version."
 
 
 Using it
 --------
 
 All libraries exports a link target named like ocpn::lz4. To find the exact
-name, check the file CMakeLists which is available in the top directory of 
-each library. Look for a line like `add_library(ocpn::lz4 ALIAS _LZ4)`.
+name, check the file CMakeLists.txt which is available in the top directory
+of each library. Look for a line like `add_library(ocpn::lz4 ALIAS _LZ4)`.
 
 A library is typically used like
 
-    add_subdirectory("libs/jsoncpp")
-    target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
+    add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/lz4")
+    target_link_libraries(${PACKAGE_NAME} ocpn::lz4)
 
 Note:  the name _target_link_libraries_ is somewhat misleading. It is not
 just about linkage, running it means importing all sorts of include paths,
