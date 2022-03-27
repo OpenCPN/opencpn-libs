@@ -286,7 +286,6 @@ void piDC::SetGLAttrs( bool highQuality )
 void piDC::SetGLStipple() const
 {
 #ifdef ocpnUSE_GL
-
 #ifndef USE_ANDROID_GLES2
     switch( m_pen.GetStyle() ) {
         case wxDOT: {
@@ -339,7 +338,7 @@ void piDrawEndCap(float x1, float y1, float t1, float angle)
     }
 #endif
 }
-#endif
+#endif  // ocpnUSE_GL
 
 // Draws a line between (x1,y1) - (x2,y2) with a start thickness of t1
 void piDrawGLThickLine( float x1, float y1, float x2, float y2, wxPen pen, bool b_hiqual )
@@ -416,7 +415,7 @@ void piDrawGLThickLine( float x1, float y1, float x2, float y2, wxPen pen, bool 
     }
 
     glEnd();
-#else
+#else  // USE_ANDROID_GLES2
 
     //    n.b.  The dwxDash interpretation for GL only allows for 2 elements in the dash table.
     //    The first is assumed drawn, second is assumed space
@@ -533,9 +532,9 @@ void piDrawGLThickLine( float x1, float y1, float x2, float y2, wxPen pen, bool 
 //
      }
 
-#endif
+#endif  // USE_ANDROID_GLES2
 
-#endif
+#endif  // ocpnUSE_GL
 }
 
 void piDC::DrawLine( wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2, bool b_hiqual )
@@ -657,7 +656,7 @@ void piDC::DrawLine( wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2, bool b_hiqu
             }
         }
 
-#else
+#else  // USE_ANDROID_GLES2
         if( b_draw_thick )
             piDrawGLThickLine( x1, y1, x2, y2, m_pen, b_hiqual );
         else {
@@ -709,14 +708,14 @@ void piDC::DrawLine( wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2, bool b_hiqu
                 glEnd();
             }
         }
-#endif
+#endif  // USE_ANDROID_GLES2
         glDisable( GL_LINE_STIPPLE );
 
         if( b_hiqual )
             glDisable( GL_LINE_SMOOTH );
         glDisable( GL_BLEND );
     }
-#endif
+#endif  // ocpnUSE_GL
 }
 
 // Draws thick lines from triangles
@@ -825,8 +824,8 @@ void piDrawGLThickLines( int n, wxPoint points[],wxCoord xoffset,
     glPopAttrib();
 
     delete [] cpoints;
- #endif
- #endif
+ #endif  // USE_ANDROID_GLES2
+ #endif  // ocpnUSE_GL
  }
 
  void piDC::DrawLines( int n, wxPoint points[], wxCoord xoffset, wxCoord yoffset, bool b_hiqual )
@@ -922,7 +921,7 @@ void piDrawGLThickLines( int n, wxPoint points[],wxCoord xoffset,
         glDrawArrays(GL_LINE_STRIP, 0, n);
 
 
-#endif
+#endif  // USE_ANDROID_GLES2
 
 
         if( b_hiqual ) {
@@ -930,7 +929,7 @@ void piDrawGLThickLines( int n, wxPoint points[],wxCoord xoffset,
             glDisable( GL_POLYGON_SMOOTH );
         }
     }
-#endif
+#endif  // ocpnUSE_GL
 }
 
 void piDC::StrokeLine( wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2 )
@@ -1026,7 +1025,7 @@ void piDC::DrawGLLineArray( int n, float *vertex_array, float *color_array,  boo
                 glDisable( GL_POLYGON_SMOOTH );
             }
         }
-#endif
+#endif  // ocpnUSE_GL
 }
 
 
@@ -1186,7 +1185,7 @@ void piDC::DrawRoundedRectangle( wxCoord x, wxCoord y, wxCoord w, wxCoord h, wxC
         glUniformMatrix4fv( matlocf, 1, GL_FALSE, (const GLfloat*)IM);
 
 
-#else
+#else  // USE_ANDROID_GLES2
         if( ConfigureBrush() ) {
             glBegin( GL_TRIANGLE_FAN );
             drawrrhelper( x2, y1, r, 0, steps );
@@ -1204,9 +1203,9 @@ void piDC::DrawRoundedRectangle( wxCoord x, wxCoord y, wxCoord w, wxCoord h, wxC
             drawrrhelper( x2, y2, r, 3, steps );
             glEnd();
         }
-#endif
+#endif  // USE_ANDROID_GLES2
     }
-#endif
+#endif  // ocpnUSE_GL
 }
 
 void piDC::DrawCircle( wxCoord x, wxCoord y, wxCoord radius )
@@ -1279,7 +1278,7 @@ void piDC::DrawCircle( wxCoord x, wxCoord y, wxCoord radius )
 
 #else
     DrawEllipse( x - radius, y - radius, 2 * radius, 2 * radius );
-#endif
+#endif  // USE_ANDROID_GLES2
 }
 
 void piDC::StrokeCircle( wxCoord x, wxCoord y, wxCoord radius )
@@ -1335,7 +1334,7 @@ void piDC::DrawEllipse( wxCoord x, wxCoord y, wxCoord width, wxCoord height )
 #endif
         glDisable( GL_BLEND );
     }
-#endif
+#endif  // ocpnUSE_GL
 }
 
 void piDC::DrawPolygon( int n, wxPoint points[], wxCoord xoffset, wxCoord yoffset, float scale, float angle )
@@ -1432,7 +1431,7 @@ void piDC::DrawPolygon( int n, wxPoint points[], wxCoord xoffset, wxCoord yoffse
             GLint matlocf = glGetUniformLocation(pi_color_tri_shader_program,"TransformMatrix");
             glUniformMatrix4fv( matlocf, 1, GL_FALSE, (const GLfloat*)IM);
 
-#else
+#else  // USE_ANDROID_GLES2
 
         if( ConfigureBrush() ) {
             glEnable( GL_POLYGON_SMOOTH );
@@ -1451,12 +1450,12 @@ void piDC::DrawPolygon( int n, wxPoint points[], wxCoord xoffset, wxCoord yoffse
             glEnd();
             glDisable( GL_LINE_SMOOTH );
         }
-#endif
+#endif  // USE_ANDROID_GLES2
 
         SetGLAttrs( false );
 
     }
-#endif
+#endif  // ocpnUSE_GL
 }
 
 #ifdef ocpnUSE_GL
@@ -1518,7 +1517,7 @@ static void piDCendCallback()
 {
     glEnd();
 }
-#endif
+#endif  // USE_ANDROID_GLES2
 
 
 // GLSL callbacks
@@ -1606,12 +1605,12 @@ void pi_odc_endCallbackD_GLSL(void *data)
     glUniform4fv(colloc, 1, colorv);
 
     glDrawArrays(pDC->s_odc_tess_mode, 0, pDC->s_odc_nvertex);
-#endif
+#endif  // 1
 }
-#endif
+#endif  // USE_ANDROID_GLES2
 
 
-#endif          //#ifdef ocpnUSE_GL
+#endif  // #ifdef ocpnUSE_GL
 
 void piDC::StrokePolygon( int n, wxPoint points[], wxCoord xoffset, wxCoord yoffset, float scale )
 {
@@ -1707,10 +1706,10 @@ void piDC::DrawBitmap( const wxBitmap &bitmap, wxCoord x, wxCoord y, bool usemas
                 glDrawPixels( w, h, GL_RGB, GL_UNSIGNED_BYTE, image.GetData() );
             glPixelZoom( 1, 1 );
         }
-#endif          // GLES2
+#endif  // GLES2
     }
 
-#endif
+#endif  // ocpnUSE_GL
 }
 
 #ifdef ocpnUSE_GL
@@ -1880,7 +1879,7 @@ void piDC::DrawText( const wxString &text, wxCoord x, wxCoord y )
             delete[] data;
         }
     }
-#endif
+#endif  // ocpnUSE_GL
 }
 
 void piDC::GetTextExtent( const wxString &string, wxCoord *w, wxCoord *h, wxCoord *descent,
