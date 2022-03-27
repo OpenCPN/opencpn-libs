@@ -1059,10 +1059,10 @@ void piDC::DrawRectangle( wxCoord x, wxCoord y, wxCoord w, wxCoord h )
 #endif
 }
 
+#ifdef ocpnUSE_GL
 /* draw the arc along corners */
 static void drawrrhelper( wxCoord x0, wxCoord y0, wxCoord r, int quadrant, int steps )
 {
-#ifdef ocpnUSE_GL
 #ifndef USE_ANDROID_GLES2
     float step = 1.0/steps, rs = 2.0*r*step, rss = rs*step, x, y, dx, dy, ddx, ddy;
     switch(quadrant) {
@@ -1080,8 +1080,8 @@ static void drawrrhelper( wxCoord x0, wxCoord y0, wxCoord r, int quadrant, int s
     }
     glVertex2i( x0 + floor(x), y0 + floor(y) );
 #endif
-#endif
 }
+#endif
 
 void piDC::drawrrhelperGLES2( wxCoord x0, wxCoord y0, wxCoord r, int quadrant, int steps )
 {
@@ -1713,6 +1713,8 @@ void piDC::DrawBitmap( const wxBitmap &bitmap, wxCoord x, wxCoord y, bool usemas
 #endif
 }
 
+#ifdef ocpnUSE_GL
+
 static int NextPow2(int size)
 {
     int n = size-1;          // compute dimensions needed as next larger power of 2
@@ -1724,6 +1726,8 @@ static int NextPow2(int size)
 
     return n + 1;
 }
+
+#endif
 
 void piDC::DrawText( const wxString &text, wxCoord x, wxCoord y )
 {
@@ -1929,9 +1933,9 @@ bool piDC::ConfigurePen()
     if( m_pen == *wxTRANSPARENT_PEN ) return false;
 
     wxColour c = m_pen.GetColour();
-    int width = m_pen.GetWidth();
 #ifdef ocpnUSE_GL
 #ifndef USE_ANDROID_GLES2
+    int width = m_pen.GetWidth();
     glColor4ub( c.Red(), c.Green(), c.Blue(), c.Alpha() );
     glLineWidth( wxMax(GLMinSymbolLineWidth, width) );
 #endif
