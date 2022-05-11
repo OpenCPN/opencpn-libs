@@ -22,38 +22,25 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
  **************************************************************************/
-#include "wx/wxprec.h"
 
-#ifndef  WX_PRECOMP
-#include "wx/wx.h"
-#endif
+#include <wx/wx.h>
 
-#ifdef __MSVC__
-#include <windows.h>
-#endif
-
-#ifdef ocpnUSE_GL
-#include <wx/glcanvas.h>
-#endif
-
+#include "TexFont.h"
 
 #ifdef USE_ANDROID_GLES2
 #include "GLES2/gl2.h"
 #include "linmath.h"
-#include "pi_shaders.h"
-#elif defined (__APPLE__)
-#include "OpenGL/gl.h"
-#else
-#include "GL/gl.h"
-#endif
-
-#ifdef __OCPN__ANDROID__
+#include "shaders.h"
 #include "qdebug.h"
+#elif defined (__WXOSX__)
+#include <OpenGL/gl.h>
+#include <OpenGL/glext.h>
+#include <OpenGL/glu.h>
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
 #endif
 
-#include "TexFont.h"
-
-#if ocpnUSE_GL
 
 TexFont::TexFont( )
 {
@@ -72,8 +59,8 @@ TexFont::~TexFont( )
 void TexFont::Build( wxFont &font, bool blur )
 {
     /* avoid rebuilding if the parameters are the same */
-    if(font == m_font && blur == m_blur)
-        return;
+     if(font == m_font && blur == m_blur && m_built)
+         return;
     
     m_font = font;
     m_blur = blur;
@@ -206,6 +193,7 @@ void TexFont::Delete( )
         glDeleteTextures(1, &texobj);
         texobj = 0;
     }
+    m_built = false;
 }
 
 void TexFont::GetTextExtent(const char *string, int *width, int *height)
@@ -278,14 +266,14 @@ void TexFont::RenderGlyph( int c )
     coords[0] = 0; coords[1] = 0; coords[2] = w; coords[3] = 0;
     coords[4] = w; coords[5] = h; coords[6] = 0; coords[7] = h;
     
-    glUseProgram( pi_texture_text_shader_program );
+    glUseProgram( texture_2DA_shader_program );
     
     // Get pointers to the attributes in the program.
-    GLint mPosAttrib = glGetAttribLocation( pi_texture_text_shader_program, "aPos" );
-    GLint mUvAttrib  = glGetAttribLocation( pi_texture_text_shader_program, "aUV" );
+    GLint mPosAttrib = glGetAttribLocation( texture_2DA_shader_program, "aPos" );
+    GLint mUvAttrib  = glGetAttribLocation( texture_2DA_shader_program, "aUV" );
     
     // Set up the texture sampler to texture unit 0
-    GLint texUni = glGetUniformLocation( pi_texture_text_shader_program, "uTex" );
+    GLint texUni = glGetUniformLocation( texture_2DA_shader_program, "uTex" );
     glUniform1i( texUni, 0 );
     
     // Disable VBO's (vertex buffer objects) for attributes.
@@ -296,20 +284,20 @@ void TexFont::RenderGlyph( int c )
     glVertexAttribPointer( mPosAttrib, 2, GL_FLOAT, GL_FALSE, 0, coords );
     // ... and enable it.
     glEnableVertexAttribArray( mPosAttrib );
-
-    float colorv[4];
-    colorv[0] = m_color.Red() / 255.0f;
-    colorv[1] = m_color.Green() / 255.0f;
-    colorv[2] = m_color.Blue() / 255.0f;
-    colorv[3] = m_color.Alpha() / 255.0f;
-
-    GLint colloc = glGetUniformLocation(pi_texture_text_shader_program, "color");
-    glUniform4fv(colloc, 1, colorv);
-
+    
     // Set the attribute mUvAttrib with the vertices in the GL coordinates...
     glVertexAttribPointer( mUvAttrib, 2, GL_FLOAT, GL_FALSE, 0, uv );
     // ... and enable it.
     glEnableVertexAttribArray( mUvAttrib );
+ 
+    float colorv[4];
+    colorv[0] = m_color.Red() / float(256);
+    colorv[1] = m_color.Green() / float(256);
+    colorv[2] = m_color.Blue() / float(256);
+    colorv[3] = 0;
+    
+    GLint colloc = glGetUniformLocation(texture_2DA_shader_program,"color");
+    glUniform4fv(colloc, 1, colorv);
     
     // Rotate 
     float angle = 0;
@@ -321,7 +309,11 @@ void TexFont::RenderGlyph( int c )
     Q[3][0] = m_dx;
     Q[3][1] = m_dy;
     
-    GLint matloc = glGetUniformLocation(pi_texture_text_shader_program, "TransformMatrix");
+    
+    //mat4x4 X;
+    //mat4x4_mul(X, (float (*)[4])vp->vp_transform, Q);
+    
+    GLint matloc = glGetUniformLocation(texture_2DA_shader_program,"TransformMatrix");
     glUniformMatrix4fv( matloc, 1, GL_FALSE, (const GLfloat*)Q); 
     
     // Select the active texture unit.
@@ -360,7 +352,12 @@ void TexFont::RenderGlyph( int c )
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     
     #endif
+    
+    
+    
+    
     m_dx += tgic.advance;
+    
 #endif    
 }
 
@@ -423,4 +420,4 @@ void TexFont::RenderString( const wxString &string, int x, int y )
     RenderString((const char*)string.ToUTF8(), x, y);
 }
 
-#endif     //#ifdef ocpnUSE_GL
+//#endif     //#ifdef ocpnUSE_GL
