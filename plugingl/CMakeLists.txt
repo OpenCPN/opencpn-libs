@@ -33,7 +33,12 @@ add_library(ocpn::plugingl ALIAS PLUGINGL)
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
   set_property(TARGET PLUGINGL PROPERTY COMPILE_FLAGS "-fvisibility=hidden")
 endif ()
+
 target_link_libraries(PLUGINGL PRIVATE ocpn::api)
+
+if (TARGET OpenGL::GLU)
+  target_link_libraries(PLUGINGL PRIVATE OpenGL::GLU)
+endif()
 
 if (WIN32)
   target_link_libraries(PLUGINGL PRIVATE windows::headers)
