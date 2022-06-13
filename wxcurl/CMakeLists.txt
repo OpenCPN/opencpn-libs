@@ -95,7 +95,6 @@ endif ()
 # The curl dependency
 #
 if (WIN32 AND NOT TARGET ocpn::libcurl)
-  set(_implib ${CMAKE_CURRENT_LIST_DIR}/win/libcurl.dll)
   add_library(CURL_LIBRARIES STATIC IMPORTED)
   set_property(
     TARGET CURL_LIBRARIES
