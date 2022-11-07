@@ -11,7 +11,7 @@ endif ()
 add_library(_SQLITE INTERFACE)
 add_library(ocpn::sqlite ALIAS _SQLITE)
 
-include(FindSqlite3)
+include(FindSqlite)
 if (NOT SQLITE_FOUND OR APPLE OR WIN32 OR QT_ANDROID)
   message(STATUS "Using bundled sqlite3 library.")
   add_library(
