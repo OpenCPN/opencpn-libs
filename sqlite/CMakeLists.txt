@@ -4,14 +4,17 @@ if (TARGET ocpn::sqlite)
   return()
 endif ()
 
-if (NOT CMAKE_MODULE_PATH)
-  set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake)
-endif ()
 
 add_library(_SQLITE INTERFACE)
 add_library(ocpn::sqlite ALIAS _SQLITE)
 
-include(FindSqlite)
+if(CMAKE_VERSION VERSION_LESS 3.14.0)
+  list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR/cmake)
+  find_package(Sqlite)
+else ()
+  find_package(Sqlite3)
+endif ()
+
 if (NOT SQLITE_FOUND OR APPLE OR WIN32 OR QT_ANDROID)
   message(STATUS "Using bundled sqlite3 library.")
   add_library(
