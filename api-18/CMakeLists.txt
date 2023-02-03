@@ -13,6 +13,7 @@ set(API_OCPN_MIN_VERSION "5.7.0" PARENT_SCOPE)
 
 add_library(OCPN_API_WX32 INTERFACE)
 add_library(ocpn::api_wx32 ALIAS OCPN_API_WX32)
+add_library(ocpn::api ALIAS OCPN_API_WX32)
 target_include_directories(
   OCPN_API_WX32
     INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}"
