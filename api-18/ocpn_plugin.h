@@ -1573,6 +1573,19 @@ GetActiveRouteGUID(void);  // if no active route, returns wxEmptyString
 
 // API 1.18
 
+//  Scaled display support, as on some GTK3 and Mac Retina devices
+extern DECL_EXP double OCPN_GetDisplayContentScaleFactor();
+
+//  Scaled display support, on Windows devices
+extern DECL_EXP double OCPN_GetWinDIPScaleFactor();
+
+//  Comm Priority query support
+extern DECL_EXP std::vector<std::string> GetPriorityMaps();
+extern DECL_EXP std::vector<std::string> GetActivePriorityIdentifiers();
+
+extern DECL_EXP int GetGlobalWatchdogTimoutSeconds();
+
+
 typedef enum _OBJECT_LAYER_REQ {
   OBJECTS_ALL = 0,
   OBJECTS_NO_LAYERS,
@@ -1648,11 +1661,14 @@ struct SignalkId {
 extern DECL_EXP std::shared_ptr<ObservableListener> GetListener(
     SignalkId id, wxEventType ev, wxEvtHandler *handler);
 
-/** Return payload in a recieved n2000 message of type id in ev. */
+/** Return payload in a received n2000 message of type id in ev. */
 extern DECL_EXP std::vector<uint8_t> GetN2000Payload(NMEA2000Id id,
                                                      ObservedEvt ev);
 
-/** Return payload in a recieved n0183 message of type id in ev. */
+/** Return source identifier (iface) of a received n2000 message of type id in ev. */
+extern DECL_EXP std::string GetN2000Source(NMEA2000Id id, ObservedEvt ev);
+
+/** Return payload in a received n0183 message of type id in ev. */
 extern DECL_EXP std::string GetN0183Payload(NMEA0183Id id, ObservedEvt ev);
 
 /** Facade for BasicNavDataMsg. */
