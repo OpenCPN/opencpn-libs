@@ -44,20 +44,20 @@
 #define DECL_IMP
 #endif
 
+#include <wx/xml/xml.h>
 #include <wx/dcmemory.h>
 #include <wx/dialog.h>
 #include <wx/event.h>
-#include <wx/gdicmn.h>
 #include <wx/menuitem.h>
-#include <wx/xml/xml.h>
+#include <wx/gdicmn.h>
 
 #ifdef ocpnUSE_SVG
 #include <wx/bitmap.h>
-#endif // ocpnUSE_SVG
+#endif  // ocpnUSE_SVG
 
 #include <memory>
-#include <unordered_map>
 #include <vector>
+#include <unordered_map>
 
 class wxGLContext;
 
@@ -127,13 +127,13 @@ enum PI_ColorScheme {
 
 class PlugIn_ViewPort {
 public:
-  double clat; // center point
+  double clat;  // center point
   double clon;
   double view_scale_ppm;
   double skew;
   double rotation;
 
-  float chart_scale; // conventional chart displayed scale
+  float chart_scale;  // conventional chart displayed scale
 
   int pix_width;
   int pix_height;
@@ -143,7 +143,7 @@ public:
 
   double lat_min, lat_max, lon_min, lon_max;
 
-  bool bValid; // This VP is valid
+  bool bValid;  // This VP is valid
 };
 
 class PlugIn_Position_Fix {
@@ -152,7 +152,7 @@ public:
   double Lon;
   double Cog;
   double Sog;
-  double Var; // Variation, typically from RMC message
+  double Var;  // Variation, typically from RMC message
   time_t FixTime;
   int nSats;
 };
@@ -163,7 +163,7 @@ public:
   double Lon;
   double Cog;
   double Sog;
-  double Var; // Variation, typically from RMC message
+  double Var;  // Variation, typically from RMC message
   double Hdm;
   double Hdt;
   time_t FixTime;
@@ -172,11 +172,11 @@ public:
 
 class Plugin_Active_Leg_Info {
 public:
-  double Xte; // Left side of the track -> negative XTE
+  double Xte;  // Left side of the track -> negative XTE
   double Btw;
   double Dtw;
-  wxString wp_name; // Name of destination waypoint for active leg
-  bool arrival;     // True when within arrival circle
+  wxString wp_name;  // Name of destination waypoint for active leg
+  bool arrival;      // True when within arrival circle
 };
 
 //    Describe AIS Alarm state
@@ -198,7 +198,7 @@ public:
   double Lon;
   double Lat;
   int ROTAIS;
-  char CallSign[8]; // includes terminator
+  char CallSign[8];  // includes terminator
   char ShipName[21];
   unsigned char ShipType;
   int IMO;
@@ -208,8 +208,8 @@ public:
 
   //      Per target collision parameters
   bool bCPA_Valid;
-  double TCPA; // Minutes
-  double CPA;  // Nautical Miles
+  double TCPA;  // Minutes
+  double CPA;   // Nautical Miles
 
   plugin_ais_alarm_type alarm_state;
 };
@@ -393,7 +393,7 @@ public:
 
   //    This group of methods is required, and will be called by the opencpn
   //    host opencpn PlugIns must implement this group
-  virtual int Init(void); // Return the PlugIn Capabilites flag
+  virtual int Init(void);  // Return the PlugIn Capabilites flag
   virtual bool DeInit(void);
 
   virtual int GetAPIVersionMajor();
@@ -413,8 +413,8 @@ public:
   //    PlugIns may override any of these methods as required
 
   virtual void SetDefaults(
-      void); // This will be called upon enabling a PlugIn via the user Dialog
-             // It gives a chance to setup any default options and behavior
+      void);  // This will be called upon enabling a PlugIn via the user Dialog
+              // It gives a chance to setup any default options and behavior
 
   virtual int GetToolbarToolCount(void);
 
@@ -501,7 +501,7 @@ public:
   opencpn_plugin_110(void *pmgr);
   virtual ~opencpn_plugin_110();
 
-  virtual void LateInit(void); // If WANTS_LATE_INIT is returned by Init()
+  virtual void LateInit(void);  // If WANTS_LATE_INIT is returned by Init()
 };
 
 class DECL_EXP opencpn_plugin_111 : public opencpn_plugin_110 {
@@ -585,20 +585,19 @@ public:
   /// \param pcontext Pointer to the OpenGL context
   /// \param vp Pointer to the Viewport
   /// \param canvasIndex Index of the chart canvas, 0 for the first canvas
-  /// \param priority Priority, plugins only upgrading from older API versions
-  /// should draw only when priority is OVERLAY_LEGACY (0) \return true if
-  /// overlay was rendered, false otherwise
+  /// \param priority Priority, plugins only upgrading from older API versions should draw only
+  /// when priority is OVERLAY_LEGACY (0)
+  /// \return true if overlay was rendered, false otherwise
   virtual bool RenderGLOverlayMultiCanvas(wxGLContext *pcontext,
-                                          PlugIn_ViewPort *vp, int canvasIndex,
-                                          int priority = -1);
+                                          PlugIn_ViewPort *vp, int canvasIndex, int priority = -1);
   /// Render plugin overlay over chart canvas in non-OpenGL mode
   ///
   /// \param dc Reference to the "device context"
   /// \param vp Pointer to the Viewport
   /// \param canvasIndex Index of the chart canvas, 0 for the first canvas
-  /// \param priority Priority, plugins only upgrading from older API versions
-  /// should draw only when priority is OVERLAY_LEGACY (0) \return true if
-  /// overlay was rendered, false otherwise
+  /// \param priority Priority, plugins only upgrading from older API versions should draw only
+  /// when priority is OVERLAY_LEGACY (0)
+  /// \return true if overlay was rendered, false otherwise
   virtual bool RenderOverlayMultiCanvas(wxDC &dc, PlugIn_ViewPort *vp,
                                         int canvasIndex, int priority = -1);
 };
@@ -680,28 +679,27 @@ extern "C" DECL_EXP int InsertPlugInTool(wxString label, wxBitmap *bitmap,
                                          wxObject *clientData, int position,
                                          int tool_sel, opencpn_plugin *pplugin);
 extern "C" DECL_EXP void RemovePlugInTool(int tool_id);
-extern "C" DECL_EXP void
-SetToolbarToolViz(int item, bool viz); // Temporarily change toolbar tool viz
+extern "C" DECL_EXP void SetToolbarToolViz(
+    int item, bool viz);  // Temporarily change toolbar tool viz
 extern "C" DECL_EXP void SetToolbarItemState(int item, bool toggle);
 extern "C" DECL_EXP void SetToolbarToolBitmaps(int item, wxBitmap *bitmap,
                                                wxBitmap *bmpRollover);
 
-extern "C" DECL_EXP int
-InsertPlugInToolSVG(wxString label, wxString SVGfile, wxString SVGfileRollover,
-                    wxString SVGfileToggled, wxItemKind kind,
-                    wxString shortHelp, wxString longHelp, wxObject *clientData,
-                    int position, int tool_sel, opencpn_plugin *pplugin);
+extern "C" DECL_EXP int InsertPlugInToolSVG(
+    wxString label, wxString SVGfile, wxString SVGfileRollover,
+    wxString SVGfileToggled, wxItemKind kind, wxString shortHelp,
+    wxString longHelp, wxObject *clientData, int position, int tool_sel,
+    opencpn_plugin *pplugin);
 extern "C" DECL_EXP void SetToolbarToolBitmapsSVG(int item, wxString SVGfile,
                                                   wxString SVGfileRollover,
                                                   wxString SVGfileToggled);
 
 extern "C" DECL_EXP int AddCanvasContextMenuItem(wxMenuItem *pitem,
                                                  opencpn_plugin *pplugin);
-extern "C" DECL_EXP void
-RemoveCanvasContextMenuItem(int item); // Fully remove this item
-extern "C" DECL_EXP void
-SetCanvasContextMenuItemViz(int item,
-                            bool viz); // Temporarily change context menu ptions
+extern "C" DECL_EXP void RemoveCanvasContextMenuItem(
+    int item);  // Fully remove this item
+extern "C" DECL_EXP void SetCanvasContextMenuItemViz(
+    int item, bool viz);  // Temporarily change context menu ptions
 extern "C" DECL_EXP void SetCanvasContextMenuItemGrey(int item, bool grey);
 
 extern "C" DECL_EXP wxFileConfig *GetOCPNConfigObject(void);
@@ -747,12 +745,12 @@ extern "C" DECL_EXP void JumpToPosition(double lat, double lon, double scale);
  * duplication */
 /* Study the original OpenCPN source (georef.c) for functional definitions  */
 
-extern "C" DECL_EXP void
-PositionBearingDistanceMercator_Plugin(double lat, double lon, double brg,
-                                       double dist, double *dlat, double *dlon);
-extern "C" DECL_EXP void
-DistanceBearingMercator_Plugin(double lat0, double lon0, double lat1,
-                               double lon1, double *brg, double *dist);
+extern "C" DECL_EXP void PositionBearingDistanceMercator_Plugin(
+    double lat, double lon, double brg, double dist, double *dlat,
+    double *dlon);
+extern "C" DECL_EXP void DistanceBearingMercator_Plugin(
+    double lat0, double lon0, double lat1, double lon1, double *brg,
+    double *dist);
 extern "C" DECL_EXP double DistGreatCircle_Plugin(double slat, double slon,
                                                   double dlat, double dlon);
 
@@ -907,9 +905,8 @@ public:
   PlugInChartBaseGLPlus2();
   virtual ~PlugInChartBaseGLPlus2();
 
-  virtual ListOfPI_S57Obj *
-  GetLightsObjRuleListVisibleAtLatLon(float lat, float lon,
-                                      PlugIn_ViewPort *VPoint);
+  virtual ListOfPI_S57Obj *GetLightsObjRuleListVisibleAtLatLon(
+      float lat, float lon, PlugIn_ViewPort *VPoint);
 };
 
 // ----------------------------------------------------------------------------
@@ -966,54 +963,53 @@ public:
   PlugInChartBaseExtendedPlus2();
   virtual ~PlugInChartBaseExtendedPlus2();
 
-  virtual ListOfPI_S57Obj *
-  GetLightsObjRuleListVisibleAtLatLon(float lat, float lon,
-                                      PlugIn_ViewPort *VPoint);
+  virtual ListOfPI_S57Obj *GetLightsObjRuleListVisibleAtLatLon(
+      float lat, float lon, PlugIn_ViewPort *VPoint);
 };
 
 class wxArrayOfS57attVal;
 
 // name of the addressed look up table set (fifth letter)
 typedef enum _PI_LUPname {
-  PI_SIMPLIFIED = 'L',            // points
-  PI_PAPER_CHART = 'R',           // points
-  PI_LINES = 'S',                 // lines
-  PI_PLAIN_BOUNDARIES = 'N',      // areas
-  PI_SYMBOLIZED_BOUNDARIES = 'O', // areas
+  PI_SIMPLIFIED = 'L',             // points
+  PI_PAPER_CHART = 'R',            // points
+  PI_LINES = 'S',                  // lines
+  PI_PLAIN_BOUNDARIES = 'N',       // areas
+  PI_SYMBOLIZED_BOUNDARIES = 'O',  // areas
   PI_LUPNAME_NUM = 5
 } PI_LUPname;
 
 // display category type
 typedef enum _PI_DisCat {
-  PI_DISPLAYBASE = 'D',       //
-  PI_STANDARD = 'S',          //
-  PI_OTHER = 'O',             // O for OTHER
-  PI_MARINERS_STANDARD = 'M', // Mariner specified
-  PI_MARINERS_OTHER,          // value not defined
-  PI_DISP_CAT_NUM,            // value not defined
+  PI_DISPLAYBASE = 'D',        //
+  PI_STANDARD = 'S',           //
+  PI_OTHER = 'O',              // O for OTHER
+  PI_MARINERS_STANDARD = 'M',  // Mariner specified
+  PI_MARINERS_OTHER,           // value not defined
+  PI_DISP_CAT_NUM,             // value not defined
 } PI_DisCat;
 
 // Display Priority
 typedef enum _PI_DisPrio {
-  PI_PRIO_NODATA = '0',     // no data fill area pattern
-  PI_PRIO_GROUP1 = '1',     // S57 group 1 filled areas
-  PI_PRIO_AREA_1 = '2',     // superimposed areas
-  PI_PRIO_AREA_2 = '3',     // superimposed areas also water features
-  PI_PRIO_SYMB_POINT = '4', // point symbol also land features
-  PI_PRIO_SYMB_LINE = '5',  // line symbol also restricted areas
-  PI_PRIO_SYMB_AREA = '6',  // area symbol also traffic areas
-  PI_PRIO_ROUTEING = '7',   // routeing lines
-  PI_PRIO_HAZARDS = '8',    // hazards
-  PI_PRIO_MARINERS = '9',   // VRM, EBL, own ship
-  PI_PRIO_NUM = 10          // number of priority levels
+  PI_PRIO_NODATA = '0',      // no data fill area pattern
+  PI_PRIO_GROUP1 = '1',      // S57 group 1 filled areas
+  PI_PRIO_AREA_1 = '2',      // superimposed areas
+  PI_PRIO_AREA_2 = '3',      // superimposed areas also water features
+  PI_PRIO_SYMB_POINT = '4',  // point symbol also land features
+  PI_PRIO_SYMB_LINE = '5',   // line symbol also restricted areas
+  PI_PRIO_SYMB_AREA = '6',   // area symbol also traffic areas
+  PI_PRIO_ROUTEING = '7',    // routeing lines
+  PI_PRIO_HAZARDS = '8',     // hazards
+  PI_PRIO_MARINERS = '9',    // VRM, EBL, own ship
+  PI_PRIO_NUM = 10           // number of priority levels
 
 } PI_DisPrio;
 
 typedef enum PI_InitReturn {
   PI_INIT_OK = 0,
-  PI_INIT_FAIL_RETRY,  // Init failed, retry suggested
-  PI_INIT_FAIL_REMOVE, // Init failed, suggest remove from further use
-  PI_INIT_FAIL_NOERROR // Init failed, request no explicit error message
+  PI_INIT_FAIL_RETRY,   // Init failed, retry suggested
+  PI_INIT_FAIL_REMOVE,  // Init failed, suggest remove from further use
+  PI_INIT_FAIL_NOERROR  // Init failed, request no explicit error message
 } _PI_InitReturn;
 
 class PI_line_segment_element {
@@ -1021,7 +1017,7 @@ public:
   size_t vbo_offset;
   size_t n_points;
   int priority;
-  float lat_max; // segment bounding box
+  float lat_max;  // segment bounding box
   float lat_min;
   float lon_max;
   float lon_min;
@@ -1048,18 +1044,18 @@ public:
   int iOBJL;
   int Index;
 
-  double x; // for POINT
+  double x;  // for POINT
   double y;
   double z;
-  int npt;            // number of points as needed by arrays
-  void *geoPt;        // for LINE & AREA not described by PolyTessGeo
-  double *geoPtz;     // an array[3] for MultiPoint, SM with Z, i.e. depth
-  double *geoPtMulti; // an array[2] for MultiPoint, lat/lon to make bbox
-                      // of decomposed points
+  int npt;             // number of points as needed by arrays
+  void *geoPt;         // for LINE & AREA not described by PolyTessGeo
+  double *geoPtz;      // an array[3] for MultiPoint, SM with Z, i.e. depth
+  double *geoPtMulti;  // an array[2] for MultiPoint, lat/lon to make bbox
+                       // of decomposed points
 
   void *pPolyTessGeo;
 
-  double m_lat; // The lat/lon of the object's "reference" point
+  double m_lat;  // The lat/lon of the object's "reference" point
   double m_lon;
 
   double chart_ref_lat;
@@ -1070,13 +1066,13 @@ public:
   double lon_min;
   double lon_max;
 
-  int Scamin; // SCAMIN attribute decoded during load
+  int Scamin;  // SCAMIN attribute decoded during load
 
   bool bIsClone;
-  int nRef; // Reference counter, to signal OK for deletion
+  int nRef;  // Reference counter, to signal OK for deletion
 
-  bool bIsAton;       // This object is an aid-to-navigation
-  bool bIsAssociable; // This object is DRGARE or DEPARE
+  bool bIsAton;        // This object is an aid-to-navigation
+  bool bIsAssociable;  // This object is DRGARE or DEPARE
 
   int m_n_lsindex;
   int *m_lsindex_array;
@@ -1086,18 +1082,18 @@ public:
   PI_DisCat m_DisplayCat;
 
   void *S52_Context;
-  PI_S57Obj *child; // child list, used only for MultiPoint Soundings
+  PI_S57Obj *child;  // child list, used only for MultiPoint Soundings
 
-  PI_S57Obj *next; //  List linkage
+  PI_S57Obj *next;  //  List linkage
 
   // This transform converts from object geometry
   // to SM coordinates.
-  double x_rate;   // These auxiliary transform coefficients are
-  double y_rate;   // to be used in GetPointPix() and friends
-  double x_origin; // on a per-object basis if necessary
+  double x_rate;    // These auxiliary transform coefficients are
+  double y_rate;    // to be used in GetPointPix() and friends
+  double x_origin;  // on a per-object basis if necessary
   double y_origin;
 
-  int auxParm0; // some per-object auxiliary parameters, used for OpenGL
+  int auxParm0;  // some per-object auxiliary parameters, used for OpenGL
   int auxParm1;
   int auxParm2;
   int auxParm3;
@@ -1259,25 +1255,25 @@ typedef enum _OCPN_DLCondition {
 //      Style definitions for Synchronous file download modal dialogs, if
 //      desired. Abstracted from wxCURL package
 enum OCPN_DLDialogStyle {
-  OCPN_DLDS_ELAPSED_TIME = 0x0001, //!< The dialog shows the elapsed time.
+  OCPN_DLDS_ELAPSED_TIME = 0x0001,  //!< The dialog shows the elapsed time.
   OCPN_DLDS_ESTIMATED_TIME =
-      0x0002, //!< The dialog shows the estimated total time.
-  OCPN_DLDS_REMAINING_TIME = 0x0004, //!< The dialog shows the remaining time.
-  OCPN_DLDS_SPEED = 0x0008,          //!< The dialog shows the transfer speed.
-  OCPN_DLDS_SIZE = 0x0010, //!< The dialog shows the size of the resource to
-                           //!< download/upload.
+      0x0002,  //!< The dialog shows the estimated total time.
+  OCPN_DLDS_REMAINING_TIME = 0x0004,  //!< The dialog shows the remaining time.
+  OCPN_DLDS_SPEED = 0x0008,           //!< The dialog shows the transfer speed.
+  OCPN_DLDS_SIZE = 0x0010,  //!< The dialog shows the size of the resource to
+                            //!< download/upload.
   OCPN_DLDS_URL =
-      0x0020, //!< The dialog shows the URL involved in the transfer.
+      0x0020,  //!< The dialog shows the URL involved in the transfer.
 
   // styles related to the use of wxCurlConnectionSettingsDialog:
 
   OCPN_DLDS_CONN_SETTINGS_AUTH =
-      0x0040, //!< The dialog allows the user to change the authentication
-              //!< settings.
-  OCPN_DLDS_CONN_SETTINGS_PORT = 0x0080, //!< The dialog allows the user to
-                                         //!< change the port for the transfer.
+      0x0040,  //!< The dialog allows the user to change the authentication
+               //!< settings.
+  OCPN_DLDS_CONN_SETTINGS_PORT = 0x0080,  //!< The dialog allows the user to
+                                          //!< change the port for the transfer.
   OCPN_DLDS_CONN_SETTINGS_PROXY =
-      0x0100, //!< The dialog allows the user to change the proxy settings.
+      0x0100,  //!< The dialog allows the user to change the proxy settings.
 
   OCPN_DLDS_CONN_SETTINGS_ALL = OCPN_DLDS_CONN_SETTINGS_AUTH |
                                 OCPN_DLDS_CONN_SETTINGS_PORT |
@@ -1288,13 +1284,13 @@ enum OCPN_DLDialogStyle {
                        OCPN_DLDS_SIZE | OCPN_DLDS_URL |
                        OCPN_DLDS_CONN_SETTINGS_ALL,
 
-  OCPN_DLDS_CAN_ABORT = 0x0200, //!< The transfer can be aborted by the user.
-  OCPN_DLDS_CAN_START = 0x0400, //!< The transfer won't start automatically.
-                                //!< The user needs to start it.
-  OCPN_DLDS_CAN_PAUSE = 0x0800, //!< The transfer can be paused.
+  OCPN_DLDS_CAN_ABORT = 0x0200,  //!< The transfer can be aborted by the user.
+  OCPN_DLDS_CAN_START = 0x0400,  //!< The transfer won't start automatically.
+                                 //!< The user needs to start it.
+  OCPN_DLDS_CAN_PAUSE = 0x0800,  //!< The transfer can be paused.
 
   OCPN_DLDS_AUTO_CLOSE =
-      0x1000, //!< The dialog auto closes when transfer is complete.
+      0x1000,  //!< The dialog auto closes when transfer is complete.
 
   // by default all available features are enabled:
   OCPN_DLDS_DEFAULT_STYLE = OCPN_DLDS_CAN_START | OCPN_DLDS_CAN_PAUSE |
@@ -1302,8 +1298,8 @@ enum OCPN_DLDialogStyle {
                             OCPN_DLDS_AUTO_CLOSE
 };
 
-#define ONLINE_CHECK_RETRY                                                     \
-  30 // Recheck the Internet connection availability every ONLINE_CHECK_RETRY s
+#define ONLINE_CHECK_RETRY \
+  30  // Recheck the Internet connection availability every ONLINE_CHECK_RETRY s
 
 /*   Synchronous (Blocking) download of a single file  */
 
@@ -1405,11 +1401,10 @@ extern DECL_EXP bool PlugInSetFontColor(const wxString TextElement,
 extern DECL_EXP double PlugInGetDisplaySizeMM();
 
 //
-extern DECL_EXP wxFont *
-FindOrCreateFont_PlugIn(int point_size, wxFontFamily family, wxFontStyle style,
-                        wxFontWeight weight, bool underline = false,
-                        const wxString &facename = wxEmptyString,
-                        wxFontEncoding encoding = wxFONTENCODING_DEFAULT);
+extern DECL_EXP wxFont *FindOrCreateFont_PlugIn(
+    int point_size, wxFontFamily family, wxFontStyle style, wxFontWeight weight,
+    bool underline = false, const wxString &facename = wxEmptyString,
+    wxFontEncoding encoding = wxFONTENCODING_DEFAULT);
 
 extern DECL_EXP int PlugInGetMinAvailableGshhgQuality();
 extern DECL_EXP int PlugInGetMaxAvailableGshhgQuality();
@@ -1447,11 +1442,11 @@ extern "C" DECL_EXP void CanvasJumpToPosition(wxWindow *canvas, double lat,
 extern "C" DECL_EXP int AddCanvasMenuItem(wxMenuItem *pitem,
                                           opencpn_plugin *pplugin,
                                           const char *name = "");
-extern "C" DECL_EXP void
-RemoveCanvasMenuItem(int item, const char *name = ""); // Fully remove this item
+extern "C" DECL_EXP void RemoveCanvasMenuItem(
+    int item, const char *name = "");  // Fully remove this item
 extern "C" DECL_EXP void SetCanvasMenuItemViz(
     int item, bool viz,
-    const char *name = ""); // Temporarily change context menu options
+    const char *name = "");  // Temporarily change context menu options
 extern "C" DECL_EXP void SetCanvasMenuItemGrey(int item, bool grey,
                                                const char *name = "");
 
@@ -1460,8 +1455,8 @@ extern DECL_EXP wxString GetSelectedWaypointGUID_Plugin();
 extern DECL_EXP wxString GetSelectedRouteGUID_Plugin();
 extern DECL_EXP wxString GetSelectedTrackGUID_Plugin();
 
-extern DECL_EXP std::unique_ptr<PlugIn_Waypoint>
-GetWaypoint_Plugin(const wxString &); // doublon with GetSingleWaypoint
+extern DECL_EXP std::unique_ptr<PlugIn_Waypoint> GetWaypoint_Plugin(
+    const wxString &);  // doublon with GetSingleWaypoint
 extern DECL_EXP std::unique_ptr<PlugIn_Route> GetRoute_Plugin(const wxString &);
 extern DECL_EXP std::unique_ptr<PlugIn_Track> GetTrack_Plugin(const wxString &);
 
@@ -1503,14 +1498,14 @@ public:
   ~PlugIn_Waypoint_Ex();
   void InitDefaults();
 
-  bool GetFSStatus(); // return "free standing" status
-                      // To be a "free standing waypoint"(FSWP),
-                      // the RoutePoint will have been created by GUI dropping
-                      // a point; by importing a waypoint in a GPX file or by
-                      // the AddSingleWaypoint API.
+  bool GetFSStatus();  // return "free standing" status
+                       // To be a "free standing waypoint"(FSWP),
+                       // the RoutePoint will have been created by GUI dropping
+                       // a point; by importing a waypoint in a GPX file or by
+                       // the AddSingleWaypoint API.
 
-  int GetRouteMembershipCount(); // Return the number of routes to which this
-                                 // WP belongs
+  int GetRouteMembershipCount();  // Return the number of routes to which this
+                                  // WP belongs
 
   double m_lat;
   double m_lon;
@@ -1566,15 +1561,15 @@ extern DECL_EXP bool AddPlugInRouteEx(PlugIn_Route_Ex *proute,
                                       bool b_permanent = true);
 extern DECL_EXP bool UpdatePlugInRouteEx(PlugIn_Route_Ex *proute);
 
-extern DECL_EXP std::unique_ptr<PlugIn_Waypoint_Ex>
-GetWaypointEx_Plugin(const wxString &);
-extern DECL_EXP std::unique_ptr<PlugIn_Route_Ex>
-GetRouteEx_Plugin(const wxString &);
+extern DECL_EXP std::unique_ptr<PlugIn_Waypoint_Ex> GetWaypointEx_Plugin(
+    const wxString &);
+extern DECL_EXP std::unique_ptr<PlugIn_Route_Ex> GetRouteEx_Plugin(
+    const wxString &);
 
 extern DECL_EXP wxString
-GetActiveWaypointGUID(void); // if no active waypoint, returns wxEmptyString
+GetActiveWaypointGUID(void);  // if no active waypoint, returns wxEmptyString
 extern DECL_EXP wxString
-GetActiveRouteGUID(void); // if no active route, returns wxEmptyString
+GetActiveRouteGUID(void);  // if no active route, returns wxEmptyString
 
 // API 1.18
 
@@ -1590,13 +1585,14 @@ extern DECL_EXP std::vector<std::string> GetActivePriorityIdentifiers();
 
 extern DECL_EXP int GetGlobalWatchdogTimoutSeconds();
 
+
 typedef enum _OBJECT_LAYER_REQ {
   OBJECTS_ALL = 0,
   OBJECTS_NO_LAYERS,
   OBJECTS_ONLY_LAYERS
 } OBJECT_LAYER_REQ;
 
-// FIXME (dave)  Implement these
+//FIXME (dave)  Implement these
 extern DECL_EXP wxArrayString GetRouteGUIDArray(OBJECT_LAYER_REQ req);
 extern DECL_EXP wxArrayString GetTrackGUIDArray(OBJECT_LAYER_REQ req);
 extern DECL_EXP wxArrayString GetWaypointGUIDArray(OBJECT_LAYER_REQ req);
@@ -1634,7 +1630,7 @@ private:
   std::shared_ptr<const void> m_shared_ptr;
 };
 
-#endif // OBSERVABLE_EVT_H
+#endif  // OBSERVABLE_EVT_H
 
 class ObservableListener;
 
@@ -1644,8 +1640,8 @@ struct NMEA2000Id {
   NMEA2000Id(int value) : id(static_cast<uint64_t>(value)){};
 };
 
-extern DECL_EXP std::shared_ptr<ObservableListener>
-GetListener(NMEA2000Id id, wxEventType ev, wxEvtHandler *handler);
+extern DECL_EXP std::shared_ptr<ObservableListener> GetListener(
+    NMEA2000Id id, wxEventType ev, wxEvtHandler *handler);
 
 /** Facade for NavAddr0183. */
 struct NMEA0183Id {
@@ -1653,8 +1649,8 @@ struct NMEA0183Id {
   NMEA0183Id(const std::string &s) : id(s){};
 };
 
-extern DECL_EXP std::shared_ptr<ObservableListener>
-GetListener(NMEA0183Id id, wxEventType ev, wxEvtHandler *handler);
+extern DECL_EXP std::shared_ptr<ObservableListener> GetListener(
+    NMEA0183Id id, wxEventType ev, wxEvtHandler *handler);
 
 /** Facade for NavAddrSignalK. */
 struct SignalkId {
@@ -1662,15 +1658,14 @@ struct SignalkId {
   SignalkId(const std::string &s) : id(s){};
 };
 
-extern DECL_EXP std::shared_ptr<ObservableListener>
-GetListener(SignalkId id, wxEventType ev, wxEvtHandler *handler);
+extern DECL_EXP std::shared_ptr<ObservableListener> GetListener(
+    SignalkId id, wxEventType ev, wxEvtHandler *handler);
 
 /** Return payload in a received n2000 message of type id in ev. */
 extern DECL_EXP std::vector<uint8_t> GetN2000Payload(NMEA2000Id id,
                                                      ObservedEvt ev);
 
-/** Return source identifier (iface) of a received n2000 message of type id in
- * ev. */
+/** Return source identifier (iface) of a received n2000 message of type id in ev. */
 extern DECL_EXP std::string GetN2000Source(NMEA2000Id id, ObservedEvt ev);
 
 /** Return payload in a received n0183 message of type id in ev. */
@@ -1682,8 +1677,8 @@ struct NavDataId {
   NavDataId() : type(0) {}
 };
 
-extern DECL_EXP std::shared_ptr<ObservableListener>
-GetListener(NavDataId id, wxEventType ev, wxEvtHandler *handler);
+extern DECL_EXP std::shared_ptr<ObservableListener> GetListener(
+    NavDataId id, wxEventType ev, wxEvtHandler *handler);
 
 /** Available decoded data for plugins. */
 struct PluginNavdata {
@@ -1702,22 +1697,19 @@ extern DECL_EXP PluginNavdata GetEventNavdata(ObservedEvt ev);
 /** Plugin API supporting direct access to comm drivers for output purposes */
 /*
  * Plugins may access comm ports for direct output.
- * The general program flow for a plugin may look something like this
- * pseudo-code:
+ * The general program flow for a plugin may look something like this pseudo-code:
  * 1.  Plugin will query OCPN core for a list of active comm drivers.
  * 2.  Plugin will inspect the list, and query OCPN core for driver attributes.
  * 3.  Plugin will select a comm driver with appropriate attributes for output.
- * 4.  Plugin will register a list of PGNs expected to be transmitted (N2K
- * specific)
- * 5.  Plugin may then send a payload buffer to a specific comm driver for
- * output as soon as possible.
+ * 4.  Plugin will register a list of PGNs expected to be transmitted (N2K specific)
+ * 5.  Plugin may then send a payload buffer to a specific comm driver for output as soon as possible.
  *
- * The mechanism for specifying a particular comm driver uses the notion of
- * "handles". Each active comm driver has an associated opaque handle, managed
- * by OCPN core. All references by a plugin to a driver are by means of its
- * handle. Handles should be considered to be "opaque", meaning that the exact
- * contents of the handle are of no specific value to the plugin, and only have
- * meaning to the OCPN core management of drivers.
+ * The mechanism for specifying a particular comm driver uses the notion of "handles".
+ * Each active comm driver has an associated opaque handle, managed by OCPN core.
+ * All references by a plugin to a driver are by means of its handle.
+ * Handles should be considered to be "opaque", meaning that the exact contents of the
+ * handle are of no specific value to the plugin, and only have meaning to the OCPN core
+ * management of drivers.
  */
 
 /** Definition of OCPN DriverHandle  */
@@ -1730,17 +1722,18 @@ typedef enum CommDriverResult {
   RESULT_COMM_INVALID_HANDLE,
   RESULT_COMM_INVALID_PARMS,
   RESULT_COMM_TX_ERROR,
-  RESULT_COMM_REGISTER_GATEWAY_ERROR
+  RESULT_COMM_REGISTER_GATEWAY_ERROR,
+  RESULT_COMM_REGISTER_PGN_ERROR
 } _CommDriverResult;
 
 /** Query OCPN core for a list of active drivers  */
 extern DECL_EXP std::vector<DriverHandle> GetActiveDrivers();
 
 /** Query a specific driver for attributes  */
-/* Driver attributes are available from OCPN core as a hash map of
- * tag->attribute pairs. There is a defined set of common tags guaranteed for
- * every driver. Both tags and attributes are defined as std::string. Here is
- * the list of common tag-attribute pairs.
+/* Driver attributes are available from OCPN core as a hash map of tag->attribute pairs.
+ * There is a defined set of common tags guaranteed for every driver.
+ * Both tags and attributes are defined as std::string.
+ * Here is the list of common tag-attribute pairs.
  *
  * Tag              Attribute definition
  * ----------       --------------------
@@ -1751,33 +1744,31 @@ extern DECL_EXP std::vector<DriverHandle> GetActiveDrivers();
 
 /**  Query driver attributes  */
 extern DECL_EXP const std::unordered_map<std::string, std::string>
-GetAttributes(DriverHandle handle);
+        GetAttributes(DriverHandle handle);
 
 /* Writing to a specific driver  */
 
-/* Comm drivers on bus protocols other than NMEA2000 may write directly to the
- * port using  a simple call.  The physical write operation will be queued, and
- * executed in order as bandwidth allows. Return value is number of bytes queued
- * for transmission.
+/* Comm drivers on bus protocols other than NMEA2000 may write directly to the port
+ * using  a simple call.  The physical write operation will be queued, and executed
+ * in order as bandwidth allows.
+ * Return value is number of bytes queued for transmission.
  */
-extern DECL_EXP CommDriverResult WriteCommDriver(
-    DriverHandle handle, const std::shared_ptr<std::vector<uint8_t>> &payload);
+extern DECL_EXP CommDriverResult WriteCommDriver( DriverHandle handle,
+                                     const std::shared_ptr <std::vector<uint8_t>> &payload);
 
-/** NMEA2000 protocol requires additional specific parameters to transmit the
- * payload */
-extern DECL_EXP CommDriverResult WriteCommDriverN2K(
-    DriverHandle handle, int PGN, int destinationCANAddress, int priority,
-    const std::shared_ptr<std::vector<uint8_t>> &payload);
+/** NMEA2000 protocol requires additional specific parameters to transmit the payload */
+extern DECL_EXP CommDriverResult WriteCommDriverN2K( DriverHandle handle, int PGN,
+                                        int destinationCANAddress, int priority,
+                                        const std::shared_ptr <std::vector<uint8_t>> &payload);
 
 /** Special NMEA2000 requirements
- * NMEA2000 bus protocol device management requires that devices writing on the
- * bus must inform all bus listeners of the specific PGNs that may be
- * transmitted by this device. Once configured, this bus management process will
- * be handled transparently by the OCPN core drivers. It is only necessary for
- * plugins wishing to write to the NMEA2000 bus to register the specific PGNs
+ * NMEA2000 bus protocol device management requires that devices writing on the bus must inform
+ * all bus listeners of the specific PGNs that may be transmitted by this device.
+ * Once configured, this bus management process will be handled transparently by the OCPN core drivers.
+ * It is only necessary for plugins wishing to write to the NMEA2000 bus to register the specific PGNs
  * that they anticipate using, with the selected driver.
  */
-extern DECL_EXP CommDriverResult RegisterTXPGNs(DriverHandle handle,
-                                                std::vector<int> &pgn_list);
+extern DECL_EXP CommDriverResult RegisterTXPGNs( DriverHandle handle, std::vector<int> &pgn_list);
 
-#endif //_PLUGIN_H_
+
+#endif  //_PLUGIN_H_
