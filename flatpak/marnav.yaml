@@ -1,0 +1,16 @@
+- name: marnav
+  no-autogen: true
+  buildsystem: cmake
+  config-opts:
+    - -DBUILD_SHARED_LIBS=FALSE
+    - -DENABLE_TESTS=OFF
+    - -DENABLE_TOOLS=OFF
+    - -DENABLE_EXAMPLES=OFF
+    - -DCMAKE_INSTALL_PREFIX=/app/extensions/@app_id
+
+  sources:
+    - type: git
+      url: https://github.com/mariokonrad/marnav.git
+      tag: v0.14.0
+
+
