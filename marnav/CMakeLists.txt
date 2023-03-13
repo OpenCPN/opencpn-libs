@@ -28,6 +28,10 @@ if (EXISTS /app/bin)
   set_property(TARGET _mnav_io_lib PROPERTY IMPORTED_LOCATION ${_mnav_io_path})
 
   target_link_libraries(_ocpn_marnav_if INTERFACE _mnav_lib _mnav_io_lib)
+
+  string(TOLOWER  ${PACKAGE_NAME} _lc_pkg_name)
+  set(mnav_incl_path /app/extensions/${_lc_pkg_name}/include)
+  target_include_directories(_ocpn_marnav_if INTERFACE  ${mnav_incl_path})
 else ()
   # Download sources and get the source directory
   #
