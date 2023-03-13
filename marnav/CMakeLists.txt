@@ -10,7 +10,8 @@
 #      https://fedoraproject.org/wiki/Licensing:BSD#3ClauseBSD for details
 
 set(mnav_repo https://github.com/mariokonrad/marnav.git)
-set(mnav_tag v0.14.0)
+# set(mnav_tag v0.14.0)   ## Does not build on gcc12/Bookworm
+set(mnav_tag c4ae147)
 
 add_library(_ocpn_marnav_if INTERFACE)
 add_library(ocpn::marnav ALIAS _ocpn_marnav_if)
