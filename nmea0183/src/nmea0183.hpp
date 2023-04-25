@@ -88,6 +88,8 @@
 #include "P.hpp"
 #include "RMA.hpp"
 */
+#include "dbt.hpp"
+#include "dpt.hpp"
 #include "hdm.hpp"
 #include "hdg.hpp"
 #include "hdt.hpp"
@@ -191,6 +193,8 @@ class NMEA0183
       P   Proprietary;
       RMA Rma;
 */
+       DBT Dbt;
+       DPT Dpt;
        HDM Hdm;
        HDG Hdg;
        HDT Hdt;
