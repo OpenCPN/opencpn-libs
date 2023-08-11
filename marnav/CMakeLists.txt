@@ -9,6 +9,8 @@
 #  License: BSD with Advertising, see
 #      https://fedoraproject.org/wiki/Licensing:BSD#3ClauseBSD for details
 
+cmake_minimum_required(VERSION 3.5)
+
 set(mnav_repo https://github.com/mariokonrad/marnav.git)
 # set(mnav_tag v0.14.0)   ## Does not build on gcc12/Bookworm
 set(mnav_tag c4ae147)

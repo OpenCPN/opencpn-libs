@@ -14,7 +14,7 @@
 # the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 
-cmake_minimum_required (VERSION 3.1.0)
+cmake_minimum_required (VERSION 3.5)
 
 set(curl_version 7.83.1)   # Actual version for built library
 
