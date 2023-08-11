@@ -1799,7 +1799,7 @@ extern DECL_EXP CommDriverResult WriteCommDriver(
         DriverHandle handle,
         const std::shared_ptr <std::vector<uint8_t>> &payload);
 
-/** Send a PGN message to an NMEA2000 address.  */
+/** NMEA2000 protocol requires additional specific parameters to transmit the payload */
 extern DECL_EXP CommDriverResult WriteCommDriverN2K(
     DriverHandle handle, int PGN, int destinationCANAddress, int priority,
     const std::shared_ptr <std::vector<uint8_t>> &payload);
