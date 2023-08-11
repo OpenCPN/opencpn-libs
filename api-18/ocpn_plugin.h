@@ -1753,13 +1753,14 @@ extern DECL_EXP const std::unordered_map<std::string, std::string>
  * in order as bandwidth allows.
  * Return value is number of bytes queued for transmission.
  */
-extern DECL_EXP CommDriverResult WriteCommDriver( DriverHandle handle,
-                                     const std::shared_ptr <std::vector<uint8_t>> &payload);
+extern DECL_EXP CommDriverResult WriteCommDriver(
+        DriverHandle handle,
+        const std::shared_ptr <std::vector<uint8_t>> &payload);
 
 /** NMEA2000 protocol requires additional specific parameters to transmit the payload */
-extern DECL_EXP CommDriverResult WriteCommDriverN2K( DriverHandle handle, int PGN,
-                                        int destinationCANAddress, int priority,
-                                        const std::shared_ptr <std::vector<uint8_t>> &payload);
+extern DECL_EXP CommDriverResult WriteCommDriverN2K(
+    DriverHandle handle, int PGN, int destinationCANAddress, int priority,
+    const std::shared_ptr <std::vector<uint8_t>> &payload);
 
 /** Special NMEA2000 requirements
  * NMEA2000 bus protocol device management requires that devices writing on the bus must inform
@@ -1768,7 +1769,8 @@ extern DECL_EXP CommDriverResult WriteCommDriverN2K( DriverHandle handle, int PG
  * It is only necessary for plugins wishing to write to the NMEA2000 bus to register the specific PGNs
  * that they anticipate using, with the selected driver.
  */
-extern DECL_EXP CommDriverResult RegisterTXPGNs( DriverHandle handle, std::vector<int> &pgn_list);
+extern DECL_EXP CommDriverResult RegisterTXPGNs(DriverHandle handle,
+                                                std::vector<int> &pgn_list);
 
 
 #endif  //_PLUGIN_H_
