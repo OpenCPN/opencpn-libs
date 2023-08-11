@@ -6,10 +6,6 @@
 
 cmake_minimum_required(VERSION 3.5)
 
-if (NOT WIN32)
-  message(FATAL_ERROR "This file must only be included in windows builds")
-endif ()
-
 if (TARGET windows::headers)
   return ()
 endif ()
