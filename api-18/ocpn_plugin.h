@@ -589,9 +589,7 @@ public:
   /// when priority is OVERLAY_LEGACY (0)
   /// \return true if overlay was rendered, false otherwise
   virtual bool RenderGLOverlayMultiCanvas(wxGLContext *pcontext,
-                                          PlugIn_ViewPort *vp,
-                                          int canvasIndex,
-                                          int priority = -1) override;
+                                          PlugIn_ViewPort *vp, int canvasIndex, int priority = -1);
   /// Render plugin overlay over chart canvas in non-OpenGL mode
   ///
   /// \param dc Reference to the "device context"
@@ -601,7 +599,7 @@ public:
   /// when priority is OVERLAY_LEGACY (0)
   /// \return true if overlay was rendered, false otherwise
   virtual bool RenderOverlayMultiCanvas(wxDC &dc, PlugIn_ViewPort *vp,
-                                        int canvasIndex, int priority = -1) override;
+                                        int canvasIndex, int priority = -1);
 };
 //------------------------------------------------------------------
 //      Route and Waypoint PlugIn support
