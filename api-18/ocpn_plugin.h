@@ -598,21 +598,10 @@ public:
   /// \param priority Priority, plugins only upgrading from older API versions
   ///        should draw only when priority is OVERLAY_LEGACY (0)
   /// \return true if overlay was rendered, false otherwise
-#ifdef _MSC_VER
-  virtual bool RenderGLOverlayMultiCanvas(wxGLContext *pcontext, PlugIn_ViewPort *vp,
-		                          int canvasIndex, int priority = -1);
-#else
-  virtual bool RenderGLOverlayMultiCanvas(wxGLContext *pcontext, PlugIn_ViewPort *vp,
-                                  int canvasIndex, int priority);
-
-  bool RenderGLOverlayMultiCanvas(wxGLContext *pcontext, PlugIn_ViewPort *vp,
-                                  int canvas_ix) override {
-    return RenderGLOverlayMultiCanvas(pcontext, vp, canvas_ix, -1);
-  }
-#endif
-
-
-
+  virtual bool RenderGLOverlayMultiCanvas(wxGLContext *pcontext,
+                                          PlugIn_ViewPort *vp,
+                                          int canvasIndex,
+                                          int priority = -1) override;
   /// Render plugin overlay over chart canvas in non-OpenGL mode
   ///
   /// \param dc Reference to the "device context"
@@ -623,16 +612,7 @@ public:
   /// \return true if overlay was rendered, false otherwise
 #ifdef _MSC_VER
   virtual bool RenderOverlayMultiCanvas(wxDC &dc, PlugIn_ViewPort *vp,
-                                        int canvasIndex, int priority = -1);
-#else
-  virtual bool RenderOverlayMultiCanvas(wxDC &dc, PlugIn_ViewPort *vp, int canvas_ix,
-                                int priority);
-  bool RenderOverlayMultiCanvas(wxDC &dc, PlugIn_ViewPort *vp,
-                                int canvas_ix) override {
-    return RenderOverlayMultiCanvas(dc, vp, canvas_ix, -1);
-  }
-#endif
-
+                                        int canvasIndex, int priority = -1) override;
 };
 //------------------------------------------------------------------
 //      Route and Waypoint PlugIn support
