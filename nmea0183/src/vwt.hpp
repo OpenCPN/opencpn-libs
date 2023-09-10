@@ -2,7 +2,7 @@
  *
  * Project:  OpenCPN
  * Purpose:  NMEA0183 Support Classes
- * Author:   Samuel R. Blackburn, David S. Register
+ * Author:   Samuel R. Blackburn, David S. Register, Jean-Eudes Onfray
  *
  ***************************************************************************
  *   Copyright (C) 2010 by Samuel R. Blackburn, David S Register           *
@@ -29,9 +29,8 @@
  *         "It is BSD license, do with it what you will"                   *
  */
 
-
-#if ! defined( GSV_CLASS_HEADER )
-#define GSV_CLASS_HEADER
+#if ! defined( VWT_CLASS_HEADER )
+#define VWT_CLASS_HEADER
 
 /*
 ** Author: Samuel R. Blackburn
@@ -41,25 +40,24 @@
 ** You can use it any way you like.
 */
 
-// Required for struct SAT_INFO
-#include "SatInfo.h"
-
-class GSV : public RESPONSE
+class VWT : public RESPONSE
 {
+//   DECLARE_DYNAMIC( MWV )
 
    public:
 
-      GSV();
-     ~GSV();
+      VWT();
+     ~VWT();
 
       /*
       ** Data
       */
 
-      int NumberOfMessages;
-      int MessageNumber;
-      int   SatsInView;
-      SAT_INFO SatInfo[4];
+      double           WindDirectionMagnitude;
+      LEFTRIGHT	     DirectionOfWind;
+      double           WindSpeedKnots;
+      double           WindSpeedms;
+      double           WindSpeedKmh;
 
       /*
       ** Methods
@@ -73,7 +71,7 @@ class GSV : public RESPONSE
       ** Operators
       */
 
-      virtual const GSV& operator = ( const GSV& source );
+      virtual const VWT& operator = ( const VWT& source );
 };
 
-#endif // GSV_CLASS_HEADER
+#endif // VWT_CLASS_HEADER

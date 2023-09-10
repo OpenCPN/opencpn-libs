@@ -106,6 +106,18 @@
 #include "xte.hpp"
 #include "mwd.hpp"
 #include "mwv.hpp"
+#include "mta.hpp"
+#include "mda.hpp"
+#include "mtw.hpp"
+#include "rsa.hpp"
+#include "vhw.hpp"
+#include "vlw.hpp"
+#include "vwr.hpp"
+#include "vwt.hpp"
+#include "xdr.hpp"
+#include "zda.hpp"
+
+
 
 /*
 #include "ROT.hpp"
@@ -211,6 +223,20 @@ class NMEA0183
        XTE Xte;
        MWD Mwd;
        MWV Mwv;
+
+       MTA Mta;
+       MDA Mda;
+       MTW Mtw;
+       RSA Rsa;
+       VHW Vhw;
+       VLW Vlw;
+       VWR Vwr;
+       VWT Vwt;
+       XDR Xdr;
+       ZDA Zda;
+
+
+
  /*
       ROT Rot;
       RPM Rpm;

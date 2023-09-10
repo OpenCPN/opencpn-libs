@@ -30,8 +30,8 @@
  */
 
 
-#if ! defined( GSV_CLASS_HEADER )
-#define GSV_CLASS_HEADER
+#if ! defined( RSA_CLASS_HEADER )
+#define RSA_CLASS_HEADER
 
 /*
 ** Author: Samuel R. Blackburn
@@ -41,25 +41,23 @@
 ** You can use it any way you like.
 */
 
-// Required for struct SAT_INFO
-#include "SatInfo.h"
-
-class GSV : public RESPONSE
+class RSA : public RESPONSE
 {
+//   DECLARE_DYNAMIC( RSA )
 
    public:
 
-      GSV();
-     ~GSV();
+      RSA();
+     ~RSA();
 
       /*
       ** Data
       */
 
-      int NumberOfMessages;
-      int MessageNumber;
-      int   SatsInView;
-      SAT_INFO SatInfo[4];
+      double           Starboard;
+      NMEA0183_BOOLEAN IsStarboardDataValid;
+      double           Port;
+      NMEA0183_BOOLEAN IsPortDataValid;
 
       /*
       ** Methods
@@ -73,7 +71,7 @@ class GSV : public RESPONSE
       ** Operators
       */
 
-      virtual const GSV& operator = ( const GSV& source );
+      virtual const RSA& operator = ( const RSA& source );
 };
 
-#endif // GSV_CLASS_HEADER
+#endif // RSA_CLASS_HEADER

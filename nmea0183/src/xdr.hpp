@@ -2,7 +2,7 @@
  *
  * Project:  OpenCPN
  * Purpose:  NMEA0183 Support Classes
- * Author:   Samuel R. Blackburn, David S. Register
+ * Author:   Samuel R. Blackburn, David S. Register, Thomas Rauch
  *
  ***************************************************************************
  *   Copyright (C) 2010 by Samuel R. Blackburn, David S Register           *
@@ -29,37 +29,47 @@
  *         "It is BSD license, do with it what you will"                   *
  */
 
-
-#if ! defined( GSV_CLASS_HEADER )
-#define GSV_CLASS_HEADER
+#if ! defined( XDR_CLASS_HEADER )
+#define XDR_CLASS_HEADER
 
 /*
-** Author: Samuel R. Blackburn
-** CI$: 76300,326
-** Internet: sammy@sed.csc.com
+** Author: Thomas Rauch
+**
+**
 **
 ** You can use it any way you like.
 */
 
-// Required for struct SAT_INFO
-#include "SatInfo.h"
+#if ! defined( TRANSDUCER_INFO_HEADER )
+#define TRANSDUCER_INFO_HEADER
 
-class GSV : public RESPONSE
+typedef struct
 {
+      wxString  TransducerType;
+      double    MeasurementData;
+      wxString  UnitOfMeasurement;
+      wxString TransducerName;
+ } TRANSDUCER_INFO;
+#endif
+
+#define MaxTransducerCnt 10 //max number of transducer quadrupels per NMEA line
+
+class XDR : public RESPONSE
+{
+//   DECLARE_DYNAMIC( XDR )
 
    public:
 
-      GSV();
-     ~GSV();
+      XDR();
+     ~XDR();
 
       /*
       ** Data
       */
 
-      int NumberOfMessages;
-      int MessageNumber;
-      int   SatsInView;
-      SAT_INFO SatInfo[4];
+      int TransducerCnt;
+      TRANSDUCER_INFO TransducerInfo[MaxTransducerCnt];
+
 
       /*
       ** Methods
@@ -73,7 +83,7 @@ class GSV : public RESPONSE
       ** Operators
       */
 
-      virtual const GSV& operator = ( const GSV& source );
+      virtual const XDR& operator = ( const XDR& source );
 };
 
-#endif // GSV_CLASS_HEADER
+#endif // XDR_CLASS_HEADER

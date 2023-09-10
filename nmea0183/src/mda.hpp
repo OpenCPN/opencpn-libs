@@ -29,9 +29,8 @@
  *         "It is BSD license, do with it what you will"                   *
  */
 
-
-#if ! defined( GSV_CLASS_HEADER )
-#define GSV_CLASS_HEADER
+#if ! defined( MDA_CLASS_HEADER )
+#define MDA_CLASS_HEADER
 
 /*
 ** Author: Samuel R. Blackburn
@@ -41,25 +40,22 @@
 ** You can use it any way you like.
 */
 
-// Required for struct SAT_INFO
-#include "SatInfo.h"
-
-class GSV : public RESPONSE
+class MDA : public RESPONSE
 {
+//   DECLARE_DYNAMIC( MDA )
 
    public:
 
-      GSV();
-     ~GSV();
+      MDA();
+     ~MDA();
 
       /*
       ** Data
       */
 
-      int NumberOfMessages;
-      int MessageNumber;
-      int   SatsInView;
-      SAT_INFO SatInfo[4];
+      double  Pressure, AirTemp;
+      wxString UnitOfMeasurement;
+      double RelativeHumidity;
 
       /*
       ** Methods
@@ -73,7 +69,7 @@ class GSV : public RESPONSE
       ** Operators
       */
 
-      virtual const GSV& operator = ( const GSV& source );
+      virtual const MDA& operator = ( const MDA& source );
 };
 
-#endif // GSV_CLASS_HEADER
+#endif // MDA_CLASS_HEADER
