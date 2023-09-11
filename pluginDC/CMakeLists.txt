@@ -106,10 +106,15 @@ if  (QT_ANDROID)
           )
 
     ENDIF(_wx_selected_config MATCHES "androideabi-qt-arm64")
-	
-	    
     include_directories(${qt_android_include})
 endif(QT_ANDROID)
+
+if (APPLE)
+    find_package(OpenGL)
+    if(OPENGL_FOUND)
+        include_directories(${OPENGL_INCLUDE_DIR})
+    endif ()
+endif ()
 
 
 ADD_LIBRARY(${PACKAGE_NAME}_LIB_PLUGINDC STATIC ${SRC_PLUGINDC})
