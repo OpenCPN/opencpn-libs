@@ -116,7 +116,7 @@ if (APPLE)
     message(STATUS "${CMLOC}Building PluginDC: Apple:  ${OPENGL_FOUND}  ${OPENGL_INCLUDE_DIR}")
 
     if(OPENGL_FOUND)
-        include_directories(${OPENGL_INCLUDE_DIR})
+        target_include_directories(${PACKAGE_NAME}_LIB_PLUGINDC PUBLIC ${OPENGL_INCLUDE_DIR})
     endif ()
 endif ()
 
