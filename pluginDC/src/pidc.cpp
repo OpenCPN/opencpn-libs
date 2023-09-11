@@ -51,7 +51,6 @@
 #include "GL/gl_private.h"
 #else
 #include "GL/gl.h"
-#include "GL/glu.h"
 #endif
 
 #include "linmath.h"
