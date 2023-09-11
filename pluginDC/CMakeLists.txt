@@ -110,7 +110,11 @@ if  (QT_ANDROID)
 endif(QT_ANDROID)
 
 if (APPLE)
+    message(STATUS "${CMLOC}Building PluginDC: Apple:")
+
     find_package(OpenGL)
+    message(STATUS "${CMLOC}Building PluginDC: Apple:  ${OPENGL_FOUND}  ${OPENGL_INCLUDE_DIR}")
+
     if(OPENGL_FOUND)
         include_directories(${OPENGL_INCLUDE_DIR})
     endif ()
