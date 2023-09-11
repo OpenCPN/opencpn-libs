@@ -37,7 +37,11 @@
 #include "linmath.h"
 #include "pi_shaders.h"
 #else
-#include "GL/gl.h"
+    #ifdef __APPLE__
+        #include <OpenGL/gl.h>
+    #else
+        #include "GL/gl.h"
+    #endif
 #endif
 
 TexFont::TexFont( )
