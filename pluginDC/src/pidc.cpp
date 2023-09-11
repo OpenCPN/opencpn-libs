@@ -46,11 +46,15 @@
 
 #include "pidc.h"
 
-#ifdef __OCPN__ANDROID__
-#include <qopengl.h>
-#include "GL/gl_private.h"
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
 #else
-#include "GL/gl.h"
+    #ifdef __OCPN__ANDROID__
+        #include <qopengl.h>
+        #include "GL/gl_private.h"
+    #else
+        #include <GL/gl.h>
+#endif
 #endif
 
 #include "linmath.h"
