@@ -109,6 +109,9 @@ if  (QT_ANDROID)
     include_directories(${qt_android_include})
 endif(QT_ANDROID)
 
+
+ADD_LIBRARY(${PACKAGE_NAME}_LIB_PLUGINDC STATIC ${SRC_PLUGINDC})
+target_include_directories(${PACKAGE_NAME}_LIB_PLUGINDC PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 if (APPLE)
     message(STATUS "${CMLOC}Building PluginDC: Apple:")
 
@@ -120,9 +123,6 @@ if (APPLE)
     endif ()
 endif ()
 
-
-ADD_LIBRARY(${PACKAGE_NAME}_LIB_PLUGINDC STATIC ${SRC_PLUGINDC})
-target_include_directories(${PACKAGE_NAME}_LIB_PLUGINDC PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_library(ocpn::pluginDC ALIAS ${PACKAGE_NAME}_LIB_PLUGINDC)
 
 set(CMLOC ${SAVE_CMLOC_PLUGINDC})
