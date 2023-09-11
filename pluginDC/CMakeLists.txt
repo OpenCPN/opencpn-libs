@@ -119,7 +119,9 @@ if (APPLE)
     message(STATUS "${CMLOC}Building PluginDC: Apple:  ${OPENGL_FOUND}  ${OPENGL_INCLUDE_DIR}")
 
     if(OPENGL_FOUND)
+        message(STATUS "${CMLOC}Building PluginDC: Apple:  OpenGL found")
         target_include_directories(${PACKAGE_NAME}_LIB_PLUGINDC PUBLIC ${OPENGL_INCLUDE_DIR})
+        include_directories(${OPENGL_INCLUDE_DIR})
     endif ()
 endif ()
 
