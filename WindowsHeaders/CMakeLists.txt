@@ -12,7 +12,7 @@ endif ()
 
 add_library(_windows_headers INTERFACE)
 add_library(windows::headers ALIAS _windows_headers)
-
+if (WIN32)
 target_include_directories(
   _windows_headers INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
