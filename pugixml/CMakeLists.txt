@@ -15,7 +15,6 @@ SET(SRC
     pugixml.cpp
     )
 
-set(CMAKE_POSITION_INDEPENDENT_CODE "ON")
 
 add_library(OCPN_PUGIXML STATIC ${SRC})
 add_library(ocpn::pugixml ALIAS OCPN_PUGIXML)
