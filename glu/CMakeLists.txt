@@ -78,6 +78,9 @@ set_target_properties(GLU_static PROPERTIES OUTPUT_NAME GLU)
 #PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/gdal
 #PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
 #  )
+
+target_include_directories(GLU_static PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 message(STATUS "${CMLOC}CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}, CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
 get_property(
     dirs
