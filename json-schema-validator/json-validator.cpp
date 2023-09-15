@@ -10,7 +10,7 @@
 
 #include <memory>
 #include <set>
-#if defined(__MSVC__) || defined(__WXMAC__)
+#ifdef __MSVC__
 #include <sstream>
 #endif
 
