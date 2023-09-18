@@ -602,7 +602,7 @@ public:
   virtual bool RenderGLOverlayMultiCanvas(wxGLContext *pcontext, PlugIn_ViewPort *vp,
 		                          int canvasIndex, int priority = -1);
 #else
-  bool RenderGLOverlayMultiCanvas(wxGLContext *pcontext, PlugIn_ViewPort *vp,
+  virtual bool RenderGLOverlayMultiCanvas(wxGLContext *pcontext, PlugIn_ViewPort *vp,
                                   int canvasIndex, int priority);
 
   bool RenderGLOverlayMultiCanvas(wxGLContext *pcontext, PlugIn_ViewPort *vp,
@@ -625,7 +625,7 @@ public:
   virtual bool RenderOverlayMultiCanvas(wxDC &dc, PlugIn_ViewPort *vp,
                                         int canvasIndex, int priority = -1);
 #else
-  bool RenderOverlayMultiCanvas(wxDC &dc, PlugIn_ViewPort *vp, int canvas_ix,
+  virtual bool RenderOverlayMultiCanvas(wxDC &dc, PlugIn_ViewPort *vp, int canvas_ix,
                                 int priority);
   bool RenderOverlayMultiCanvas(wxDC &dc, PlugIn_ViewPort *vp,
                                 int canvas_ix) override {
@@ -1802,7 +1802,7 @@ extern DECL_EXP CommDriverResult WriteCommDriver(
 /** Send a PGN message to an NMEA2000 address.  */
 extern DECL_EXP CommDriverResult WriteCommDriverN2K(
     DriverHandle handle, int PGN, int destinationCANAddress, int priority,
-    const std::shared_ptr<std::vector<uint8_t>> &payload);
+    const std::shared_ptr <std::vector<uint8_t>> &payload);
 
 /**
  * Special NMEA2000 requirements
