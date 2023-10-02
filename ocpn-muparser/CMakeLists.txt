@@ -3,7 +3,7 @@
 # Exports: muparser::muparser link object
 
 
-cmake_minimum_required (VERSION 3.1.0)
+cmake_minimum_required (VERSION 3.5)
 project(ocpn_muparser)
 
 set(ENABLE_SAMPLES OFF CACHE BOOL "Enable samples build" FORCE)

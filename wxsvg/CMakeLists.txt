@@ -5,7 +5,7 @@
 #
 #  In particular, it defines the ocpnUSE_SVG preprocessor symbol.
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.5)
 
 if (TARGET ocpn::wxsvg)
   return()
