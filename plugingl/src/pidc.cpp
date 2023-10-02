@@ -34,7 +34,7 @@
 #include "ocpn_plugin.h"
 
 #ifdef __MSVC__
-#include <windows.h>
+//#include <windows.h>
 #endif
 
 #ifdef ocpnUSE_GL
