@@ -29,9 +29,7 @@
  *         "It is BSD license, do with it what you will"                   *
  */
 
-
-#if ! defined( GSV_CLASS_HEADER )
-#define GSV_CLASS_HEADER
+#include "nmea0183.h"
 
 /*
 ** Author: Samuel R. Blackburn
@@ -41,39 +39,85 @@
 ** You can use it any way you like.
 */
 
-// Required for struct SAT_INFO
-#include "SatInfo.h"
+//IMPLEMENT_DYNAMIC( MTW, RESPONSE )
 
-class GSV : public RESPONSE
+MTW::MTW()
 {
+   Mnemonic = _T("MTW");
+   Empty();
+}
 
-   public:
+MTW::~MTW()
+{
+   Mnemonic.Empty();
+   Empty();
+}
 
-      GSV();
-     ~GSV();
+void MTW::Empty( void )
+{
+//   ASSERT_VALID( this );
 
-      /*
-      ** Data
-      */
+   Temperature = 0.0;
+   UnitOfMeasurement.Empty();
+}
 
-      int NumberOfMessages;
-      int MessageNumber;
-      int   SatsInView;
-      SAT_INFO SatInfo[4];
+bool MTW::Parse( const SENTENCE& sentence )
+{
+//   ASSERT_VALID( this );
 
-      /*
-      ** Methods
-      */
+   /*
+   ** MTW - Water Temperature
+   **
+   **        1   2 3
+   **        |   | |
+   ** $--MTW,x.x,C*hh<CR><LF>
+   **
+   ** Field Number:
+   **  1) Degrees
+   **  2) Unit of Measurement, Celcius
+   **  3) Checksum
+   */
 
-      virtual void Empty( void );
-      virtual bool Parse( const SENTENCE& sentence );
-      virtual bool Write( SENTENCE& sentence );
+   /*
+   ** First we check the checksum...
+   */
 
-      /*
-      ** Operators
-      */
+   if ( sentence.IsChecksumBad( 3 ) == TRUE )
+   {
+      SetErrorMessage( _T("Invalid Checksum") );
+      return( FALSE );
+   }
 
-      virtual const GSV& operator = ( const GSV& source );
-};
+   Temperature       = sentence.Double( 1 );
+   UnitOfMeasurement = sentence.Field( 2 );
 
-#endif // GSV_CLASS_HEADER
+   return( TRUE );
+}
+
+bool MTW::Write( SENTENCE& sentence )
+{
+//   ASSERT_VALID( this );
+
+   /*
+   ** Let the parent do its thing
+   */
+
+   RESPONSE::Write( sentence );
+
+   sentence += Temperature;
+   sentence += UnitOfMeasurement;
+
+   sentence.Finish();
+
+   return( TRUE );
+}
+
+const MTW& MTW::operator = ( const MTW& source )
+{
+//   ASSERT_VALID( this );
+
+   Temperature       = source.Temperature;
+   UnitOfMeasurement = source.UnitOfMeasurement;
+
+   return( *this );
+}

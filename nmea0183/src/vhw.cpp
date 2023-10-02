@@ -29,9 +29,7 @@
  *         "It is BSD license, do with it what you will"                   *
  */
 
-
-#if ! defined( GSV_CLASS_HEADER )
-#define GSV_CLASS_HEADER
+#include "nmea0183.h"
 
 /*
 ** Author: Samuel R. Blackburn
@@ -41,39 +39,103 @@
 ** You can use it any way you like.
 */
 
-// Required for struct SAT_INFO
-#include "SatInfo.h"
+//IMPLEMENT_DYNAMIC( VHW, RESPONSE )
 
-class GSV : public RESPONSE
+VHW::VHW()
 {
+   Mnemonic = _T("VHW");
+   Empty();
+}
 
-   public:
+VHW::~VHW()
+{
+   Mnemonic.Empty();
+   Empty();
+}
 
-      GSV();
-     ~GSV();
+void VHW::Empty( void )
+{
+//   ASSERT_VALID( this );
 
-      /*
-      ** Data
-      */
+   DegreesTrue       = 0.0;
+   DegreesMagnetic   = 0.0;
+   Knots             = 0.0;
+   KilometersPerHour = 0.0;
+}
 
-      int NumberOfMessages;
-      int MessageNumber;
-      int   SatsInView;
-      SAT_INFO SatInfo[4];
+bool VHW::Parse( const SENTENCE& sentence )
+{
+//   ASSERT_VALID( this );
 
-      /*
-      ** Methods
-      */
+   /*
+   ** VHW - Water speed and heading
+   **
+   **        1   2 3   4 5   6 7   8 9
+   **        |   | |   | |   | |   | |
+   ** $--VHW,x.x,T,x.x,M,x.x,N,x.x,K*hh<CR><LF>
+   **
+   ** Field Number: 
+   **  1) Degress True
+   **  2) T = True
+   **  3) Degrees Magnetic
+   **  4) M = Magnetic
+   **  5) Knots (speed of vessel relative to the water)
+   **  6) N = Knots
+   **  7) Kilometers (speed of vessel relative to the water)
+   **  8) K = Kilometers
+   **  9) Checksum
+   */
 
-      virtual void Empty( void );
-      virtual bool Parse( const SENTENCE& sentence );
-      virtual bool Write( SENTENCE& sentence );
+   /*
+   ** First we check the checksum...
+   */
 
-      /*
-      ** Operators
-      */
+   if ( sentence.IsChecksumBad( 9 ) == TRUE )
+   {
+      SetErrorMessage( _T("Invalid Checksum") );
+      return( FALSE );
+   } 
 
-      virtual const GSV& operator = ( const GSV& source );
-};
+   DegreesTrue       = sentence.Double( 1 );
+   DegreesMagnetic   = sentence.Double( 3 );
+   Knots             = sentence.Double( 5 );
+   KilometersPerHour = sentence.Double( 7 );
 
-#endif // GSV_CLASS_HEADER
+   return( TRUE );
+}
+
+bool VHW::Write( SENTENCE& sentence )
+{
+//   ASSERT_VALID( this );
+
+   /*
+   ** Let the parent do its thing
+   */
+   
+   RESPONSE::Write( sentence );
+
+   sentence += DegreesTrue;
+   sentence += _T("T");
+   sentence += DegreesMagnetic;
+   sentence += _T("M");
+   sentence += Knots;
+   sentence += _T("N");
+   sentence += KilometersPerHour;
+   sentence += _T("K");
+
+   sentence.Finish();
+
+   return( TRUE );
+}
+
+const VHW& VHW::operator = ( const VHW& source )
+{
+//   ASSERT_VALID( this );
+
+   DegreesTrue       = source.DegreesTrue;
+   DegreesMagnetic   = source.DegreesMagnetic;
+   Knots             = source.Knots;
+   KilometersPerHour = source.KilometersPerHour;
+
+   return( *this );
+}

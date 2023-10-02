@@ -29,10 +29,7 @@
  *         "It is BSD license, do with it what you will"                   *
  */
 
-
-#if ! defined( GSV_CLASS_HEADER )
-#define GSV_CLASS_HEADER
-
+#include "nmea0183.h"
 /*
 ** Author: Samuel R. Blackburn
 ** CI$: 76300,326
@@ -41,39 +38,100 @@
 ** You can use it any way you like.
 */
 
-// Required for struct SAT_INFO
-#include "SatInfo.h"
+//IMPLEMENT_DYNAMIC( MDA, RESPONSE )
+// TODO: Read rest of MDA sentece.
 
-class GSV : public RESPONSE
+MDA::MDA()
 {
+   Mnemonic = _T("MDA");
+   Empty();
+}
 
-   public:
+MDA::~MDA()
+{
+   Mnemonic.Empty();
+   Empty();
+}
 
-      GSV();
-     ~GSV();
+void MDA::Empty( void )
+{
+//   ASSERT_VALID( this );
 
-      /*
-      ** Data
-      */
+   Pressure = 0.0;
+   UnitOfMeasurement.Empty();
+   RelativeHumidity = 0.0;
+}
 
-      int NumberOfMessages;
-      int MessageNumber;
-      int   SatsInView;
-      SAT_INFO SatInfo[4];
+bool MDA::Parse( const SENTENCE& sentence )
+{
+//   ASSERT_VALID( this );
 
-      /*
-      ** Methods
-      */
+/*Wind speed, meters/second
+**Wind speed, knots
+**Wind direction,
+**degrees Magnetic
+**Wind direction, degrees True
+**$
+**--
+**MDA,x.x,I,x.x,B,x.x,C,x.x,C,x.x,x.x,x.x,C,x.x,T,x.x,M,x.x,N,x.x,M*hh<CR><LF>
+**    |   |  |  |          Dew point, degrees C
+**    |   |  |  |          Absolute humidity, percent
+**    |   |  |  |          Relative humidity, percent
+**    |   |  |  |        Water temperature, degrees C
+**    |   |  |  |          Air temperature, degrees C
+**    |   |  |----Barometric pressure, bars
+**    |----- Barometric pressure, inches of mercur
+*/
 
-      virtual void Empty( void );
-      virtual bool Parse( const SENTENCE& sentence );
-      virtual bool Write( SENTENCE& sentence );
 
-      /*
-      ** Operators
-      */
+   /*
+   ** First we check the checksum...
+   */
 
-      virtual const GSV& operator = ( const GSV& source );
-};
+   if ( sentence.IsChecksumBad( sentence.GetNumberOfDataFields() +1) == TRUE || FALSE ) //diferent vendors have different length of data message and not 24 field as in standard.
+   {
+      SetErrorMessage( _T("Invalid Checksum") );
+      return( FALSE );
+   }
 
-#endif // GSV_CLASS_HEADER
+Pressure       = sentence.Double( 3 );
+UnitOfMeasurement = sentence.Field( 4 );
+RelativeHumidity       = sentence.Double( 9 );
+
+if(UnitOfMeasurement==wxT("B"))
+{
+   Pressure       = sentence.Double( 3 ); //from bar to Hecto pascal
+
+}
+
+
+   return( TRUE );
+}
+
+bool MDA::Write( SENTENCE& sentence )
+{
+//   ASSERT_VALID( this );
+
+   /*
+   ** Let the parent do its thing
+   */
+
+   RESPONSE::Write( sentence );
+
+   sentence += Pressure;
+   sentence += UnitOfMeasurement;
+
+   sentence.Finish();
+
+   return( TRUE );
+}
+
+const MDA& MDA::operator = ( const MDA& source )
+{
+//   ASSERT_VALID( this );
+
+   Pressure       = source.Pressure;
+   UnitOfMeasurement = source.UnitOfMeasurement;
+
+   return( *this );
+}

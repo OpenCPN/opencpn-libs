@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1.0)
+cmake_minimum_required(VERSION 3.5)
 
 if (TARGET ocpn::nmea0183)
     return ()
@@ -58,12 +58,36 @@ SET(SRC
     src/dbt.hpp
     src/dpt.cpp
     src/dpt.hpp
-)
+    src/mta.hpp
+    src/mda.hpp
+    src/mtw.hpp
+    src/rsa.hpp
+    src/vhw.hpp
+    src/vlw.hpp
+    src/vwr.hpp
+    src/vwt.hpp
+    src/xdr.hpp
+    src/zda.hpp
+    src/mta.cpp
+    src/mda.cpp
+    src/mtw.cpp
+    src/rsa.cpp
+    src/vhw.cpp
+    src/vlw.cpp
+    src/vwr.cpp
+    src/vwt.cpp
+    src/xdr.cpp
+    src/zda.cpp
+        )
 
+if (NOT QT_ANDROID)
 if (NOT wxWidgets_INCLUDE_DIRS)
     include(SimpleWxConfig)
     SimpleWxConfig()
 endif ()
+endif ()
+
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 add_library(NMEA0183 STATIC ${SRC})
 add_library(ocpn::nmea0183 ALIAS NMEA0183)

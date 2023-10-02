@@ -2,7 +2,7 @@
  *
  * Project:  OpenCPN
  * Purpose:  NMEA0183 Support Classes
- * Author:   Samuel R. Blackburn, David S. Register
+ * Author:   Samuel R. Blackburn, David S. Register, Jean-Eudes Onfray
  *
  ***************************************************************************
  *   Copyright (C) 2010 by Samuel R. Blackburn, David S Register           *
@@ -30,50 +30,15 @@
  */
 
 
-#if ! defined( GSV_CLASS_HEADER )
-#define GSV_CLASS_HEADER
+#if ! defined( SAT_INFO_HEADER )
+#define SAT_INFO_HEADER
 
-/*
-** Author: Samuel R. Blackburn
-** CI$: 76300,326
-** Internet: sammy@sed.csc.com
-**
-** You can use it any way you like.
-*/
-
-// Required for struct SAT_INFO
-#include "SatInfo.h"
-
-class GSV : public RESPONSE
+typedef struct
 {
+   int SatNumber;
+   int ElevationDegrees;
+   int AzimuthDegreesTrue;
+   int SignalToNoiseRatio;
+} SAT_INFO;
 
-   public:
-
-      GSV();
-     ~GSV();
-
-      /*
-      ** Data
-      */
-
-      int NumberOfMessages;
-      int MessageNumber;
-      int   SatsInView;
-      SAT_INFO SatInfo[4];
-
-      /*
-      ** Methods
-      */
-
-      virtual void Empty( void );
-      virtual bool Parse( const SENTENCE& sentence );
-      virtual bool Write( SENTENCE& sentence );
-
-      /*
-      ** Operators
-      */
-
-      virtual const GSV& operator = ( const GSV& source );
-};
-
-#endif // GSV_CLASS_HEADER
+#endif // SAT_INFO_HEADER

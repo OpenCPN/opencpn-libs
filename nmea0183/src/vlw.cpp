@@ -30,8 +30,7 @@
  */
 
 
-#if ! defined( GSV_CLASS_HEADER )
-#define GSV_CLASS_HEADER
+#include "nmea0183.h"
 
 /*
 ** Author: Samuel R. Blackburn
@@ -41,39 +40,78 @@
 ** You can use it any way you like.
 */
 
-// Required for struct SAT_INFO
-#include "SatInfo.h"
-
-class GSV : public RESPONSE
+VLW::VLW()
 {
+   Mnemonic = _T("VLW");
+   Empty();
+}
 
-   public:
+VLW::~VLW()
+{
+   Mnemonic.Empty();
+   Empty();
+}
 
-      GSV();
-     ~GSV();
+void VLW::Empty( void )
+{
+   TotalMileage = 0.0;
+   TripMileage  = 0.0;
+   }
 
-      /*
-      ** Data
-      */
+bool VLW::Parse( const SENTENCE& sentence )
+{
+   /*
+   VLW - Distance Traveled through Water 
 
-      int NumberOfMessages;
-      int MessageNumber;
-      int   SatsInView;
-      SAT_INFO SatInfo[4];
+        1   2 3   4 5 
+        |   | |   | | 
+ $--VLW,x.x,N,x.x,N*hh<CR><LF> 
 
-      /*
-      ** Methods
-      */
+ Field Number:  
+  1) Total cumulative distance 
+  2) N = Nautical Miles 
+  3) Distance since Reset 
+  4) N = Nautical Miles 
+  5) Checksum 
 
-      virtual void Empty( void );
-      virtual bool Parse( const SENTENCE& sentence );
-      virtual bool Write( SENTENCE& sentence );
+   */
 
-      /*
-      ** Operators
-      */
+   /*
+   ** First we check the checksum...
+   */
 
-      virtual const GSV& operator = ( const GSV& source );
-};
+   if ( sentence.IsChecksumBad( 5 ) == TRUE )
+   {
+      SetErrorMessage( _T("Invalid Checksum") );
+      return( FALSE );
+   }
 
-#endif // GSV_CLASS_HEADER
+   TotalMileage = sentence.Double( 1 );
+   TripMileage  = sentence.Double( 3 );
+   
+   return( TRUE );
+}
+
+bool VLW::Write( SENTENCE& sentence )
+{
+   /*
+   ** Let the parent do its thing
+   */
+
+   RESPONSE::Write( sentence );
+
+   sentence += TotalMileage;
+   sentence += _T("N");
+   sentence += TripMileage;
+   sentence += _T("N");
+   sentence.Finish();
+
+   return( TRUE );
+}
+
+const VLW& VLW::operator = ( const VLW& source )
+{
+   TotalMileage = source.TotalMileage;
+   TripMileage  = source.TripMileage;
+      return( *this );
+}

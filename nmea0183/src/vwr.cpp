@@ -29,9 +29,7 @@
  *         "It is BSD license, do with it what you will"                   *
  */
 
-
-#if ! defined( GSV_CLASS_HEADER )
-#define GSV_CLASS_HEADER
+#include "nmea0183.h"
 
 /*
 ** Author: Samuel R. Blackburn
@@ -41,39 +39,101 @@
 ** You can use it any way you like.
 */
 
-// Required for struct SAT_INFO
-#include "SatInfo.h"
+//IMPLEMENT_DYNAMIC( MWV, RESPONSE )
 
-class GSV : public RESPONSE
+VWR::VWR()
 {
+   Mnemonic = _T("VWR");
+   Empty();
+}
 
-   public:
+VWR::~VWR()
+{
+   Mnemonic.Empty();
+   Empty();
+}
 
-      GSV();
-     ~GSV();
+void VWR::Empty( void )
+{
+//   ASSERT_VALID( this );
 
-      /*
-      ** Data
-      */
+    WindDirectionMagnitude = 0.0;
+    DirectionOfWind = LR_Unknown;
+    WindSpeedKnots = 0.0;
+    WindSpeedms = 0.0;
+    WindSpeedKmh = 0.0;
+}
 
-      int NumberOfMessages;
-      int MessageNumber;
-      int   SatsInView;
-      SAT_INFO SatInfo[4];
+bool VWR::Parse( const SENTENCE& sentence )
+{
+//   ASSERT_VALID( this );
 
-      /*
-      ** Methods
-      */
+   /*
+    ** MWV - Wind Speed and Angle
+    **
+    **        1   2 3 4   5 6   7   8
+    **        |   | | |   | |   |   |
+    ** $--VWR,x.x,L,x.x,N,x.x,M,x.x,K,*hh<CR><LF>
+    **
+    ** 1) Wind direction magnitude in degrees
+    ** 2) Wind direction Left/Right of bow
+    ** 3) Speed
+    ** 4) N = Knots
+    ** 5) Speed
+    ** 6) M = Meters Per Second
+    ** 7) Speed
+    ** 8) K = Kilometers Per Hour
+    ** 9) Checksum
+   */
 
-      virtual void Empty( void );
-      virtual bool Parse( const SENTENCE& sentence );
-      virtual bool Write( SENTENCE& sentence );
+   /*
+   ** First we check the checksum...
+   */
 
-      /*
-      ** Operators
-      */
+   if ( sentence.IsChecksumBad( 9 ) == TRUE )
+   {
+      SetErrorMessage( _T("Invalid Checksum") );
+      return( FALSE );
+   }
 
-      virtual const GSV& operator = ( const GSV& source );
-};
+   WindDirectionMagnitude = sentence.Double( 1 );
+   DirectionOfWind = sentence.LeftOrRight( 2 );
+   WindSpeedKnots = sentence.Double( 3 );
+   WindSpeedms = sentence.Double( 5 );
+   WindSpeedKmh = sentence.Double( 7 );
 
-#endif // GSV_CLASS_HEADER
+   return( TRUE );
+}
+
+bool VWR::Write( SENTENCE& sentence )
+{
+//   ASSERT_VALID( this );
+
+   /*
+   ** Let the parent do its thing
+   */
+
+   RESPONSE::Write( sentence );
+
+   sentence += WindDirectionMagnitude;
+   sentence += DirectionOfWind;
+   sentence += WindSpeedKnots;
+   sentence += WindSpeedms;
+   sentence += WindSpeedms;
+   sentence += WindSpeedKmh;
+
+   return( TRUE );
+}
+
+const VWR& VWR::operator = ( const VWR& source )
+{
+//   ASSERT_VALID( this );
+
+   WindDirectionMagnitude   = source.WindDirectionMagnitude;
+   DirectionOfWind          = source.DirectionOfWind;
+   WindSpeedKnots           = source.WindSpeedKnots;
+   WindSpeedms              = source.WindSpeedms;
+   WindSpeedKmh             = source.WindSpeedKmh;
+
+   return( *this );
+}

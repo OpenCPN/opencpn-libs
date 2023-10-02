@@ -91,6 +91,16 @@ NMEA0183::NMEA0183(const NmeaContext& ctx) : caller_ctx(ctx)
    response_table.Append( (RESPONSE *) &Xte );
    response_table.Append( (RESPONSE *) &Mwd );
    response_table.Append( (RESPONSE *) &Mwv );
+   response_table.Append( (RESPONSE *) &Mta );
+   response_table.Append( (RESPONSE *) &Mda );
+   response_table.Append( (RESPONSE *) &Mtw );
+   response_table.Append( (RESPONSE *) &Rsa );
+   response_table.Append( (RESPONSE *) &Vhw );
+   response_table.Append( (RESPONSE *) &Vlw );
+   response_table.Append( (RESPONSE *) &Vwr );
+   response_table.Append( (RESPONSE *) &Vwt );
+   response_table.Append( (RESPONSE *) &Xdr );
+   response_table.Append( (RESPONSE *) &Zda );
 
 
 /*
