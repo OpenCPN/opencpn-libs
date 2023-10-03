@@ -28,7 +28,12 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_library(JSONLIB STATIC ${SRC_JSON})
 add_library(ocpn::jsonlib ALIAS JSONLIB)
 
-set_property(TARGET JSONLIB PROPERTY COMPILE_FLAGS "${OBJ_VISIBILITY}")
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+  set_property(TARGET JSONLIB
+    PROPERTY COMPILE_FLAGS "-fvisibility=hidden -Wno-unused-but-set-variable"
+  )
+endif ()
+
 target_include_directories(JSONLIB PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_include_directories(JSONLIB PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_include_directories(JSONLIB PRIVATE ${wxWidgets_INCLUDE_DIRS})
