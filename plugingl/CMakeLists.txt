@@ -41,7 +41,6 @@ if (TARGET OpenGL::GLU)
 endif()
 
 if (WIN32)
-  add_subdirectory(${CMAKE_SOURCE_DIR}/opencpn-libs/WindowsHeaders)
   target_link_libraries(PLUGINGL PRIVATE windows::headers)
 endif ()
 
