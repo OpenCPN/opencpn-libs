@@ -1,9 +1,20 @@
 opencpn-libs README
 ===================
 
+This is a set of libraries aimed to be used in opencpn plugins as a git
+submodule.
 
-This is an experimental set of libraries aimed to be used in 
-opencpn plugins as a git submodule.
+TRANSITION UNDER WAY
+--------------------
+
+opencpn-libs has been available as https://github.com/leamas/opencpn-libs. It will
+be moved to the new location https://github.com/opencpn/opencpn-libs. During the
+transition time both of these locations will be kept in sync.
+
+NOTE: Changes are done to the devel branch in github.com/opencpn/opencpn-libs.
+https://github.com/leamas/opencpn-libs should be considered being a read-only
+mirror.
+
 
 Adding the submodule
 --------------------
