@@ -4,7 +4,11 @@
 # Copyright (c) 2021 Alec Leamas
 # ~~~
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.5)
+
+if (NOT WIN32)
+  message(FATAL_ERROR "This file must only be included in windows builds")
+endif ()
 
 if (TARGET windows::headers)
   return ()
@@ -12,6 +16,7 @@ endif ()
 
 add_library(_windows_headers INTERFACE)
 add_library(windows::headers ALIAS _windows_headers)
+
 target_include_directories(
   _windows_headers INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
