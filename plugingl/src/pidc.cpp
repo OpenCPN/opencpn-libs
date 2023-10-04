@@ -67,7 +67,7 @@
 #include "qdebug.h"
 #endif
 
-static float GLMinSymbolLineWidth;
+static float g_GLMinSymbolLineWidth;
 static wxArrayPtrVoid pi_gTesselatorVertices;
 
 #ifdef USE_ANDROID_GLES2
@@ -1188,16 +1188,16 @@ void piDC::DrawGLLineArray( int n, float *vertex_array, float *color_array,  boo
                 //if(glGetError())
                 //glGetIntegerv( GL_ALIASED_LINE_WIDTH_RANGE, &parms[0] );
 
-                glLineWidth( wxMax(GLMinSymbolLineWidth, m_pen.GetWidth()) );
+                glLineWidth( wxMax(g_GLMinSymbolLineWidth, m_pen.GetWidth()) );
             } else
-                glLineWidth( wxMax(GLMinSymbolLineWidth, 1) );
+                glLineWidth( wxMax(g_GLMinSymbolLineWidth, 1) );
         } else {
             if( m_pen.GetWidth() > 1 ) {
                 //GLint parms[2];
                 //glGetIntegerv( GL_ALIASED_LINE_WIDTH_RANGE, &parms[0] );
-                glLineWidth( wxMax(GLMinSymbolLineWidth, m_pen.GetWidth()) );
+                glLineWidth( wxMax(g_GLMinSymbolLineWidth, m_pen.GetWidth()) );
             } else
-                glLineWidth( wxMax(GLMinSymbolLineWidth, 1) );
+                glLineWidth( wxMax(g_GLMinSymbolLineWidth, 1) );
         }
 
         #ifndef USE_ANDROID_GLES2
