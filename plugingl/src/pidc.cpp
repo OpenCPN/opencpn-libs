@@ -2204,7 +2204,7 @@ static void odc_combineCallbackD(GLdouble coords[3],
     GLvertex *vertex;
 
     vertex = new GLvertex();
-    gTesselatorVertices.Add(vertex );
+    pi_gTesselatorVertices.Add(vertex );
 
     vertex->info.x = coords[0];
     vertex->info.y = coords[1];
@@ -2358,7 +2358,7 @@ void piDC::DrawPolygonTessellated( int n, wxPoint points[], wxCoord xoffset, wxC
 */
             for( int i = 0; i < n; i++ ) {
                 GLvertex* vertex = new GLvertex();
-                gTesselatorVertices.Add( vertex );
+                pi_gTesselatorVertices.Add( vertex );
                 vertex->info.x = (GLdouble) points[i].x;
                 vertex->info.y = (GLdouble) points[i].y;
                 vertex->info.z = (GLdouble) 0.0;
@@ -2424,7 +2424,7 @@ void piDC::DrawPolygonTessellated( int n, wxPoint points[], wxCoord xoffset, wxC
 
             for( int i = 0; i < n; i++ ) {
                 GLvertex* vertex = new GLvertex();
-                gTesselatorVertices.Add( vertex );
+                pi_gTesselatorVertices.Add( vertex );
                 vertex->info.x = (GLdouble) points[i].x;
                 vertex->info.y = (GLdouble) points[i].y;
                 vertex->info.z = (GLdouble) 0.0;
@@ -2437,9 +2437,9 @@ void piDC::DrawPolygonTessellated( int n, wxPoint points[], wxCoord xoffset, wxC
             gluTessEndPolygon( m_tobj );
         }
 
-        for( unsigned int i=0; i<gTesselatorVertices.Count(); i++ )
-            delete (GLvertex*)gTesselatorVertices[i];
-        gTesselatorVertices.Clear();
+        for( unsigned int i=0; i<pi_gTesselatorVertices.Count(); i++ )
+            delete (GLvertex*)pi_gTesselatorVertices[i];
+        pi_gTesselatorVertices.Clear();
 
         gluDeleteTess(m_tobj);
         m_tobj = NULL;
@@ -2457,7 +2457,7 @@ void __CALL_CONVENTION piDCPatterncombineCallback(GLdouble coords[3], GLdouble *
     GLvertex *vertex;
 
     vertex = new GLvertex();
-    gTesselatorVertices.Add(vertex );
+    pi_gTesselatorVertices.Add(vertex );
 
     vertex->info.x = coords[0];
     vertex->info.y = coords[1];
@@ -2625,7 +2625,7 @@ void piDC::DrawPolygonTessellatedPattern( int n, wxPoint points[], int textureID
 
             for( int i = 0; i < n; i++ ) {
                 GLvertex* vertex = new GLvertex();
-                gTesselatorVertices.Add( vertex );
+                pi_gTesselatorVertices.Add( vertex );
                 vertex->info.x = (GLdouble) points[i].x;
                 vertex->info.y = (GLdouble) points[i].y;
                 vertex->info.z = (GLdouble) 0.0;
@@ -2717,7 +2717,7 @@ void piDC::DrawPolygonTessellatedPattern( int n, wxPoint points[], int textureID
 
             for( int i = 0; i < n; i++ ) {
                 GLvertex* vertex = new GLvertex();
-                gTesselatorVertices.Add( vertex );
+                pi_gTesselatorVertices.Add( vertex );
                 vertex->info.x = (GLdouble) points[i].x;
                 vertex->info.y = (GLdouble) points[i].y;
                 vertex->info.z = (GLdouble) 0.0;
@@ -2730,9 +2730,9 @@ void piDC::DrawPolygonTessellatedPattern( int n, wxPoint points[], int textureID
             gluTessEndPolygon( m_tobj );
         }
 
-        for( unsigned int i=0; i<gTesselatorVertices.Count(); i++ )
-            delete (GLvertex*)gTesselatorVertices[i];
-        gTesselatorVertices.Clear();
+        for( unsigned int i=0; i<pi_gTesselatorVertices.Count(); i++ )
+            delete (GLvertex*)pi_gTesselatorVertices[i];
+        pi_gTesselatorVertices.Clear();
 
         gluDeleteTess(m_tobj);
         m_tobj = NULL;
@@ -2823,7 +2823,7 @@ void piDC::DrawPolygonTessellated( int n, wxPoint points[], wxCoord xoffset, wxC
             gluTessBeginContour(m_tobj);
             for( int i = 0; i < n; i++ ) {
                 GLvertex* vertex = new GLvertex();
-                gTesselatorVertices.Add( vertex );
+                pi_gTesselatorVertices.Add( vertex );
                 vertex->info.x = (GLdouble) points[i].x;
                 vertex->info.y = (GLdouble) points[i].y;
                 vertex->info.z = (GLdouble) 0.0;
@@ -2838,9 +2838,9 @@ void piDC::DrawPolygonTessellated( int n, wxPoint points[], wxCoord xoffset, wxC
 		}
 
 		gluDeleteTess(m_tobj);
-		for (unsigned int i = 0; i<gTesselatorVertices.Count(); i++)
-            delete (GLvertex*)gTesselatorVertices.Item(i);
-        gTesselatorVertices.Clear();
+		for (unsigned int i = 0; i<pi_gTesselatorVertices.Count(); i++)
+            delete (GLvertex*)pi_gTesselatorVertices.Item(i);
+        pi_gTesselatorVertices.Clear();
 
     }
 #endif
@@ -2884,7 +2884,7 @@ void piDC::DrawPolygonsTessellated( int n, int npoints[], wxPoint points[], wxCo
                 gluTessBeginContour(m_tobj);
                 for( int i = 0; i < npoints[j]; i++ ) {
                     GLvertex* vertex = new GLvertex();
-                    gTesselatorVertices.Add( vertex );
+                    pi_gTesselatorVertices.Add( vertex );
                     vertex->info.x = (GLdouble) points[i + prev].x;
                     vertex->info.y = (GLdouble) points[i + prev].y;
                     vertex->info.z = (GLdouble) 0.0;
@@ -2901,9 +2901,9 @@ void piDC::DrawPolygonsTessellated( int n, int npoints[], wxPoint points[], wxCo
         }
 
         gluDeleteTess(m_tobj);
-        for (unsigned int i = 0; i<gTesselatorVertices.Count(); i++)
-            delete (GLvertex*)gTesselatorVertices.Item(i);
-        gTesselatorVertices.Clear();
+        for (unsigned int i = 0; i<pi_gTesselatorVertices.Count(); i++)
+            delete (GLvertex*)pi_gTesselatorVertices.Item(i);
+        pi_gTesselatorVertices.Clear();
 
 #endif          //__OCPN__ANDROID__
     }
