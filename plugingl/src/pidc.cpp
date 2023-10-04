@@ -55,7 +55,7 @@
 #include "wx28compat.h"
 #include "cutil.h"
 #include "georef.h"
-#include "GL/gl_private"
+#include "GL/gl_private.h"
 
 #define __CALL_CONVENTION
 
