@@ -54,10 +54,12 @@
 #include "pidc.h"
 #include "wx28compat.h"
 #include "cutil.h"
+#include "georef.h"
 
 #define __CALL_CONVENTION
 
-wxArrayPtrVoid gTesselatorVertices;
+wxArrayPtrVoid  gTesselatorVertices;
+float           g_GLMinSymbolLineWidth;
 
 // These are only global to this module to allow tessellation callbacks to access them. Tessellation does not handle classes and methods
 bool        g_bTexture2D;
