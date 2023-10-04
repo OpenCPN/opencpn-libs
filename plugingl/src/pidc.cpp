@@ -57,6 +57,7 @@
 #include "OpenGL/glu.h"
 #else
 #include "GL/gl.h"
+#include "OpenGL/glu.h"
 #include "GL/glext.h"
 #endif
 
@@ -2148,7 +2149,7 @@ void APIENTRY piDCcombineCallback( GLdouble coords[3], GLdouble *vertex_data[4],
     GLvertex *vertex;
 
     vertex = new GLvertex();
-    gTesselatorVertices.Add(vertex );
+    pi_gTesselatorVertices.Add(vertex );
 
     vertex->info.x = coords[0];
     vertex->info.y = coords[1];
