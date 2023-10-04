@@ -68,7 +68,7 @@
 #include "qdebug.h"
 #endif
 
-static float g_GLMinSymbolLineWidth;
+static float GLMinSymbolLineWidth;
 static wxArrayPtrVoid pi_gTesselatorVertices;
 
 #ifdef USE_ANDROID_GLES2
@@ -176,12 +176,16 @@ void piDC::Init()
     s_odc_tess_work_buf = (GLfloat *)malloc( 100 * sizeof(GLfloat));
     s_odc_tess_tex_buf = (GLfloat *)malloc( 100 * sizeof(GLfloat));
     s_odc_tess_buf_len = 100;
-
-    pi_loadShaders();
 #endif
+
     g_textureId = -1;
     m_tobj = NULL;
 
+    GLint parms[2];
+    glGetIntegerv( GL_SMOOTH_LINE_WIDTH_RANGE, &parms[0] );
+    GLMinSymbolLineWidth = wxMax(parms[0], 1);
+
+    pi_loadShaders();
 }
 
 void piDC::SetVP(PlugIn_ViewPort *vp)
@@ -583,7 +587,7 @@ void piDC::DrawLine( wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2, bool b_hiqu
     else if( ConfigurePen() ) {
         bool b_draw_thick = false;
 
-        float pen_width = wxMax(g_GLMinSymbolLineWidth, m_pen.GetWidth());
+        float pen_width = wxMax(GLMinSymbolLineWidth, m_pen.GetWidth());
 
         //      Enable anti-aliased lines, at best quality
         if( b_hiqual ) {
@@ -906,18 +910,18 @@ void piDC::DrawLines( int n, wxPoint points[], wxCoord xoffset, wxCoord yoffset,
                 if( m_pen.GetWidth() > parms[1] )
                     b_draw_thick = true;
                 else
-                    glLineWidth( wxMax(g_GLMinSymbolLineWidth, m_pen.GetWidth()) );
+                    glLineWidth( wxMax(GLMinSymbolLineWidth, m_pen.GetWidth()) );
             } else
-                glLineWidth( wxMax(g_GLMinSymbolLineWidth, 1) );
+                glLineWidth( wxMax(GLMinSymbolLineWidth, 1) );
         } else {
             if( m_pen.GetWidth() > 1 ) {
                 GLint parms[2];
                 glGetIntegerv( GL_ALIASED_LINE_WIDTH_RANGE, &parms[0] );
                 if( m_pen.GetWidth() > parms[1] ) b_draw_thick = true;
                 else
-                    glLineWidth( wxMax(g_GLMinSymbolLineWidth, m_pen.GetWidth()) );
+                    glLineWidth( wxMax(GLMinSymbolLineWidth, m_pen.GetWidth()) );
             } else
-                glLineWidth( wxMax(g_GLMinSymbolLineWidth, 1) );
+                glLineWidth( wxMax(GLMinSymbolLineWidth, 1) );
         }
 
         if( b_draw_thick) {
@@ -987,7 +991,7 @@ void piDC::DrawArc( wxCoord xc, wxCoord yc, wxCoord x1, wxCoord y1, wxCoord x2, 
     else if( ConfigurePen() ) {
         bool b_draw_thick = false;
 
-        float pen_width = wxMax(g_GLMinSymbolLineWidth, m_pen.GetWidth());
+        float pen_width = wxMax(GLMinSymbolLineWidth, m_pen.GetWidth());
 
         //      Enable anti-aliased lines, at best quality
         if( b_hiqual ) {
@@ -1189,16 +1193,16 @@ void piDC::DrawGLLineArray( int n, float *vertex_array, float *color_array,  boo
                 //if(glGetError())
                 //glGetIntegerv( GL_ALIASED_LINE_WIDTH_RANGE, &parms[0] );
 
-                glLineWidth( wxMax(g_GLMinSymbolLineWidth, m_pen.GetWidth()) );
+                glLineWidth( wxMax(GLMinSymbolLineWidth, m_pen.GetWidth()) );
             } else
-                glLineWidth( wxMax(g_GLMinSymbolLineWidth, 1) );
+                glLineWidth( wxMax(GLMinSymbolLineWidth, 1) );
         } else {
             if( m_pen.GetWidth() > 1 ) {
                 //GLint parms[2];
                 //glGetIntegerv( GL_ALIASED_LINE_WIDTH_RANGE, &parms[0] );
-                glLineWidth( wxMax(g_GLMinSymbolLineWidth, m_pen.GetWidth()) );
+                glLineWidth( wxMax(GLMinSymbolLineWidth, m_pen.GetWidth()) );
             } else
-                glLineWidth( wxMax(g_GLMinSymbolLineWidth, 1) );
+                glLineWidth( wxMax(GLMinSymbolLineWidth, 1) );
         }
 
         #ifndef USE_ANDROID_GLES2
@@ -3361,7 +3365,7 @@ bool piDC::ConfigurePen()
 #ifndef USE_ANDROID_GLES2
     if(c != wxNullColour)
         glColor4ub( c.Red(), c.Green(), c.Blue(), c.Alpha() );
-    glLineWidth(wxMax(g_GLMinSymbolLineWidth, width) );
+    glLineWidth(wxMax(GLMinSymbolLineWidth, width) );
 #endif
 #endif
     return true;
