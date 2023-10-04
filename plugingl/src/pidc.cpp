@@ -32,14 +32,10 @@
 #include "wx/wx.h"
 #endif
 
+#include "ocpn_plugin.h"
+
 #ifdef __MSVC__
 //#include <windows.h>
-#endif
-
-#ifdef USE_ANDROID_GLES2
-#include "pi_shaders.h"
-#include <gl2.h>
-#include "linmath.h"
 #endif
 
 #ifdef ocpnUSE_GL
@@ -52,15 +48,44 @@
 #include <vector>
 
 #include "pidc.h"
-#include "wx28compat.h"
+
+#if defined(__ANDROID__) || defined(__OCPN__ANDROID__)
+#include <qopengl.h>
+#include "GL/gl_private.h"
+#elif defined(__APPLE__)
+#include "OpenGL/gl.h"
+#include "OpenGL/glu.h"
+#else
+#include "GL/gl.h"
+#include "GL/glext.h"
+#endif
+
+#include "linmath.h"
+#include "pi_shaders.h"
+
+#ifdef __OCPN__ANDROID__
+#include "qdebug.h"
+#endif
+
+static float GLMinSymbolLineWidth;
+static wxArrayPtrVoid pi_gTesselatorVertices;
+
+#ifdef USE_ANDROID_GLES2
+extern GLint pi_color_tri_shader_program;
+extern GLint pi_circle_filled_shader_program;
+#endif
+
+//#ifdef USE_ANDROID_GLES2
+//#include "pi_shaders.h"
+//#include <gl2.h>
+//#include "linmath.h"
+//#endif
+
+//#include "wx28compat.h"
 #include "cutil.h"
 #include "georef.h"
-#include "GL/gl_private.h"
 
 #define __CALL_CONVENTION
-
-wxArrayPtrVoid  gTesselatorVertices;
-float           g_GLMinSymbolLineWidth;
 
 // These are only global to this module to allow tessellation callbacks to access them. Tessellation does not handle classes and methods
 bool        g_bTexture2D;
@@ -1138,6 +1163,69 @@ void piDC::StrokeLines( int n, wxPoint *points) {
     } else
 #endif
         DrawLines( n, points, 0, 0, true );
+}
+
+void piDC::DrawGLLineArray( int n, float *vertex_array, float *color_array,  bool b_hiqual )
+{
+    #ifdef ocpnUSE_GL
+    if( ConfigurePen() ) {
+
+        #ifdef __WXQT__
+        SetGLAttrs( false );            // Some QT platforms (Android) have trouble with GL_BLEND / GL_LINE_SMOOTH
+        #else
+        SetGLAttrs( b_hiqual );
+        #endif
+        //bool b_draw_thick = false;
+
+        glDisable( GL_LINE_STIPPLE );
+        SetGLStipple();
+
+        //      Enable anti-aliased lines, at best quality
+        if( b_hiqual ) {
+            if( m_pen.GetWidth() > 1 ) {
+                //GLint parms[2];
+                //glGetIntegerv( GL_SMOOTH_LINE_WIDTH_RANGE, &parms[0] );
+                //if(glGetError())
+                //glGetIntegerv( GL_ALIASED_LINE_WIDTH_RANGE, &parms[0] );
+
+                glLineWidth( wxMax(GLMinSymbolLineWidth, m_pen.GetWidth()) );
+            } else
+                glLineWidth( wxMax(GLMinSymbolLineWidth, 1) );
+        } else {
+            if( m_pen.GetWidth() > 1 ) {
+                //GLint parms[2];
+                //glGetIntegerv( GL_ALIASED_LINE_WIDTH_RANGE, &parms[0] );
+                glLineWidth( wxMax(GLMinSymbolLineWidth, m_pen.GetWidth()) );
+            } else
+                glLineWidth( wxMax(GLMinSymbolLineWidth, 1) );
+        }
+
+        #ifndef USE_ANDROID_GLES2
+
+        glBegin( GL_LINE_STRIP );
+        for( int i = 0; i < n; i++ )
+            glVertex2f( vertex_array[2*i], vertex_array[2*i+1] );
+        glEnd();
+
+        #else
+        glUseProgram(pi_colorv_tri_shader_program);
+
+        GLint pos = glGetAttribLocation(pi_colorv_tri_shader_program, "position");
+        glVertexAttribPointer(pos, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), vertex_array);
+        glEnableVertexAttribArray(pos);
+
+        GLint colloc = glGetAttribLocation(pi_colorv_tri_shader_program, "colorv");
+        glVertexAttribPointer(colloc, 4, GL_FLOAT, GL_FALSE, 4*sizeof(float), color_array);
+        glEnableVertexAttribArray(colloc);
+
+        glDrawArrays(GL_LINES, 0, n);
+        #endif
+        if( b_hiqual ) {
+            glDisable( GL_LINE_STIPPLE );
+            glDisable( GL_POLYGON_SMOOTH );
+        }
+    }
+    #endif  // ocpnUSE_GL
 }
 
 void piDC::StrokeArc( wxCoord xc, wxCoord yc, wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2 )

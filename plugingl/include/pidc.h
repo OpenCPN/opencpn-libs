@@ -32,16 +32,13 @@
 #define __PIDC_H__
 
 #include <vector>
+#include "linmath.h"
 
 #include "TexFont.h"
 #include "ocpn_plugin.h"
 
 #ifdef ocpnUSE_GL
 #include <wx/glcanvas.h>
-#endif
-
-#ifdef USE_ANDROID_GLES2
-    #include "linmath.h"
 #endif
 
 #ifndef DECL_EXP
