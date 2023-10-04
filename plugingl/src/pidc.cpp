@@ -51,9 +51,9 @@
 
 #include <vector>
 
-#include "ocpn_draw_pi.h"
+//#include "ocpn_draw_pi.h"
 #include "piDC.h"
-#include "ODUtils.h"
+//#include "ODUtils.h"
 #include "wx28compat.h"
 #include "cutil.h"
 

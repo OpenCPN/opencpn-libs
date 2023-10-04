@@ -152,6 +152,8 @@ public:
 
     void RenderSingleTexture(float *coords, float *uvCoords, PlugIn_ViewPort *vp, float dx, float dy, float angle_rad);
 
+    int ArcSectorPoints( wxPoint *&points, wxCoord xc, wxCoord yc, wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2, wxCoord x3, wxCoord y3, wxCoord x4, wxCoord y4, bool bHighQuality );
+
 #ifdef ocpnUSE_GL
     GLfloat     *s_odc_tess_work_buf;
     GLfloat     *s_odc_tess_tex_buf;
