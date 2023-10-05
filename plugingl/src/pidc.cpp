@@ -53,7 +53,7 @@
 #include <qopengl.h>
 #include "GL/gl_private.h"
 
-#elif defined(__APPLE__)
+#elif defined(__WXOSX__)
 #include "OpenGL/gl.h"
 #include "OpenGL/glu.h"
 #include "OpenGL/glext.h"
