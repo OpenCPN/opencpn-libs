@@ -83,7 +83,6 @@ extern GLint pi_circle_filled_shader_program;
 //#endif
 
 //#include "wx28compat.h"
-#include "cutil.h"
 #include "georef.h"
 
 #define __CALL_CONVENTION
@@ -101,6 +100,20 @@ int         g_max_x;
 int         g_max_y;
 #endif
 
+
+#ifdef ocpnUSE_GL
+static int NextPow2(int size)
+{
+    int n = size-1;          // compute dimensions needed as next larger power of 2
+    int shift = 1;
+    while ((n+1) & n){
+        n |= n >> shift;
+        shift <<= 1;
+    }
+
+    return n + 1;
+}
+#endif
 
 //----------------------------------------------------------------------------
 /* pass the dc to the constructor, or NULL to use opengl */
