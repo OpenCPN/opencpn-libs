@@ -72,10 +72,6 @@ typedef void (*  _GLUfuncptr)();
 #include "qdebug.h"
 #endif
 
-#ifdef __MSVC__
-typedef void (__stdcall *_GLUfuncptr)(void);
-#endif
-
 static float GLMinSymbolLineWidth;
 static wxArrayPtrVoid pi_gTesselatorVertices;
 
