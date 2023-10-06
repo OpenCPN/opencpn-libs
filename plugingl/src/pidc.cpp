@@ -54,11 +54,9 @@
 #include "GL/gl_private.h"
 
 #elif defined(__WXOSX__)
-sina
 #include "OpenGL/gl.h"
 #include "OpenGL/glu.h"
 #include "OpenGL/glext.h"
-#typedef void (GLAPIENTRYP _GLUfuncptr)(void);
 typedef void (*  _GLUfuncptr)();
 
 #else
