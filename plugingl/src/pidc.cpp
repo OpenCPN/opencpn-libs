@@ -86,8 +86,11 @@ extern GLint pi_circle_filled_shader_program;
 //#include "linmath.h"
 //#endif
 
-//#include "wx28compat.h"
-#include "georef.h"
+//#include "georef.h"
+#ifndef PI
+      #define PI        3.1415926535897931160E0      /* pi */
+#endif
+
 
 #define __CALL_CONVENTION
 
