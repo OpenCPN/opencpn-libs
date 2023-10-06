@@ -40,6 +40,10 @@ if (TARGET OpenGL::GLU)
   target_link_libraries(PLUGINGL PRIVATE OpenGL::GLU)
 endif()
 
+if (TARGET ocpn::glu_static)
+  target_link_libraries(PLUGINGL PRIVATE ocpn::glu_static)
+endif()
+
 if (WIN32)
   target_link_libraries(PLUGINGL PRIVATE windows::headers)
 endif ()
