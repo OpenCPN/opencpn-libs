@@ -36,10 +36,6 @@ endif ()
 
 target_link_libraries(PLUGINGL PRIVATE ocpn::api)
 
-if (TARGET OpenGL::GL)
-  target_link_libraries(PLUGINGL PRIVATE OpenGL::GL)
-endif()
-
 if (TARGET OpenGL::GLU)
   target_link_libraries(PLUGINGL PRIVATE OpenGL::GLU)
 endif()
