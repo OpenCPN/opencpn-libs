@@ -11,11 +11,9 @@
 
 #include "Event.h"
 
-class wxSVGEvent:
-  public wxEvent
-{
-  public:
-    virtual ~wxSVGEvent() {}
+class wxSVGEvent : public wxEvent {
+public:
+  virtual ~wxSVGEvent() {}
 };
 
-#endif // WX_SVG_EVENT_H
+#endif  // WX_SVG_EVENT_H

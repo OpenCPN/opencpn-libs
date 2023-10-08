@@ -16,43 +16,55 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGLinearGradientElement:
-  public wxSVGGradientElement
-{
-  protected:
-    wxSVGAnimatedLength m_x1;
-    wxSVGAnimatedLength m_y1;
-    wxSVGAnimatedLength m_x2;
-    wxSVGAnimatedLength m_y2;
+class wxSVGLinearGradientElement : public wxSVGGradientElement {
+protected:
+  wxSVGAnimatedLength m_x1;
+  wxSVGAnimatedLength m_y1;
+  wxSVGAnimatedLength m_x2;
+  wxSVGAnimatedLength m_y2;
 
-  public:
-    inline const wxSVGAnimatedLength& GetX1() const { WX_SVG_ANIM_LENGTH_CALC_WIDTH(m_x1, GetViewportElement()); return m_x1; }
-    inline void SetX1(const wxSVGAnimatedLength& n) { m_x1 = n; }
-    inline void SetX1(const wxSVGLength& n) { m_x1.SetBaseVal(n); }
+public:
+  inline const wxSVGAnimatedLength& GetX1() const {
+    WX_SVG_ANIM_LENGTH_CALC_WIDTH(m_x1, GetViewportElement());
+    return m_x1;
+  }
+  inline void SetX1(const wxSVGAnimatedLength& n) { m_x1 = n; }
+  inline void SetX1(const wxSVGLength& n) { m_x1.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedLength& GetY1() const { WX_SVG_ANIM_LENGTH_CALC_HEIGHT(m_y1, GetViewportElement()); return m_y1; }
-    inline void SetY1(const wxSVGAnimatedLength& n) { m_y1 = n; }
-    inline void SetY1(const wxSVGLength& n) { m_y1.SetBaseVal(n); }
+  inline const wxSVGAnimatedLength& GetY1() const {
+    WX_SVG_ANIM_LENGTH_CALC_HEIGHT(m_y1, GetViewportElement());
+    return m_y1;
+  }
+  inline void SetY1(const wxSVGAnimatedLength& n) { m_y1 = n; }
+  inline void SetY1(const wxSVGLength& n) { m_y1.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedLength& GetX2() const { WX_SVG_ANIM_LENGTH_CALC_WIDTH(m_x2, GetViewportElement()); return m_x2; }
-    inline void SetX2(const wxSVGAnimatedLength& n) { m_x2 = n; }
-    inline void SetX2(const wxSVGLength& n) { m_x2.SetBaseVal(n); }
+  inline const wxSVGAnimatedLength& GetX2() const {
+    WX_SVG_ANIM_LENGTH_CALC_WIDTH(m_x2, GetViewportElement());
+    return m_x2;
+  }
+  inline void SetX2(const wxSVGAnimatedLength& n) { m_x2 = n; }
+  inline void SetX2(const wxSVGLength& n) { m_x2.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedLength& GetY2() const { WX_SVG_ANIM_LENGTH_CALC_HEIGHT(m_y2, GetViewportElement()); return m_y2; }
-    inline void SetY2(const wxSVGAnimatedLength& n) { m_y2 = n; }
-    inline void SetY2(const wxSVGLength& n) { m_y2.SetBaseVal(n); }
+  inline const wxSVGAnimatedLength& GetY2() const {
+    WX_SVG_ANIM_LENGTH_CALC_HEIGHT(m_y2, GetViewportElement());
+    return m_y2;
+  }
+  inline void SetY2(const wxSVGAnimatedLength& n) { m_y2 = n; }
+  inline void SetY2(const wxSVGLength& n) { m_y2.SetBaseVal(n); }
 
-  public:
-    wxSVGLinearGradientElement(wxString tagName = wxT("linearGradient")):
-      wxSVGGradientElement(tagName) {}
-    virtual ~wxSVGLinearGradientElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGLinearGradientElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_LINEARGRADIENT_ELEMENT; }
+public:
+  wxSVGLinearGradientElement(wxString tagName = wxT("linearGradient"))
+      : wxSVGGradientElement(tagName) {}
+  virtual ~wxSVGLinearGradientElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGLinearGradientElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_LINEARGRADIENT_ELEMENT; }
 };
 
-#endif // WX_SVG_LINEAR_GRADIENT_ELEMENT_H
+#endif  // WX_SVG_LINEAR_GRADIENT_ELEMENT_H

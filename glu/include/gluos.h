@@ -11,12 +11,12 @@
 #endif
 
 #ifdef __WATCOMC__
-/* Disable *lots* of warnings to get a clean build. I can't be bothered fixing the
- * code at the moment, as it is pretty ugly.
+/* Disable *lots* of warnings to get a clean build. I can't be bothered fixing
+ * the code at the moment, as it is pretty ugly.
  */
-#pragma warning 7   10
-#pragma warning 13  10
-#pragma warning 14  10
+#pragma warning 7 10
+#pragma warning 13 10
+#pragma warning 14 10
 #pragma warning 367 10
 #pragma warning 379 10
 #pragma warning 726 10
@@ -31,7 +31,7 @@
 
 #elif defined(_WIN32)
 
-#include <stdlib.h>	    /* For _MAX_PATH definition */
+#include <stdlib.h> /* For _MAX_PATH definition */
 #include <stdio.h>
 #include <malloc.h>
 
@@ -41,16 +41,16 @@
 #define NOMINMAX
 
 #ifdef __MINGW64_VERSION_MAJOR
-  #undef _WIN32_WINNT
+#undef _WIN32_WINNT
 #endif
 
 #ifndef _WIN32_WINNT
-  /* XXX: Workaround a bug in mingw-w64's headers when NOGDI is set and
-   * _WIN32_WINNT >= 0x0600 */
-  #define _WIN32_WINNT 0x0400
+/* XXX: Workaround a bug in mingw-w64's headers when NOGDI is set and
+ * _WIN32_WINNT >= 0x0600 */
+#define _WIN32_WINNT 0x0400
 #endif
 #ifndef STRICT
-  #define STRICT 1
+#define STRICT 1
 #endif
 
 #include <windows.h>

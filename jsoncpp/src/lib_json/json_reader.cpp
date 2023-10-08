@@ -755,7 +755,7 @@ Value& Reader::currentValue() { return *(nodes_.top()); }
 
 // https://github.com/open-source-parsers/jsoncpp/issues/1188
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored  "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 Reader::Char Reader::getNextChar() {
   if (current_ == end_)
@@ -800,7 +800,6 @@ String Reader::getFormatedErrorMessages() const {
   return getFormattedErrorMessages();
 }
 
-
 String Reader::getFormattedErrorMessages() const {
   String formattedMessage;
   for (const auto& error : errors_) {
@@ -816,7 +815,7 @@ String Reader::getFormattedErrorMessages() const {
 
 // https://github.com/open-source-parsers/jsoncpp/issues/1188
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored  "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 std::vector<Reader::StructuredError> Reader::getStructuredErrors() const {
   std::vector<Reader::StructuredError> allErrors;

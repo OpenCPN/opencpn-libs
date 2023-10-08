@@ -62,18 +62,17 @@
 /*      as an integer.                                                  */
 /************************************************************************/
 
-long DDFScanInt( const char * pszString, int nMaxChars )
+long DDFScanInt(const char *pszString, int nMaxChars)
 
 {
-    char        szWorking[33];
+  char szWorking[33];
 
-    if( nMaxChars > 32 || nMaxChars == 0 )
-        nMaxChars = 32;
+  if (nMaxChars > 32 || nMaxChars == 0) nMaxChars = 32;
 
-    memcpy( szWorking, pszString, nMaxChars );
-    szWorking[nMaxChars] = '\0';
+  memcpy(szWorking, pszString, nMaxChars);
+  szWorking[nMaxChars] = '\0';
 
-    return( atoi(szWorking) );
+  return (atoi(szWorking));
 }
 
 /************************************************************************/
@@ -83,14 +82,15 @@ long DDFScanInt( const char * pszString, int nMaxChars )
 /*      record.                                                         */
 /************************************************************************/
 
-int DDFScanVariable( const char *pszRecord, int nMaxChars, int nDelimChar )
+int DDFScanVariable(const char *pszRecord, int nMaxChars, int nDelimChar)
 
 {
-    int         i;
+  int i;
 
-    for( i = 0; i < nMaxChars-1 && pszRecord[i] != nDelimChar; i++ ) {}
+  for (i = 0; i < nMaxChars - 1 && pszRecord[i] != nDelimChar; i++) {
+  }
 
-    return i;
+  return i;
 }
 
 /************************************************************************/
@@ -100,25 +100,26 @@ int DDFScanVariable( const char *pszRecord, int nMaxChars, int nDelimChar )
 /*      it as a new string (with CPLStrdup()).                          */
 /************************************************************************/
 
-char * DDFFetchVariable( const char *pszRecord, int nMaxChars,
-                         int nDelimChar1, int nDelimChar2,
-                         int *pnConsumedChars )
+char *DDFFetchVariable(const char *pszRecord, int nMaxChars, int nDelimChar1,
+                       int nDelimChar2, int *pnConsumedChars)
 
 {
-    int         i;
-    char        *pszReturn;
+  int i;
+  char *pszReturn;
 
-    for( i = 0; i < nMaxChars-1 && pszRecord[i] != nDelimChar1
-                                && pszRecord[i] != nDelimChar2; i++ ) {}
+  for (i = 0; i < nMaxChars - 1 && pszRecord[i] != nDelimChar1 &&
+              pszRecord[i] != nDelimChar2;
+       i++) {
+  }
 
-    *pnConsumedChars = i;
-    if( i < nMaxChars
-        && (pszRecord[i] == nDelimChar1 || pszRecord[i] == nDelimChar2) )
-        (*pnConsumedChars)++;
+  *pnConsumedChars = i;
+  if (i < nMaxChars &&
+      (pszRecord[i] == nDelimChar1 || pszRecord[i] == nDelimChar2))
+    (*pnConsumedChars)++;
 
-    pszReturn = (char *) CPLMalloc(i+1);
-    pszReturn[i] = '\0';
-    strncpy( pszReturn, pszRecord, i );
+  pszReturn = (char *)CPLMalloc(i + 1);
+  pszReturn[i] = '\0';
+  strncpy(pszReturn, pszRecord, i);
 
-    return pszReturn;
+  return pszReturn;
 }

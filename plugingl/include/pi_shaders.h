@@ -25,21 +25,20 @@
 #define __PISHADERS_H__
 
 #include "wx/wxprec.h"
-#ifndef  WX_PRECOMP
+#ifndef WX_PRECOMP
 #include "wx/wx.h"
-#endif //precompiled headers
+#endif  // precompiled headers
 
 #ifdef USE_ANDROID_GLES2
 #include "GLES2/gl2.h"
 #endif
 
-    extern GLint pi_color_tri_shader_program;
-    extern GLint pi_colorv_tri_shader_program;
-    extern GLint pi_texture_2D_shader_program;
-    extern GLint pi_texture_2DA_shader_program;
-    extern GLint pi_texture_text_shader_program;
-    extern GLint pi_circle_filled_shader_program;
-    
+extern GLint pi_color_tri_shader_program;
+extern GLint pi_colorv_tri_shader_program;
+extern GLint pi_texture_2D_shader_program;
+extern GLint pi_texture_2DA_shader_program;
+extern GLint pi_texture_text_shader_program;
+extern GLint pi_circle_filled_shader_program;
 
 bool pi_loadShaders();
 void configureShaders(float width, float height);

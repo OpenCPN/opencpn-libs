@@ -17,29 +17,37 @@
 #include "SVGLength.h"
 #include "SVGMatrix.h"
 
-class wxSVGFitToViewBox
-{
-  protected:
-    wxSVGAnimatedRect m_viewBox;
-    wxSVGAnimatedPreserveAspectRatio m_preserveAspectRatio;
+class wxSVGFitToViewBox {
+protected:
+  wxSVGAnimatedRect m_viewBox;
+  wxSVGAnimatedPreserveAspectRatio m_preserveAspectRatio;
 
-  public:
-    inline const wxSVGAnimatedRect& GetViewBox() const { return m_viewBox; }
-    inline void SetViewBox(const wxSVGAnimatedRect& n) { m_viewBox = n; }
-    inline void SetViewBox(const wxSVGRect& n) { m_viewBox.SetBaseVal(n); }
+public:
+  inline const wxSVGAnimatedRect& GetViewBox() const { return m_viewBox; }
+  inline void SetViewBox(const wxSVGAnimatedRect& n) { m_viewBox = n; }
+  inline void SetViewBox(const wxSVGRect& n) { m_viewBox.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedPreserveAspectRatio& GetPreserveAspectRatio() const { return m_preserveAspectRatio; }
-    inline void SetPreserveAspectRatio(const wxSVGAnimatedPreserveAspectRatio& n) { m_preserveAspectRatio = n; }
-    inline void SetPreserveAspectRatio(const wxSVGPreserveAspectRatio& n) { m_preserveAspectRatio.SetBaseVal(n); }
+  inline const wxSVGAnimatedPreserveAspectRatio& GetPreserveAspectRatio()
+      const {
+    return m_preserveAspectRatio;
+  }
+  inline void SetPreserveAspectRatio(
+      const wxSVGAnimatedPreserveAspectRatio& n) {
+    m_preserveAspectRatio = n;
+  }
+  inline void SetPreserveAspectRatio(const wxSVGPreserveAspectRatio& n) {
+    m_preserveAspectRatio.SetBaseVal(n);
+  }
 
-  public:
-    virtual ~wxSVGFitToViewBox() {}
-    void UpdateMatrix(wxSVGMatrix& matrix, const wxSVGLength& width, const wxSVGLength& height);
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+public:
+  virtual ~wxSVGFitToViewBox() {}
+  void UpdateMatrix(wxSVGMatrix& matrix, const wxSVGLength& width,
+                    const wxSVGLength& height);
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
 };
 
-#endif // WX_SVG_FIT_TO_VIEW_BOX_H
+#endif  // WX_SVG_FIT_TO_VIEW_BOX_H

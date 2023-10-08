@@ -11,29 +11,38 @@
 
 #include "SVGMatrix.h"
 
-class wxSVGPoint
-{
-  protected:
-    double m_x;
-    double m_y;
+class wxSVGPoint {
+protected:
+  double m_x;
+  double m_y;
 
-  public:
-    inline double GetX() const { return m_x; }
-    inline void SetX(double n) { m_x = n; }
+public:
+  inline double GetX() const { return m_x; }
+  inline void SetX(double n) { m_x = n; }
 
-    inline double GetY() const { return m_y; }
-    inline void SetY(double n) { m_y = n; }
+  inline double GetY() const { return m_y; }
+  inline void SetY(double n) { m_y = n; }
 
-  public:
-    wxSVGPoint(): m_x(0), m_y(0) {}
-    wxSVGPoint(double x, double y): m_x(x), m_y(y) {}
-    virtual ~wxSVGPoint() {}
-    virtual wxSVGPoint MatrixTransform(const wxSVGMatrix& matrix) const;
-    inline bool operator==(const wxSVGPoint& p) const { return m_x == p.m_x && m_y == p.m_y; }
-    inline bool operator!=(const wxSVGPoint& p) const { return m_x != p.m_x || m_y != p.m_y; }
-    inline wxSVGPoint operator-(const wxSVGPoint& p) const { return wxSVGPoint(m_x - p.m_x,  m_y - p.m_y); }
-    inline wxSVGPoint operator+(const wxSVGPoint& p) const { return wxSVGPoint(m_x + p.m_x,  m_y + p.m_y); }
-    inline wxSVGPoint operator*(double n) const { return wxSVGPoint(m_x*n,  m_y*n); }
+public:
+  wxSVGPoint() : m_x(0), m_y(0) {}
+  wxSVGPoint(double x, double y) : m_x(x), m_y(y) {}
+  virtual ~wxSVGPoint() {}
+  virtual wxSVGPoint MatrixTransform(const wxSVGMatrix& matrix) const;
+  inline bool operator==(const wxSVGPoint& p) const {
+    return m_x == p.m_x && m_y == p.m_y;
+  }
+  inline bool operator!=(const wxSVGPoint& p) const {
+    return m_x != p.m_x || m_y != p.m_y;
+  }
+  inline wxSVGPoint operator-(const wxSVGPoint& p) const {
+    return wxSVGPoint(m_x - p.m_x, m_y - p.m_y);
+  }
+  inline wxSVGPoint operator+(const wxSVGPoint& p) const {
+    return wxSVGPoint(m_x + p.m_x, m_y + p.m_y);
+  }
+  inline wxSVGPoint operator*(double n) const {
+    return wxSVGPoint(m_x * n, m_y * n);
+  }
 };
 
-#endif // WX_SVG_POINT_H
+#endif  // WX_SVG_POINT_H

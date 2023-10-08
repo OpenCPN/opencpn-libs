@@ -13,19 +13,18 @@
 #include "String_wxsvg.h"
 #include "Element.h"
 
-class wxSVGVKernElement:
-  public wxSVGElement
-{
-  public:
-    wxSVGVKernElement(wxString tagName = wxT("vkern")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGVKernElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGVKernElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    virtual wxSVGDTD GetDtd() const { return wxSVG_VKERN_ELEMENT; }
+class wxSVGVKernElement : public wxSVGElement {
+public:
+  wxSVGVKernElement(wxString tagName = wxT("vkern")) : wxSVGElement(tagName) {}
+  virtual ~wxSVGVKernElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGVKernElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  virtual wxSVGDTD GetDtd() const { return wxSVG_VKERN_ELEMENT; }
 };
 
-#endif // WX_SVG_V_KERN_ELEMENT_H
+#endif  // WX_SVG_V_KERN_ELEMENT_H

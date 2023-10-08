@@ -14,20 +14,20 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGFEFuncAElement:
-  public wxSVGComponentTransferFunctionElement
-{
-  public:
-    wxSVGFEFuncAElement(wxString tagName = wxT("feFuncA")):
-      wxSVGComponentTransferFunctionElement(tagName) {}
-    virtual ~wxSVGFEFuncAElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGFEFuncAElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_FEFUNCA_ELEMENT; }
+class wxSVGFEFuncAElement : public wxSVGComponentTransferFunctionElement {
+public:
+  wxSVGFEFuncAElement(wxString tagName = wxT("feFuncA"))
+      : wxSVGComponentTransferFunctionElement(tagName) {}
+  virtual ~wxSVGFEFuncAElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGFEFuncAElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_FEFUNCA_ELEMENT; }
 };
 
-#endif // WX_SVG_FE_FUNC_A_ELEMENT_H
+#endif  // WX_SVG_FE_FUNC_A_ELEMENT_H

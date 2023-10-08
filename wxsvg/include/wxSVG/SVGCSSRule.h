@@ -11,11 +11,9 @@
 
 #include "CSSRule.h"
 
-class wxSVGCSSRule:
-  public wxCSSRule
-{
-  public:
-    virtual ~wxSVGCSSRule() {}
+class wxSVGCSSRule : public wxCSSRule {
+public:
+  virtual ~wxSVGCSSRule() {}
 };
 
-#endif // WX_SVG_CSS_RULE_H
+#endif  // WX_SVG_CSS_RULE_H

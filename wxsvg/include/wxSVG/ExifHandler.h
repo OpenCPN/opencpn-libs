@@ -15,11 +15,12 @@
 
 /** Reads EXIF metainformation from image files */
 class ExifHandler {
-  public:
-	/** Returns the orientation tag that indicates the orientation of the captured scene */
-	static int getOrient(const wxString& filename);
-	/** Rotates the image according to orientation tag  */
-	static void rotateImage(const wxString& filename, wxImage& image);
+public:
+  /** Returns the orientation tag that indicates the orientation of the captured
+   * scene */
+  static int getOrient(const wxString& filename);
+  /** Rotates the image according to orientation tag  */
+  static void rotateImage(const wxString& filename, wxImage& image);
 };
 
-#endif // WXSVG_EXIFHANDLER_H
+#endif  // WXSVG_EXIFHANDLER_H

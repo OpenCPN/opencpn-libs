@@ -599,19 +599,19 @@ public:
   ///        should draw only when priority is OVERLAY_LEGACY (0)
   /// \return true if overlay was rendered, false otherwise
 #ifdef _MSC_VER
-  virtual bool RenderGLOverlayMultiCanvas(wxGLContext *pcontext, PlugIn_ViewPort *vp,
-		                          int canvasIndex, int priority = -1);
+  virtual bool RenderGLOverlayMultiCanvas(wxGLContext *pcontext,
+                                          PlugIn_ViewPort *vp, int canvasIndex,
+                                          int priority = -1);
 #else
-  virtual bool RenderGLOverlayMultiCanvas(wxGLContext *pcontext, PlugIn_ViewPort *vp,
-                                  int canvasIndex, int priority);
+  virtual bool RenderGLOverlayMultiCanvas(wxGLContext *pcontext,
+                                          PlugIn_ViewPort *vp, int canvasIndex,
+                                          int priority);
 
   bool RenderGLOverlayMultiCanvas(wxGLContext *pcontext, PlugIn_ViewPort *vp,
                                   int canvas_ix) override {
     return RenderGLOverlayMultiCanvas(pcontext, vp, canvas_ix, -1);
   }
 #endif
-
-
 
   /// Render plugin overlay over chart canvas in non-OpenGL mode
   ///
@@ -625,14 +625,13 @@ public:
   virtual bool RenderOverlayMultiCanvas(wxDC &dc, PlugIn_ViewPort *vp,
                                         int canvasIndex, int priority = -1);
 #else
-  virtual bool RenderOverlayMultiCanvas(wxDC &dc, PlugIn_ViewPort *vp, int canvas_ix,
-                                int priority);
+  virtual bool RenderOverlayMultiCanvas(wxDC &dc, PlugIn_ViewPort *vp,
+                                        int canvas_ix, int priority);
   bool RenderOverlayMultiCanvas(wxDC &dc, PlugIn_ViewPort *vp,
                                 int canvas_ix) override {
     return RenderOverlayMultiCanvas(dc, vp, canvas_ix, -1);
   }
 #endif
-
 };
 //------------------------------------------------------------------
 //      Route and Waypoint PlugIn support
@@ -1579,7 +1578,6 @@ public:
   bool m_isVisible;
   wxString m_Description;
 
-
   Plugin_WaypointExList *pWaypointList;
 };
 
@@ -1786,7 +1784,7 @@ extern DECL_EXP std::vector<DriverHandle> GetActiveDrivers();
 
 /**  Query driver attributes  */
 extern DECL_EXP const std::unordered_map<std::string, std::string>
-        GetAttributes(DriverHandle handle);
+GetAttributes(DriverHandle handle);
 
 /* Writing to a specific driver  */
 
@@ -1796,13 +1794,12 @@ extern DECL_EXP const std::unordered_map<std::string, std::string>
  * Return value is number of bytes queued for transmission.
  */
 extern DECL_EXP CommDriverResult WriteCommDriver(
-        DriverHandle handle,
-        const std::shared_ptr <std::vector<uint8_t>> &payload);
+    DriverHandle handle, const std::shared_ptr<std::vector<uint8_t>> &payload);
 
 /** Send a PGN message to an NMEA2000 address.  */
 extern DECL_EXP CommDriverResult WriteCommDriverN2K(
     DriverHandle handle, int PGN, int destinationCANAddress, int priority,
-    const std::shared_ptr <std::vector<uint8_t>> &payload);
+    const std::shared_ptr<std::vector<uint8_t>> &payload);
 
 /**
  * Special NMEA2000 requirements
@@ -1815,6 +1812,5 @@ extern DECL_EXP CommDriverResult WriteCommDriverN2K(
  */
 extern DECL_EXP CommDriverResult RegisterTXPGNs(DriverHandle handle,
                                                 std::vector<int> &pgn_list);
-
 
 #endif  //_PLUGIN_H_

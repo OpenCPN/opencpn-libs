@@ -24,53 +24,58 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-
-enum wxLENGTHADJUST
-{
+enum wxLENGTHADJUST {
   wxLENGTHADJUST_UNKNOWN = 0,
   wxLENGTHADJUST_SPACING = 1,
   wxLENGTHADJUST_SPACINGANDGLYPHS = 2
 };
 
-class wxSVGTextContentElement:
-  public wxSVGElement,
-  public wxSVGTests,
-  public wxSVGLangSpace,
-  public wxSVGExternalResourcesRequired,
-  public wxSVGStylable,
-  public wxEventTarget
-{
-  protected:
-    wxSVGAnimatedLength m_textLength;
-    wxSVGAnimatedEnumeration m_lengthAdjust;
+class wxSVGTextContentElement : public wxSVGElement,
+                                public wxSVGTests,
+                                public wxSVGLangSpace,
+                                public wxSVGExternalResourcesRequired,
+                                public wxSVGStylable,
+                                public wxEventTarget {
+protected:
+  wxSVGAnimatedLength m_textLength;
+  wxSVGAnimatedEnumeration m_lengthAdjust;
 
-  public:
-    inline const wxSVGAnimatedLength& GetTextLength() const { WX_SVG_ANIM_LENGTH_CALC_WIDTH(m_textLength, GetViewportElement()); return m_textLength; }
-    inline void SetTextLength(const wxSVGAnimatedLength& n) { m_textLength = n; }
-    inline void SetTextLength(const wxSVGLength& n) { m_textLength.SetBaseVal(n); }
+public:
+  inline const wxSVGAnimatedLength& GetTextLength() const {
+    WX_SVG_ANIM_LENGTH_CALC_WIDTH(m_textLength, GetViewportElement());
+    return m_textLength;
+  }
+  inline void SetTextLength(const wxSVGAnimatedLength& n) { m_textLength = n; }
+  inline void SetTextLength(const wxSVGLength& n) {
+    m_textLength.SetBaseVal(n);
+  }
 
-    inline const wxSVGAnimatedEnumeration& GetLengthAdjust() const { return m_lengthAdjust; }
-    inline void SetLengthAdjust(const wxSVGAnimatedEnumeration& n) { m_lengthAdjust = n; }
-    inline void SetLengthAdjust(unsigned char n) { m_lengthAdjust.SetBaseVal(n); }
+  inline const wxSVGAnimatedEnumeration& GetLengthAdjust() const {
+    return m_lengthAdjust;
+  }
+  inline void SetLengthAdjust(const wxSVGAnimatedEnumeration& n) {
+    m_lengthAdjust = n;
+  }
+  inline void SetLengthAdjust(unsigned char n) { m_lengthAdjust.SetBaseVal(n); }
 
-  public:
-    wxSVGTextContentElement(wxString tagName = wxT("")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGTextContentElement() {}
-    virtual long GetNumberOfChars();
-    virtual double GetComputedTextLength();
-    virtual double GetSubStringLength(unsigned long charnum, unsigned long nchars);
-    virtual wxSVGPoint GetStartPositionOfChar(unsigned long charnum);
-    virtual wxSVGPoint GetEndPositionOfChar(unsigned long charnum);
-    virtual wxSVGRect GetExtentOfChar(unsigned long charnum);
-    virtual double GetRotationOfChar(unsigned long charnum);
-    virtual long GetCharNumAtPosition(const wxSVGPoint& point);
-    virtual void SelectSubString(unsigned long charnum, unsigned long nchars);
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+public:
+  wxSVGTextContentElement(wxString tagName = wxT("")) : wxSVGElement(tagName) {}
+  virtual ~wxSVGTextContentElement() {}
+  virtual long GetNumberOfChars();
+  virtual double GetComputedTextLength();
+  virtual double GetSubStringLength(unsigned long charnum,
+                                    unsigned long nchars);
+  virtual wxSVGPoint GetStartPositionOfChar(unsigned long charnum);
+  virtual wxSVGPoint GetEndPositionOfChar(unsigned long charnum);
+  virtual wxSVGRect GetExtentOfChar(unsigned long charnum);
+  virtual double GetRotationOfChar(unsigned long charnum);
+  virtual long GetCharNumAtPosition(const wxSVGPoint& point);
+  virtual void SelectSubString(unsigned long charnum, unsigned long nchars);
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
 };
 
-#endif // WX_SVG_TEXT_CONTENT_ELEMENT_H
+#endif  // WX_SVG_TEXT_CONTENT_ELEMENT_H

@@ -23,40 +23,41 @@ class wxSVGCanvasItem;
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGPolygonElement:
-  public wxSVGElement,
-  public wxSVGTests,
-  public wxSVGLangSpace,
-  public wxSVGExternalResourcesRequired,
-  public wxSVGStylable,
-  public wxSVGTransformable,
-  public wxEventTarget,
-  public wxSVGAnimatedPoints
-{
-  protected:
-    wxSVGCanvasItem* m_canvasItem;
+class wxSVGPolygonElement : public wxSVGElement,
+                            public wxSVGTests,
+                            public wxSVGLangSpace,
+                            public wxSVGExternalResourcesRequired,
+                            public wxSVGStylable,
+                            public wxSVGTransformable,
+                            public wxEventTarget,
+                            public wxSVGAnimatedPoints {
+protected:
+  wxSVGCanvasItem* m_canvasItem;
 
-  public:
-  public:
-    inline wxSVGCanvasItem* GetCanvasItem() { return m_canvasItem; }
-    void SetCanvasItem(wxSVGCanvasItem* canvasItem);
+public:
+public:
+  inline wxSVGCanvasItem* GetCanvasItem() { return m_canvasItem; }
+  void SetCanvasItem(wxSVGCanvasItem* canvasItem);
 
-  public:
-    wxSVGPolygonElement(wxString tagName = wxT("polygon")):
-      wxSVGElement(tagName), m_canvasItem(NULL) {}
-    wxSVGPolygonElement(wxSVGPolygonElement& src);
-    virtual ~wxSVGPolygonElement();
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGPolygonElement(*this); }
-    wxSVGRect GetBBox(wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER);
-    wxSVGRect GetResultBBox(wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER);
-    wxSVGMatrix GetCTM() { return wxSVGLocatable::GetCTM(this); }
-    wxSVGMatrix GetScreenCTM() { return wxSVGLocatable::GetScreenCTM(this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_POLYGON_ELEMENT; }
+public:
+  wxSVGPolygonElement(wxString tagName = wxT("polygon"))
+      : wxSVGElement(tagName), m_canvasItem(NULL) {}
+  wxSVGPolygonElement(wxSVGPolygonElement& src);
+  virtual ~wxSVGPolygonElement();
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGPolygonElement(*this);
+  }
+  wxSVGRect GetBBox(wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER);
+  wxSVGRect GetResultBBox(
+      wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER);
+  wxSVGMatrix GetCTM() { return wxSVGLocatable::GetCTM(this); }
+  wxSVGMatrix GetScreenCTM() { return wxSVGLocatable::GetScreenCTM(this); }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_POLYGON_ELEMENT; }
 };
 
-#endif // WX_SVG_POLYGON_ELEMENT_H
+#endif  // WX_SVG_POLYGON_ELEMENT_H

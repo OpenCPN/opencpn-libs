@@ -13,19 +13,19 @@
 #include "String_wxsvg.h"
 #include "Element.h"
 
-class wxSVGAnimateColorElement:
-  public wxSVGAnimationElement
-{
-  public:
-    wxSVGAnimateColorElement(wxString tagName = wxT("animateColor")):
-      wxSVGAnimationElement(tagName) {}
-    virtual ~wxSVGAnimateColorElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGAnimateColorElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    virtual wxSVGDTD GetDtd() const { return wxSVG_ANIMATECOLOR_ELEMENT; }
+class wxSVGAnimateColorElement : public wxSVGAnimationElement {
+public:
+  wxSVGAnimateColorElement(wxString tagName = wxT("animateColor"))
+      : wxSVGAnimationElement(tagName) {}
+  virtual ~wxSVGAnimateColorElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGAnimateColorElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  virtual wxSVGDTD GetDtd() const { return wxSVG_ANIMATECOLOR_ELEMENT; }
 };
 
-#endif // WX_SVG_ANIMATE_COLOR_ELEMENT_H
+#endif  // WX_SVG_ANIMATE_COLOR_ELEMENT_H

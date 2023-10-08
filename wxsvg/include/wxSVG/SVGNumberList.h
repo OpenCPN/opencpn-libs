@@ -13,13 +13,12 @@
 #include <wx/dynarray.h>
 WX_DECLARE_OBJARRAY(float, wxSVGNumberListBase);
 
-class wxSVGNumberList: public wxSVGNumberListBase
-{
-  public:
-    wxSVGNumberList() {}
+class wxSVGNumberList : public wxSVGNumberListBase {
+public:
+  wxSVGNumberList() {}
 
-    wxString GetValueAsString() const;
-    void SetValueAsString(const wxString& value);
+  wxString GetValueAsString() const;
+  void SetValueAsString(const wxString& value);
 };
 
-#endif // WX_SVG_NUMBER_LIST_H
+#endif  // WX_SVG_NUMBER_LIST_H

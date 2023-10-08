@@ -15,21 +15,23 @@
 #include <wx/dynarray.h>
 WX_DECLARE_OBJARRAY(wxSVGPathSeg, wxSVGPathSegListBase);
 
-class wxSVGPathSegList: public wxSVGPathSegListBase
-{
-  public:
-    wxSVGPathSegList() {}
-    wxSVGPathSegList(const wxSVGPathSegList& src)
-        : wxSVGPathSegListBase()
-        { DoCopy(src); }
-    wxSVGPathSegList& operator=(const wxSVGPathSegList& src)
-    { Clear(); DoCopy(src); return *this; }
+class wxSVGPathSegList : public wxSVGPathSegListBase {
+public:
+  wxSVGPathSegList() {}
+  wxSVGPathSegList(const wxSVGPathSegList& src) : wxSVGPathSegListBase() {
+    DoCopy(src);
+  }
+  wxSVGPathSegList& operator=(const wxSVGPathSegList& src) {
+    Clear();
+    DoCopy(src);
+    return *this;
+  }
 
-    wxString GetValueAsString() const;
-    void SetValueAsString(const wxString& value);
+  wxString GetValueAsString() const;
+  void SetValueAsString(const wxString& value);
 
-  protected:
-    void DoCopy(const wxSVGPathSegList& src);
+protected:
+  void DoCopy(const wxSVGPathSegList& src);
 };
 
-#endif // WX_SVG_PATH_SEG_LIST_H
+#endif  // WX_SVG_PATH_SEG_LIST_H

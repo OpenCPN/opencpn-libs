@@ -13,5 +13,4 @@
 
 struct wxEventTarget {};
 
-#endif //wxSVG_EVENT_TARGET_H
-
+#endif  // wxSVG_EVENT_TARGET_H

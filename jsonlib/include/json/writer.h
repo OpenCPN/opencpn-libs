@@ -8,7 +8,7 @@
 
 #if !defined(JSON_IS_AMALGAMATION)
 #include "value.h"
-#endif // if !defined(JSON_IS_AMALGAMATION)
+#endif  // if !defined(JSON_IS_AMALGAMATION)
 #include <vector>
 #include <string>
 #include <ostream>
@@ -18,7 +18,7 @@
 #if defined(JSONCPP_DISABLE_DLL_INTERFACE_WARNING)
 #pragma warning(push)
 #pragma warning(disable : 4251)
-#endif // if defined(JSONCPP_DISABLE_DLL_INTERFACE_WARNING)
+#endif  // if defined(JSONCPP_DISABLE_DLL_INTERFACE_WARNING)
 
 namespace Json {
 
@@ -61,13 +61,13 @@ public:
      */
     virtual StreamWriter* newStreamWriter() const = 0;
   };  // Factory
-};  // StreamWriter
+};    // StreamWriter
 
 /** \brief Write into stringstream, then return string, for convenience.
  * A StreamWriter will be created from the factory, used, and then deleted.
  */
-std::string writeString(StreamWriter::Factory const& factory, Value const& root);
-
+std::string writeString(StreamWriter::Factory const& factory,
+                        Value const& root);
 
 /** \brief Build a StreamWriter implementation.
 
@@ -153,7 +153,7 @@ public:
 
   void enableYAMLCompatibility();
 
-public: // overridden from Writer
+public:  // overridden from Writer
   virtual std::string write(const Value& root);
 
 private:
@@ -192,7 +192,7 @@ public:
   StyledWriter();
   virtual ~StyledWriter() {}
 
-public: // overridden from Writer
+public:  // overridden from Writer
   /** \brief Serialize a Value in <a HREF="http://www.json.org">JSON</a> format.
    * \param root Value to serialize.
    * \return String containing the JSON document that represents the root value.
@@ -291,7 +291,7 @@ private:
 #if defined(JSON_HAS_INT64)
 std::string JSON_API valueToString(Int value);
 std::string JSON_API valueToString(UInt value);
-#endif // if defined(JSON_HAS_INT64)
+#endif  // if defined(JSON_HAS_INT64)
 std::string JSON_API valueToString(LargestInt value);
 std::string JSON_API valueToString(LargestUInt value);
 std::string JSON_API valueToString(double value);
@@ -302,10 +302,10 @@ std::string JSON_API valueToQuotedString(const char* value);
 /// \see Json::operator>>()
 JSON_API std::ostream& operator<<(std::ostream&, const Value& root);
 
-} // namespace Json
+}  // namespace Json
 
 #if defined(JSONCPP_DISABLE_DLL_INTERFACE_WARNING)
 #pragma warning(pop)
-#endif // if defined(JSONCPP_DISABLE_DLL_INTERFACE_WARNING)
+#endif  // if defined(JSONCPP_DISABLE_DLL_INTERFACE_WARNING)
 
-#endif // JSON_WRITER_H_INCLUDED
+#endif  // JSON_WRITER_H_INCLUDED

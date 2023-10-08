@@ -15,33 +15,33 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGFEDistantLightElement:
-  public wxSVGElement
-{
-  protected:
-    wxSVGAnimatedNumber m_azimuth;
-    wxSVGAnimatedNumber m_elevation;
+class wxSVGFEDistantLightElement : public wxSVGElement {
+protected:
+  wxSVGAnimatedNumber m_azimuth;
+  wxSVGAnimatedNumber m_elevation;
 
-  public:
-    inline const wxSVGAnimatedNumber& GetAzimuth() const { return m_azimuth; }
-    inline void SetAzimuth(const wxSVGAnimatedNumber& n) { m_azimuth = n; }
-    inline void SetAzimuth(float n) { m_azimuth.SetBaseVal(n); }
+public:
+  inline const wxSVGAnimatedNumber& GetAzimuth() const { return m_azimuth; }
+  inline void SetAzimuth(const wxSVGAnimatedNumber& n) { m_azimuth = n; }
+  inline void SetAzimuth(float n) { m_azimuth.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedNumber& GetElevation() const { return m_elevation; }
-    inline void SetElevation(const wxSVGAnimatedNumber& n) { m_elevation = n; }
-    inline void SetElevation(float n) { m_elevation.SetBaseVal(n); }
+  inline const wxSVGAnimatedNumber& GetElevation() const { return m_elevation; }
+  inline void SetElevation(const wxSVGAnimatedNumber& n) { m_elevation = n; }
+  inline void SetElevation(float n) { m_elevation.SetBaseVal(n); }
 
-  public:
-    wxSVGFEDistantLightElement(wxString tagName = wxT("feDistantLight")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGFEDistantLightElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGFEDistantLightElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_FEDISTANTLIGHT_ELEMENT; }
+public:
+  wxSVGFEDistantLightElement(wxString tagName = wxT("feDistantLight"))
+      : wxSVGElement(tagName) {}
+  virtual ~wxSVGFEDistantLightElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGFEDistantLightElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_FEDISTANTLIGHT_ELEMENT; }
 };
 
-#endif // WX_SVG_FE_DISTANT_LIGHT_ELEMENT_H
+#endif  // WX_SVG_FE_DISTANT_LIGHT_ELEMENT_H

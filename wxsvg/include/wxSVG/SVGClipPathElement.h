@@ -21,38 +21,49 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGClipPathElement:
-  public wxSVGElement,
-  public wxSVGTests,
-  public wxSVGLangSpace,
-  public wxSVGExternalResourcesRequired,
-  public wxSVGStylable,
-  public wxSVGTransformable,
-  public wxSVGUnitTypes
-{
-  protected:
-    wxSVGAnimatedEnumeration m_clipPathUnits;
+class wxSVGClipPathElement : public wxSVGElement,
+                             public wxSVGTests,
+                             public wxSVGLangSpace,
+                             public wxSVGExternalResourcesRequired,
+                             public wxSVGStylable,
+                             public wxSVGTransformable,
+                             public wxSVGUnitTypes {
+protected:
+  wxSVGAnimatedEnumeration m_clipPathUnits;
 
-  public:
-    inline const wxSVGAnimatedEnumeration& GetClipPathUnits() const { return m_clipPathUnits; }
-    inline void SetClipPathUnits(const wxSVGAnimatedEnumeration& n) { m_clipPathUnits = n; }
-    inline void SetClipPathUnits(unsigned char n) { m_clipPathUnits.SetBaseVal(n); }
+public:
+  inline const wxSVGAnimatedEnumeration& GetClipPathUnits() const {
+    return m_clipPathUnits;
+  }
+  inline void SetClipPathUnits(const wxSVGAnimatedEnumeration& n) {
+    m_clipPathUnits = n;
+  }
+  inline void SetClipPathUnits(unsigned char n) {
+    m_clipPathUnits.SetBaseVal(n);
+  }
 
-  public:
-    wxSVGClipPathElement(wxString tagName = wxT("clipPath")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGClipPathElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGClipPathElement(*this); }
-    wxSVGRect GetBBox(wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER) { return wxSVGLocatable::GetChildrenBBox(this, coordinates); }
-    wxSVGRect GetResultBBox(wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER) { return wxSVGLocatable::GetChildrenResultBBox(this, coordinates); }
-    wxSVGMatrix GetCTM() { return wxSVGLocatable::GetCTM(this); }
-    wxSVGMatrix GetScreenCTM() { return wxSVGLocatable::GetScreenCTM(this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_CLIPPATH_ELEMENT; }
+public:
+  wxSVGClipPathElement(wxString tagName = wxT("clipPath"))
+      : wxSVGElement(tagName) {}
+  virtual ~wxSVGClipPathElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGClipPathElement(*this);
+  }
+  wxSVGRect GetBBox(wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER) {
+    return wxSVGLocatable::GetChildrenBBox(this, coordinates);
+  }
+  wxSVGRect GetResultBBox(
+      wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER) {
+    return wxSVGLocatable::GetChildrenResultBBox(this, coordinates);
+  }
+  wxSVGMatrix GetCTM() { return wxSVGLocatable::GetCTM(this); }
+  wxSVGMatrix GetScreenCTM() { return wxSVGLocatable::GetScreenCTM(this); }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_CLIPPATH_ELEMENT; }
 };
 
-#endif // WX_SVG_CLIP_PATH_ELEMENT_H
+#endif  // WX_SVG_CLIP_PATH_ELEMENT_H

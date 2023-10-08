@@ -14,13 +14,12 @@
 #include <wx/dynarray.h>
 WX_DECLARE_OBJARRAY(wxSVGTransform, wxSVGTransformListBase);
 
-class wxSVGTransformList: public wxSVGTransformListBase
-{
-  public:
-    wxSVGTransformList() {}
+class wxSVGTransformList : public wxSVGTransformListBase {
+public:
+  wxSVGTransformList() {}
 
-    wxString GetValueAsString() const;
-    void SetValueAsString(const wxString& value);
+  wxString GetValueAsString() const;
+  void SetValueAsString(const wxString& value);
 };
 
-#endif // WX_SVG_TRANSFORM_LIST_H
+#endif  // WX_SVG_TRANSFORM_LIST_H

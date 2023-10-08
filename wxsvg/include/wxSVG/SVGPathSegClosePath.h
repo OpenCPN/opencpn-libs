@@ -11,13 +11,10 @@
 
 #include "SVGPathSeg.h"
 
-class wxSVGPathSegClosePath:
-  public wxSVGPathSeg
-{
-  public:
-    wxSVGPathSegClosePath():
-      wxSVGPathSeg(wxPATHSEG_CLOSEPATH) {}
-    virtual ~wxSVGPathSegClosePath() {}
+class wxSVGPathSegClosePath : public wxSVGPathSeg {
+public:
+  wxSVGPathSegClosePath() : wxSVGPathSeg(wxPATHSEG_CLOSEPATH) {}
+  virtual ~wxSVGPathSegClosePath() {}
 };
 
-#endif // WX_SVG_PATH_SEG_CLOSE_PATH_H
+#endif  // WX_SVG_PATH_SEG_CLOSE_PATH_H

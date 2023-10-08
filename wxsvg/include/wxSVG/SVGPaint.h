@@ -12,9 +12,7 @@
 #include "SVGColor.h"
 #include "String_wxsvg.h"
 
-
-enum wxSVG_PAINTTYPE
-{
+enum wxSVG_PAINTTYPE {
   wxSVG_PAINTTYPE_UNKNOWN = 0,
   wxSVG_PAINTTYPE_RGBCOLOR = 1,
   wxSVG_PAINTTYPE_RGBCOLOR_ICCCOLOR = 2,
@@ -27,42 +25,44 @@ enum wxSVG_PAINTTYPE
   wxSVG_PAINTTYPE_URI = 107
 };
 
-class wxSVGPaint:
-  public wxSVGColor
-{
-  protected:
-    wxSVG_PAINTTYPE m_paintType;
-    wxString m_uri;
+class wxSVGPaint : public wxSVGColor {
+protected:
+  wxSVG_PAINTTYPE m_paintType;
+  wxString m_uri;
 
-  public:
-    inline wxSVG_PAINTTYPE GetPaintType() const { return m_paintType; }
-    inline void SetPaintType(const wxSVG_PAINTTYPE& n) { m_paintType = n; }
+public:
+  inline wxSVG_PAINTTYPE GetPaintType() const { return m_paintType; }
+  inline void SetPaintType(const wxSVG_PAINTTYPE& n) { m_paintType = n; }
 
-  public:
-    wxSVGPaint(): m_paintType(wxSVG_PAINTTYPE_NONE)
-     { m_cssValueType = wxCSS_SVG_PAINT; }
-    wxSVGPaint(unsigned char r, unsigned char g, unsigned char b):
-      wxSVGColor(r, g, b), m_paintType(wxSVG_PAINTTYPE_RGBCOLOR)
-      { m_cssValueType = wxCSS_SVG_PAINT; }
-    wxSVGPaint(wxRGBColor color):
-      wxSVGColor(color), m_paintType(wxSVG_PAINTTYPE_RGBCOLOR)
-      { m_cssValueType = wxCSS_SVG_PAINT; if (!color.Ok()) m_paintType = wxSVG_PAINTTYPE_NONE; }
-    virtual ~wxSVGPaint() {}
-    wxCSSValue* Clone() const { return new wxSVGPaint(*this); }
+public:
+  wxSVGPaint() : m_paintType(wxSVG_PAINTTYPE_NONE) {
+    m_cssValueType = wxCSS_SVG_PAINT;
+  }
+  wxSVGPaint(unsigned char r, unsigned char g, unsigned char b)
+      : wxSVGColor(r, g, b), m_paintType(wxSVG_PAINTTYPE_RGBCOLOR) {
+    m_cssValueType = wxCSS_SVG_PAINT;
+  }
+  wxSVGPaint(wxRGBColor color)
+      : wxSVGColor(color), m_paintType(wxSVG_PAINTTYPE_RGBCOLOR) {
+    m_cssValueType = wxCSS_SVG_PAINT;
+    if (!color.Ok()) m_paintType = wxSVG_PAINTTYPE_NONE;
+  }
+  virtual ~wxSVGPaint() {}
+  wxCSSValue* Clone() const { return new wxSVGPaint(*this); }
 
-    wxString GetCSSText() const;
-    inline const wxString& GetUri() const { return m_uri; }
-    virtual void SetUri(const wxString& uri);
-    virtual void SetRGBColor(const wxRGBColor& rgbColor);
-    virtual void SetICCColor(const wxSVGICCColor& iccColor);
+  wxString GetCSSText() const;
+  inline const wxString& GetUri() const { return m_uri; }
+  virtual void SetUri(const wxString& uri);
+  virtual void SetRGBColor(const wxRGBColor& rgbColor);
+  virtual void SetICCColor(const wxSVGICCColor& iccColor);
 
-    inline bool Ok() const
-    {
-	  return m_paintType != wxSVG_PAINTTYPE_UNKNOWN &&
-	         m_paintType != wxSVG_PAINTTYPE_NONE;
-	}
+  inline bool Ok() const {
+    return m_paintType != wxSVG_PAINTTYPE_UNKNOWN &&
+           m_paintType != wxSVG_PAINTTYPE_NONE;
+  }
 
-    virtual void SetPaint(wxSVG_PAINTTYPE paintType, const wxString& uri, const wxString& rgbColor, const wxString& iccColor);
+  virtual void SetPaint(wxSVG_PAINTTYPE paintType, const wxString& uri,
+                        const wxString& rgbColor, const wxString& iccColor);
 };
 
-#endif // WX_SVG_PAINT_H
+#endif  // WX_SVG_PAINT_H

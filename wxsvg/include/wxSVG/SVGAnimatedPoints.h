@@ -13,25 +13,28 @@
 #include "String_wxsvg.h"
 #include "Element.h"
 
-class wxSVGAnimatedPoints
-{
-  protected:
-    wxSVGPointList m_points;
-    wxSVGPointList m_animatedPoints;
+class wxSVGAnimatedPoints {
+protected:
+  wxSVGPointList m_points;
+  wxSVGPointList m_animatedPoints;
 
-  public:
-    inline const wxSVGPointList& GetPoints() const { return m_points; }
-    inline void SetPoints(const wxSVGPointList& n) { m_points = n; }
+public:
+  inline const wxSVGPointList& GetPoints() const { return m_points; }
+  inline void SetPoints(const wxSVGPointList& n) { m_points = n; }
 
-    inline const wxSVGPointList& GetAnimatedPoints() const { return m_animatedPoints; }
-    inline void SetAnimatedPoints(const wxSVGPointList& n) { m_animatedPoints = n; }
+  inline const wxSVGPointList& GetAnimatedPoints() const {
+    return m_animatedPoints;
+  }
+  inline void SetAnimatedPoints(const wxSVGPointList& n) {
+    m_animatedPoints = n;
+  }
 
-  public:
-    virtual ~wxSVGAnimatedPoints() {}
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
+public:
+  virtual ~wxSVGAnimatedPoints() {}
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
 };
 
-#endif // WX_SVG_ANIMATED_POINTS_H
+#endif  // WX_SVG_ANIMATED_POINTS_H

@@ -15,38 +15,38 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGFEPointLightElement:
-  public wxSVGElement
-{
-  protected:
-    wxSVGAnimatedNumber m_x;
-    wxSVGAnimatedNumber m_y;
-    wxSVGAnimatedNumber m_z;
+class wxSVGFEPointLightElement : public wxSVGElement {
+protected:
+  wxSVGAnimatedNumber m_x;
+  wxSVGAnimatedNumber m_y;
+  wxSVGAnimatedNumber m_z;
 
-  public:
-    inline const wxSVGAnimatedNumber& GetX() const { return m_x; }
-    inline void SetX(const wxSVGAnimatedNumber& n) { m_x = n; }
-    inline void SetX(float n) { m_x.SetBaseVal(n); }
+public:
+  inline const wxSVGAnimatedNumber& GetX() const { return m_x; }
+  inline void SetX(const wxSVGAnimatedNumber& n) { m_x = n; }
+  inline void SetX(float n) { m_x.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedNumber& GetY() const { return m_y; }
-    inline void SetY(const wxSVGAnimatedNumber& n) { m_y = n; }
-    inline void SetY(float n) { m_y.SetBaseVal(n); }
+  inline const wxSVGAnimatedNumber& GetY() const { return m_y; }
+  inline void SetY(const wxSVGAnimatedNumber& n) { m_y = n; }
+  inline void SetY(float n) { m_y.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedNumber& GetZ() const { return m_z; }
-    inline void SetZ(const wxSVGAnimatedNumber& n) { m_z = n; }
-    inline void SetZ(float n) { m_z.SetBaseVal(n); }
+  inline const wxSVGAnimatedNumber& GetZ() const { return m_z; }
+  inline void SetZ(const wxSVGAnimatedNumber& n) { m_z = n; }
+  inline void SetZ(float n) { m_z.SetBaseVal(n); }
 
-  public:
-    wxSVGFEPointLightElement(wxString tagName = wxT("fePointLight")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGFEPointLightElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGFEPointLightElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_FEPOINTLIGHT_ELEMENT; }
+public:
+  wxSVGFEPointLightElement(wxString tagName = wxT("fePointLight"))
+      : wxSVGElement(tagName) {}
+  virtual ~wxSVGFEPointLightElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGFEPointLightElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_FEPOINTLIGHT_ELEMENT; }
 };
 
-#endif // WX_SVG_FE_POINT_LIGHT_ELEMENT_H
+#endif  // WX_SVG_FE_POINT_LIGHT_ELEMENT_H

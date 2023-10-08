@@ -13,5 +13,4 @@
 
 struct wxDocumentCSS {};
 
-#endif //wxSVG_DOCUMENT_CSS_H
-
+#endif  // wxSVG_DOCUMENT_CSS_H

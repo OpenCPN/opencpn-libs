@@ -13,38 +13,37 @@
 #include "String_wxsvg.h"
 #include "Element.h"
 
-class wxSVGStyleElement:
-  public wxSVGElement
-{
-  protected:
-    wxString m_xmlspace;
-    wxString m_type;
-    wxString m_media;
-    wxString m_title;
+class wxSVGStyleElement : public wxSVGElement {
+protected:
+  wxString m_xmlspace;
+  wxString m_type;
+  wxString m_media;
+  wxString m_title;
 
-  public:
-    inline const wxString& GetXmlspace() const { return m_xmlspace; }
-    inline void SetXmlspace(const wxString& n) { m_xmlspace = n; }
+public:
+  inline const wxString& GetXmlspace() const { return m_xmlspace; }
+  inline void SetXmlspace(const wxString& n) { m_xmlspace = n; }
 
-    inline const wxString& GetType() const { return m_type; }
-    inline void SetType(const wxString& n) { m_type = n; }
+  inline const wxString& GetType() const { return m_type; }
+  inline void SetType(const wxString& n) { m_type = n; }
 
-    inline const wxString& GetMedia() const { return m_media; }
-    inline void SetMedia(const wxString& n) { m_media = n; }
+  inline const wxString& GetMedia() const { return m_media; }
+  inline void SetMedia(const wxString& n) { m_media = n; }
 
-    inline const wxString& GetTitle() const { return m_title; }
-    inline void SetTitle(const wxString& n) { m_title = n; }
+  inline const wxString& GetTitle() const { return m_title; }
+  inline void SetTitle(const wxString& n) { m_title = n; }
 
-  public:
-    wxSVGStyleElement(wxString tagName = wxT("style")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGStyleElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGStyleElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    virtual wxSVGDTD GetDtd() const { return wxSVG_STYLE_ELEMENT; }
+public:
+  wxSVGStyleElement(wxString tagName = wxT("style")) : wxSVGElement(tagName) {}
+  virtual ~wxSVGStyleElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGStyleElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  virtual wxSVGDTD GetDtd() const { return wxSVG_STYLE_ELEMENT; }
 };
 
-#endif // WX_SVG_STYLE_ELEMENT_H
+#endif  // WX_SVG_STYLE_ELEMENT_H

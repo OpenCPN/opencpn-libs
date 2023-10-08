@@ -17,39 +17,39 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGFEOffsetElement:
-  public wxSVGElement,
-  public wxSVGFilterPrimitiveStandardAttributes
-{
-  protected:
-    wxSVGAnimatedString m_in1;
-    wxSVGAnimatedNumber m_dx;
-    wxSVGAnimatedNumber m_dy;
+class wxSVGFEOffsetElement : public wxSVGElement,
+                             public wxSVGFilterPrimitiveStandardAttributes {
+protected:
+  wxSVGAnimatedString m_in1;
+  wxSVGAnimatedNumber m_dx;
+  wxSVGAnimatedNumber m_dy;
 
-  public:
-    inline const wxSVGAnimatedString& GetIn1() const { return m_in1; }
-    inline void SetIn1(const wxSVGAnimatedString& n) { m_in1 = n; }
-    inline void SetIn1(const wxString& n) { m_in1.SetBaseVal(n); }
+public:
+  inline const wxSVGAnimatedString& GetIn1() const { return m_in1; }
+  inline void SetIn1(const wxSVGAnimatedString& n) { m_in1 = n; }
+  inline void SetIn1(const wxString& n) { m_in1.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedNumber& GetDx() const { return m_dx; }
-    inline void SetDx(const wxSVGAnimatedNumber& n) { m_dx = n; }
-    inline void SetDx(float n) { m_dx.SetBaseVal(n); }
+  inline const wxSVGAnimatedNumber& GetDx() const { return m_dx; }
+  inline void SetDx(const wxSVGAnimatedNumber& n) { m_dx = n; }
+  inline void SetDx(float n) { m_dx.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedNumber& GetDy() const { return m_dy; }
-    inline void SetDy(const wxSVGAnimatedNumber& n) { m_dy = n; }
-    inline void SetDy(float n) { m_dy.SetBaseVal(n); }
+  inline const wxSVGAnimatedNumber& GetDy() const { return m_dy; }
+  inline void SetDy(const wxSVGAnimatedNumber& n) { m_dy = n; }
+  inline void SetDy(float n) { m_dy.SetBaseVal(n); }
 
-  public:
-    wxSVGFEOffsetElement(wxString tagName = wxT("feOffset")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGFEOffsetElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGFEOffsetElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_FEOFFSET_ELEMENT; }
+public:
+  wxSVGFEOffsetElement(wxString tagName = wxT("feOffset"))
+      : wxSVGElement(tagName) {}
+  virtual ~wxSVGFEOffsetElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGFEOffsetElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_FEOFFSET_ELEMENT; }
 };
 
-#endif // WX_SVG_FE_OFFSET_ELEMENT_H
+#endif  // WX_SVG_FE_OFFSET_ELEMENT_H

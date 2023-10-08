@@ -8,7 +8,7 @@
 
 #if !defined(JSON_IS_AMALGAMATION)
 #include "config.h"
-#endif // if !defined(JSON_IS_AMALGAMATION)
+#endif  // if !defined(JSON_IS_AMALGAMATION)
 
 namespace Json {
 
@@ -36,8 +36,8 @@ class ValueMapAllocator;
 class ValueInternalLink;
 class ValueInternalArray;
 class ValueInternalMap;
-#endif // #ifdef JSON_VALUE_USE_INTERNAL_MAP
+#endif  // #ifdef JSON_VALUE_USE_INTERNAL_MAP
 
-} // namespace Json
+}  // namespace Json
 
-#endif // JSON_FORWARDS_H_INCLUDED
+#endif  // JSON_FORWARDS_H_INCLUDED

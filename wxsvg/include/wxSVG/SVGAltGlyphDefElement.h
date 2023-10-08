@@ -13,19 +13,19 @@
 #include "String_wxsvg.h"
 #include "Element.h"
 
-class wxSVGAltGlyphDefElement:
-  public wxSVGElement
-{
-  public:
-    wxSVGAltGlyphDefElement(wxString tagName = wxT("altGlyphDef")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGAltGlyphDefElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGAltGlyphDefElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    virtual wxSVGDTD GetDtd() const { return wxSVG_ALTGLYPHDEF_ELEMENT; }
+class wxSVGAltGlyphDefElement : public wxSVGElement {
+public:
+  wxSVGAltGlyphDefElement(wxString tagName = wxT("altGlyphDef"))
+      : wxSVGElement(tagName) {}
+  virtual ~wxSVGAltGlyphDefElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGAltGlyphDefElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  virtual wxSVGDTD GetDtd() const { return wxSVG_ALTGLYPHDEF_ELEMENT; }
 };
 
-#endif // WX_SVG_ALT_GLYPH_DEF_ELEMENT_H
+#endif  // WX_SVG_ALT_GLYPH_DEF_ELEMENT_H

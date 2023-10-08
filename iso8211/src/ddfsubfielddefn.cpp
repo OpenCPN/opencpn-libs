@@ -83,18 +83,18 @@
 DDFSubfieldDefn::DDFSubfieldDefn()
 
 {
-    pszName = NULL;
+  pszName = NULL;
 
-    bIsVariable = TRUE;
-    nFormatWidth = 0;
-    chFormatDelimeter = DDF_UNIT_TERMINATOR;
-    eBinaryFormat = NotBinary;
-    eType = DDFString;
+  bIsVariable = TRUE;
+  nFormatWidth = 0;
+  chFormatDelimeter = DDF_UNIT_TERMINATOR;
+  eBinaryFormat = NotBinary;
+  eType = DDFString;
 
-    pszFormatString = CPLStrdup("");
+  pszFormatString = CPLStrdup("");
 
-    nMaxBufChars = 0;
-    pachBuffer = NULL;
+  nMaxBufChars = 0;
+  pachBuffer = NULL;
 }
 
 /************************************************************************/
@@ -104,26 +104,26 @@ DDFSubfieldDefn::DDFSubfieldDefn()
 DDFSubfieldDefn::~DDFSubfieldDefn()
 
 {
-    CPLFree( pszName );
-    CPLFree( pszFormatString );
-    CPLFree( pachBuffer );
+  CPLFree(pszName);
+  CPLFree(pszFormatString);
+  CPLFree(pachBuffer);
 }
 
 /************************************************************************/
 /*                              SetName()                               */
 /************************************************************************/
 
-void DDFSubfieldDefn::SetName( const char * pszNewName )
+void DDFSubfieldDefn::SetName(const char *pszNewName)
 
 {
-    int         i;
+  int i;
 
-    CPLFree( pszName );
+  CPLFree(pszName);
 
-    pszName = CPLStrdup( pszNewName );
+  pszName = CPLStrdup(pszNewName);
 
-    for( i = strlen(pszName)-1; i > 0 && pszName[i] == ' '; i-- )
-        pszName[i] = '\0';
+  for (i = strlen(pszName) - 1; i > 0 && pszName[i] == ' '; i--)
+    pszName[i] = '\0';
 }
 
 /************************************************************************/
@@ -137,92 +137,85 @@ void DDFSubfieldDefn::SetName( const char * pszNewName )
 /*       o 'B' bitstrings that aren't a multiple of eight.              */
 /************************************************************************/
 
-int DDFSubfieldDefn::SetFormat( const char * pszFormat )
+int DDFSubfieldDefn::SetFormat(const char *pszFormat)
 
 {
-    CPLFree( pszFormatString );
-    pszFormatString = CPLStrdup( pszFormat );
+  CPLFree(pszFormatString);
+  pszFormatString = CPLStrdup(pszFormat);
 
-/* -------------------------------------------------------------------- */
-/*      These values will likely be used.                               */
-/* -------------------------------------------------------------------- */
-    if( pszFormatString[1] == '(' )
-    {
-        nFormatWidth = atoi(pszFormatString+2);
-        bIsVariable = nFormatWidth == 0;
-    }
-    else
-        bIsVariable = TRUE;
+  /* -------------------------------------------------------------------- */
+  /*      These values will likely be used.                               */
+  /* -------------------------------------------------------------------- */
+  if (pszFormatString[1] == '(') {
+    nFormatWidth = atoi(pszFormatString + 2);
+    bIsVariable = nFormatWidth == 0;
+  } else
+    bIsVariable = TRUE;
 
-/* -------------------------------------------------------------------- */
-/*      Interpret the format string.                                    */
-/* -------------------------------------------------------------------- */
-    switch( pszFormatString[0] )
-    {
-      case 'A':
-      case 'C':         // It isn't clear to me how this is different than 'A'
-        eType = DDFString;
-        break;
+  /* -------------------------------------------------------------------- */
+  /*      Interpret the format string.                                    */
+  /* -------------------------------------------------------------------- */
+  switch (pszFormatString[0]) {
+    case 'A':
+    case 'C':  // It isn't clear to me how this is different than 'A'
+      eType = DDFString;
+      break;
 
-      case 'R':
-        eType = DDFFloat;
-        break;
+    case 'R':
+      eType = DDFFloat;
+      break;
 
-      case 'I':
-      case 'S':
-        eType = DDFInt;
-        break;
+    case 'I':
+    case 'S':
+      eType = DDFInt;
+      break;
 
-      case 'B':
-      case 'b':
-        // Is the width expressed in bits? (is it a bitstring)
-        bIsVariable = FALSE;
-        if( pszFormatString[1] == '(' )
-        {
-            CPLAssert( atoi(pszFormatString+2) % 8 == 0 );
+    case 'B':
+    case 'b':
+      // Is the width expressed in bits? (is it a bitstring)
+      bIsVariable = FALSE;
+      if (pszFormatString[1] == '(') {
+        CPLAssert(atoi(pszFormatString + 2) % 8 == 0);
 
-            nFormatWidth = atoi(pszFormatString+2) / 8;
-            eBinaryFormat = SInt; // good default, works for SDTS.
+        nFormatWidth = atoi(pszFormatString + 2) / 8;
+        eBinaryFormat = SInt;  // good default, works for SDTS.
 
-            if( nFormatWidth < 5 )
-                eType = DDFInt;
-            else
-                eType = DDFBinaryString;
-        }
-
-        // or do we have a binary type indicator? (is it binary)
+        if (nFormatWidth < 5)
+          eType = DDFInt;
         else
-        {
-            eBinaryFormat = (DDFBinaryFormat) (pszFormatString[1] - '0');
-            nFormatWidth = atoi(pszFormatString+2);
+          eType = DDFBinaryString;
+      }
 
-            if( eBinaryFormat == SInt || eBinaryFormat == UInt )
-                eType = DDFInt;
-            else
-                eType = DDFFloat;
-        }
-        break;
+      // or do we have a binary type indicator? (is it binary)
+      else {
+        eBinaryFormat = (DDFBinaryFormat)(pszFormatString[1] - '0');
+        nFormatWidth = atoi(pszFormatString + 2);
 
-      case 'X':
-        // 'X' is extra space, and shouldn't be directly assigned to a
-        // subfield ... I haven't encountered it in use yet though.
-        CPLError( CE_Failure, CPLE_AppDefined,
-                  "Format type of `%c' not supported.\n",
-                  pszFormatString[0] );
+        if (eBinaryFormat == SInt || eBinaryFormat == UInt)
+          eType = DDFInt;
+        else
+          eType = DDFFloat;
+      }
+      break;
 
-        CPLAssert( FALSE );
-        return FALSE;
+    case 'X':
+      // 'X' is extra space, and shouldn't be directly assigned to a
+      // subfield ... I haven't encountered it in use yet though.
+      CPLError(CE_Failure, CPLE_AppDefined,
+               "Format type of `%c' not supported.\n", pszFormatString[0]);
 
-      default:
-        CPLError( CE_Failure, CPLE_AppDefined,
-                  "Format type of `%c' not recognised.\n",
-                  pszFormatString[0] );
+      CPLAssert(FALSE);
+      return FALSE;
 
-        CPLAssert( FALSE );
-        return FALSE;
-    }
+    default:
+      CPLError(CE_Failure, CPLE_AppDefined,
+               "Format type of `%c' not recognised.\n", pszFormatString[0]);
 
-    return TRUE;
+      CPLAssert(FALSE);
+      return FALSE;
+  }
+
+  return TRUE;
 }
 
 /************************************************************************/
@@ -238,12 +231,12 @@ int DDFSubfieldDefn::SetFormat( const char * pszFormat )
  * @param fp The standard io file handle to write to.  ie. stderr
  */
 
-void DDFSubfieldDefn::Dump( FILE * fp )
+void DDFSubfieldDefn::Dump(FILE *fp)
 
 {
-    fprintf( fp, "    DDFSubfieldDefn:\n" );
-    fprintf( fp, "        Label = `%s'\n", pszName );
-    fprintf( fp, "        FormatString = `%s'\n", pszFormatString );
+  fprintf(fp, "    DDFSubfieldDefn:\n");
+  fprintf(fp, "        Label = `%s'\n", pszName);
+  fprintf(fp, "        FormatString = `%s'\n", pszFormatString);
 }
 
 /************************************************************************/
@@ -276,32 +269,26 @@ void DDFSubfieldDefn::Dump( FILE * fp )
  * this record (not including unit, or field terminator).
  */
 
-int DDFSubfieldDefn::GetDataLength( const char * pachSourceData,
-                                    int nMaxBytes, int * pnConsumedBytes )
+int DDFSubfieldDefn::GetDataLength(const char *pachSourceData, int nMaxBytes,
+                                   int *pnConsumedBytes)
 
 {
-    if( !bIsVariable )
-    {
-        if( nFormatWidth > nMaxBytes )
-        {
-            CPLError( CE_Warning, CPLE_AppDefined,
-                      "Only %d bytes available for subfield %s with\n"
-                      "format string %s ... returning shortened data.",
-                      nMaxBytes, pszName, pszFormatString );
+  if (!bIsVariable) {
+    if (nFormatWidth > nMaxBytes) {
+      CPLError(CE_Warning, CPLE_AppDefined,
+               "Only %d bytes available for subfield %s with\n"
+               "format string %s ... returning shortened data.",
+               nMaxBytes, pszName, pszFormatString);
 
-            if( pnConsumedBytes != NULL )
-                *pnConsumedBytes = nMaxBytes;
+      if (pnConsumedBytes != NULL) *pnConsumedBytes = nMaxBytes;
 
-            return nMaxBytes;
-        }
-        else
-        {
-            if( pnConsumedBytes != NULL )
-                *pnConsumedBytes = nFormatWidth;
+      return nMaxBytes;
+    } else {
+      if (pnConsumedBytes != NULL) *pnConsumedBytes = nFormatWidth;
 
-            return nFormatWidth;
-        }
+      return nFormatWidth;
     }
+  }
 #if 0    
     else
     {
@@ -341,80 +328,73 @@ int DDFSubfieldDefn::GetDataLength( const char * pachSourceData,
         return nLength;
     }
 #else
-else
-{
-    int     nLength = 0;
-    int     bAsciiField = TRUE;
-    int     extraConsumedBytes = 0;
-    
-    /* We only check for the field terminator because of some buggy 
+  else {
+    int nLength = 0;
+    int bAsciiField = TRUE;
+    int extraConsumedBytes = 0;
+
+    /* We only check for the field terminator because of some buggy
      * datasets with missing format terminators.  However, we have found
-     * the field terminator and unit terminators are legal characters 
+     * the field terminator and unit terminators are legal characters
      * within the fields of some extended datasets (such as JP34NC94.000).
-     * So we don't check for the field terminator and unit terminators as 
-     * a single byte if the field appears to be multi-byte which we 
+     * So we don't check for the field terminator and unit terminators as
+     * a single byte if the field appears to be multi-byte which we
      * establish by checking for the buffer ending with 0x1e 0x00 (a
-     * two byte field terminator). 
+     * two byte field terminator).
      *
-     * In the case of S57, the subfield ATVL of the NATF field can be 
-     * encoded in lexical level 2 (see S57 specification, Edition 3.1, 
-     * paragraph 2.4 and 2.5). In that case the Unit Terminator and Field 
+     * In the case of S57, the subfield ATVL of the NATF field can be
+     * encoded in lexical level 2 (see S57 specification, Edition 3.1,
+     * paragraph 2.4 and 2.5). In that case the Unit Terminator and Field
      * Terminator are followed by the NULL character.
-     * A better fix would be to read the NALL tag in the DSSI to check 
-     * that the lexical level is 2, instead of relying on the value of 
+     * A better fix would be to read the NALL tag in the DSSI to check
+     * that the lexical level is 2, instead of relying on the value of
      * the first byte as we are doing - but that is not information
      * that is available at the libiso8211 level (bug #1526)
      */
-    
+
     // If the whole field ends with 0x1e 0x00 then we assume this
     // field is a double byte character set.
-    if( nMaxBytes > 1 
-        && (pachSourceData[nMaxBytes-2] == chFormatDelimeter
-        || pachSourceData[nMaxBytes-2] == DDF_FIELD_TERMINATOR) 
-        && pachSourceData[nMaxBytes-1] == 0x00 )
-        bAsciiField = FALSE;
-    
+    if (nMaxBytes > 1 &&
+        (pachSourceData[nMaxBytes - 2] == chFormatDelimeter ||
+         pachSourceData[nMaxBytes - 2] == DDF_FIELD_TERMINATOR) &&
+        pachSourceData[nMaxBytes - 1] == 0x00)
+      bAsciiField = FALSE;
+
     //        if( !bAsciiField )
-        //            CPLDebug( "ISO8211", "Non-ASCII field detected." );
-        
-        while( nLength < nMaxBytes)
-        {
-            if (bAsciiField)
-            {
-                if (pachSourceData[nLength] == chFormatDelimeter ||
-                    pachSourceData[nLength] == DDF_FIELD_TERMINATOR)
-                    break;
-            }
-            else
-            {
-                if (nLength > 0 
-                    && (pachSourceData[nLength-1] == chFormatDelimeter 
-                    || pachSourceData[nLength-1] == DDF_FIELD_TERMINATOR) 
-                    && pachSourceData[nLength] == 0)
-                {
-                    // Suck up the field terminator if one follows
-                    // or else it will be interpreted as a new subfield.
-                    // This is a pretty ugly counter-intuitive hack!
-                    if (nLength+1 < nMaxBytes &&
-                        pachSourceData[nLength+1] == DDF_FIELD_TERMINATOR)
-                        extraConsumedBytes++;
-                    break;
-                } 
-            }
-            
-            nLength++;
+    //            CPLDebug( "ISO8211", "Non-ASCII field detected." );
+
+    while (nLength < nMaxBytes) {
+      if (bAsciiField) {
+        if (pachSourceData[nLength] == chFormatDelimeter ||
+            pachSourceData[nLength] == DDF_FIELD_TERMINATOR)
+          break;
+      } else {
+        if (nLength > 0 &&
+            (pachSourceData[nLength - 1] == chFormatDelimeter ||
+             pachSourceData[nLength - 1] == DDF_FIELD_TERMINATOR) &&
+            pachSourceData[nLength] == 0) {
+          // Suck up the field terminator if one follows
+          // or else it will be interpreted as a new subfield.
+          // This is a pretty ugly counter-intuitive hack!
+          if (nLength + 1 < nMaxBytes &&
+              pachSourceData[nLength + 1] == DDF_FIELD_TERMINATOR)
+            extraConsumedBytes++;
+          break;
         }
-        
-        if( pnConsumedBytes != NULL )
-        {
-            if( nMaxBytes == 0 )
-                *pnConsumedBytes = nLength + extraConsumedBytes;
-            else
-                *pnConsumedBytes = nLength + extraConsumedBytes + 1;
-        }
-        
-        return nLength;
-}
+      }
+
+      nLength++;
+    }
+
+    if (pnConsumedBytes != NULL) {
+      if (nMaxBytes == 0)
+        *pnConsumedBytes = nLength + extraConsumedBytes;
+      else
+        *pnConsumedBytes = nLength + extraConsumedBytes + 1;
+    }
+
+    return nLength;
+  }
 
 #endif
 }
@@ -454,33 +434,31 @@ else
  * @see ExtractIntData(), ExtractFloatData()
  */
 
-const char *
-DDFSubfieldDefn::ExtractStringData( const char * pachSourceData,
-                                    int nMaxBytes, int * pnConsumedBytes )
+const char *DDFSubfieldDefn::ExtractStringData(const char *pachSourceData,
+                                               int nMaxBytes,
+                                               int *pnConsumedBytes)
 
 {
-    int         nLength = GetDataLength( pachSourceData, nMaxBytes,
-                                         pnConsumedBytes );
+  int nLength = GetDataLength(pachSourceData, nMaxBytes, pnConsumedBytes);
 
-/* -------------------------------------------------------------------- */
-/*      Do we need to grow the buffer.                                  */
-/* -------------------------------------------------------------------- */
-    if( nMaxBufChars < nLength+1 )
-    {
-        CPLFree( pachBuffer );
+  /* -------------------------------------------------------------------- */
+  /*      Do we need to grow the buffer.                                  */
+  /* -------------------------------------------------------------------- */
+  if (nMaxBufChars < nLength + 1) {
+    CPLFree(pachBuffer);
 
-        nMaxBufChars = nLength+1;
-        pachBuffer = (char *) CPLMalloc(nMaxBufChars);
-    }
+    nMaxBufChars = nLength + 1;
+    pachBuffer = (char *)CPLMalloc(nMaxBufChars);
+  }
 
-/* -------------------------------------------------------------------- */
-/*      Copy the data to the buffer.  We use memcpy() so that it        */
-/*      will work for binary data.                                      */
-/* -------------------------------------------------------------------- */
-    memcpy( pachBuffer, pachSourceData, nLength );
-    pachBuffer[nLength] = '\0';
+  /* -------------------------------------------------------------------- */
+  /*      Copy the data to the buffer.  We use memcpy() so that it        */
+  /*      will work for binary data.                                      */
+  /* -------------------------------------------------------------------- */
+  memcpy(pachBuffer, pachSourceData, nLength);
+  pachBuffer[nLength] = '\0';
 
-    return pachBuffer;
+  return pachBuffer;
 }
 
 /************************************************************************/
@@ -510,104 +488,94 @@ DDFSubfieldDefn::ExtractStringData( const char * pachSourceData,
  * @see ExtractIntData(), ExtractStringData()
  */
 
-double
-DDFSubfieldDefn::ExtractFloatData( const char * pachSourceData,
-                                   int nMaxBytes, int * pnConsumedBytes )
+double DDFSubfieldDefn::ExtractFloatData(const char *pachSourceData,
+                                         int nMaxBytes, int *pnConsumedBytes)
 
 {
-    switch( pszFormatString[0] )
-    {
-      case 'A':
-      case 'I':
-      case 'R':
-      case 'S':
-      case 'C':
-        return atof(ExtractStringData(pachSourceData, nMaxBytes,
-                                      pnConsumedBytes));
+  switch (pszFormatString[0]) {
+    case 'A':
+    case 'I':
+    case 'R':
+    case 'S':
+    case 'C':
+      return atof(
+          ExtractStringData(pachSourceData, nMaxBytes, pnConsumedBytes));
 
-      case 'B':
-      case 'b':
-      {
-          unsigned char   abyData[8];
+    case 'B':
+    case 'b': {
+      unsigned char abyData[8];
 
-          CPLAssert( nFormatWidth <= nMaxBytes );
-          if( pnConsumedBytes != NULL )
-              *pnConsumedBytes = nFormatWidth;
+      CPLAssert(nFormatWidth <= nMaxBytes);
+      if (pnConsumedBytes != NULL) *pnConsumedBytes = nFormatWidth;
 
-          // Byte swap the data if it isn't in machine native format.
-          // In any event we copy it into our buffer to ensure it is
-          // word aligned.
+        // Byte swap the data if it isn't in machine native format.
+        // In any event we copy it into our buffer to ensure it is
+        // word aligned.
 #ifdef CPL_LSB
-          if( pszFormatString[0] == 'B' )
+      if (pszFormatString[0] == 'B')
 #else
-              if( pszFormatString[0] == 'b' )
+      if (pszFormatString[0] == 'b')
 #endif
-              {
-                  for( int i = 0; i < nFormatWidth; i++ )
-                      abyData[nFormatWidth-i-1] = pachSourceData[i];
-              }
-              else
-              {
-                  memcpy( abyData, pachSourceData, nFormatWidth );
-              }
-
-          // Interpret the bytes of data.
-          switch( eBinaryFormat )
-          {
-            case UInt:
-              if( nFormatWidth == 1 )
-                  return( abyData[0] );
-              else if( nFormatWidth == 2 )
-                  return( *((GUInt16 *) abyData) );
-              else if( nFormatWidth == 4 )
-                  return( *((GUInt32 *) abyData) );
-              else
-              {
-                  CPLAssert( FALSE );
-                  return 0.0;
-              }
-
-            case SInt:
-              if( nFormatWidth == 1 )
-                  return( *((signed char *) abyData) );
-              else if( nFormatWidth == 2 )
-                  return( *((GInt16 *) abyData) );
-              else if( nFormatWidth == 4 )
-                  return( *((GInt32 *) abyData) );
-              else
-              {
-                  CPLAssert( FALSE );
-                  return 0.0;
-              }
-
-            case FloatReal:
-              if( nFormatWidth == 4 )
-                  return( *((float *) abyData) );
-              else if( nFormatWidth == 8 )
-                  return( *((double *) abyData) );
-              else
-              {
-                  CPLAssert( FALSE );
-                  return 0.0;
-              }
-
-            case NotBinary:
-            case FPReal:
-            case FloatComplex:
-              CPLAssert( FALSE );
-              return 0.0;
-          }
-          break;
-          // end of 'b'/'B' case.
+      {
+        for (int i = 0; i < nFormatWidth; i++)
+          abyData[nFormatWidth - i - 1] = pachSourceData[i];
+      } else {
+        memcpy(abyData, pachSourceData, nFormatWidth);
       }
 
-      default:
-        CPLAssert( FALSE );
-        return 0.0;
+      // Interpret the bytes of data.
+      switch (eBinaryFormat) {
+        case UInt:
+          if (nFormatWidth == 1)
+            return (abyData[0]);
+          else if (nFormatWidth == 2)
+            return (*((GUInt16 *)abyData));
+          else if (nFormatWidth == 4)
+            return (*((GUInt32 *)abyData));
+          else {
+            CPLAssert(FALSE);
+            return 0.0;
+          }
+
+        case SInt:
+          if (nFormatWidth == 1)
+            return (*((signed char *)abyData));
+          else if (nFormatWidth == 2)
+            return (*((GInt16 *)abyData));
+          else if (nFormatWidth == 4)
+            return (*((GInt32 *)abyData));
+          else {
+            CPLAssert(FALSE);
+            return 0.0;
+          }
+
+        case FloatReal:
+          if (nFormatWidth == 4)
+            return (*((float *)abyData));
+          else if (nFormatWidth == 8)
+            return (*((double *)abyData));
+          else {
+            CPLAssert(FALSE);
+            return 0.0;
+          }
+
+        case NotBinary:
+        case FPReal:
+        case FloatComplex:
+          CPLAssert(FALSE);
+          return 0.0;
+      }
+      break;
+      // end of 'b'/'B' case.
     }
 
-    CPLAssert( FALSE );
-    return 0.0;
+    default:
+      CPLAssert(FALSE);
+      return 0.0;
+  }
+
+  CPLAssert(FALSE);
+  return 0.0;
 }
 
 /************************************************************************/
@@ -637,112 +605,101 @@ DDFSubfieldDefn::ExtractFloatData( const char * pachSourceData,
  * @see ExtractFloatData(), ExtractStringData()
  */
 
-int
-DDFSubfieldDefn::ExtractIntData( const char * pachSourceData,
-                                 int nMaxBytes, int * pnConsumedBytes )
+int DDFSubfieldDefn::ExtractIntData(const char *pachSourceData, int nMaxBytes,
+                                    int *pnConsumedBytes)
 
 {
-    switch( pszFormatString[0] )
-    {
-      case 'A':
-      case 'I':
-      case 'R':
-      case 'S':
-      case 'C':
-        return atoi(ExtractStringData(pachSourceData, nMaxBytes,
-                                      pnConsumedBytes));
+  switch (pszFormatString[0]) {
+    case 'A':
+    case 'I':
+    case 'R':
+    case 'S':
+    case 'C':
+      return atoi(
+          ExtractStringData(pachSourceData, nMaxBytes, pnConsumedBytes));
 
-      case 'B':
-      case 'b':
-      {
-          unsigned char   abyData[8];
+    case 'B':
+    case 'b': {
+      unsigned char abyData[8];
 
-          if( nFormatWidth > nMaxBytes )
-          {
-              CPLError( CE_Warning, CPLE_AppDefined,
-                        "Attempt to extract int subfield %s with format %s\n"
-                        "failed as only %d bytes available.  Using zero.",
-                        pszName, pszFormatString, nMaxBytes );
-              return 0;
-          }
-
-          if( pnConsumedBytes != NULL )
-              *pnConsumedBytes = nFormatWidth;
-
-          // Byte swap the data if it isn't in machine native format.
-          // In any event we copy it into our buffer to ensure it is
-          // word aligned.
-#ifdef CPL_LSB
-          if( pszFormatString[0] == 'B' )
-#else
-              if( pszFormatString[0] == 'b' )
-#endif
-              {
-                  for( int i = 0; i < nFormatWidth; i++ )
-                      abyData[nFormatWidth-i-1] = pachSourceData[i];
-              }
-              else
-              {
-                  memcpy( abyData, pachSourceData, nFormatWidth );
-              }
-
-          // Interpret the bytes of data.
-          switch( eBinaryFormat )
-          {
-            case UInt:
-              if( nFormatWidth == 4 )
-                  return( (int) *((GUInt32 *) abyData) );
-              else if( nFormatWidth == 1 )
-                  return( abyData[0] );
-              else if( nFormatWidth == 2 )
-                  return( *((GUInt16 *) abyData) );
-              else
-              {
-                  CPLAssert( FALSE );
-                  return 0;
-              }
-
-            case SInt:
-              if( nFormatWidth == 4 )
-                  return( *((GInt32 *) abyData) );
-              else if( nFormatWidth == 1 )
-                  return( *((signed char *) abyData) );
-              else if( nFormatWidth == 2 )
-                  return( *((GInt16 *) abyData) );
-              else
-              {
-                  CPLAssert( FALSE );
-                  return 0;
-              }
-
-            case FloatReal:
-              if( nFormatWidth == 4 )
-                  return( (int) *((float *) abyData) );
-              else if( nFormatWidth == 8 )
-                  return( (int) *((double *) abyData) );
-              else
-              {
-                  CPLAssert( FALSE );
-                  return 0;
-              }
-
-            case NotBinary:
-            case FPReal:
-            case FloatComplex:
-              CPLAssert( FALSE );
-              return 0;
-          }
-          break;
-          // end of 'b'/'B' case.
+      if (nFormatWidth > nMaxBytes) {
+        CPLError(CE_Warning, CPLE_AppDefined,
+                 "Attempt to extract int subfield %s with format %s\n"
+                 "failed as only %d bytes available.  Using zero.",
+                 pszName, pszFormatString, nMaxBytes);
+        return 0;
       }
 
-      default:
-        CPLAssert( FALSE );
-        return 0;
+      if (pnConsumedBytes != NULL) *pnConsumedBytes = nFormatWidth;
+
+        // Byte swap the data if it isn't in machine native format.
+        // In any event we copy it into our buffer to ensure it is
+        // word aligned.
+#ifdef CPL_LSB
+      if (pszFormatString[0] == 'B')
+#else
+      if (pszFormatString[0] == 'b')
+#endif
+      {
+        for (int i = 0; i < nFormatWidth; i++)
+          abyData[nFormatWidth - i - 1] = pachSourceData[i];
+      } else {
+        memcpy(abyData, pachSourceData, nFormatWidth);
+      }
+
+      // Interpret the bytes of data.
+      switch (eBinaryFormat) {
+        case UInt:
+          if (nFormatWidth == 4)
+            return ((int)*((GUInt32 *)abyData));
+          else if (nFormatWidth == 1)
+            return (abyData[0]);
+          else if (nFormatWidth == 2)
+            return (*((GUInt16 *)abyData));
+          else {
+            CPLAssert(FALSE);
+            return 0;
+          }
+
+        case SInt:
+          if (nFormatWidth == 4)
+            return (*((GInt32 *)abyData));
+          else if (nFormatWidth == 1)
+            return (*((signed char *)abyData));
+          else if (nFormatWidth == 2)
+            return (*((GInt16 *)abyData));
+          else {
+            CPLAssert(FALSE);
+            return 0;
+          }
+
+        case FloatReal:
+          if (nFormatWidth == 4)
+            return ((int)*((float *)abyData));
+          else if (nFormatWidth == 8)
+            return ((int)*((double *)abyData));
+          else {
+            CPLAssert(FALSE);
+            return 0;
+          }
+
+        case NotBinary:
+        case FPReal:
+        case FloatComplex:
+          CPLAssert(FALSE);
+          return 0;
+      }
+      break;
+      // end of 'b'/'B' case.
     }
 
-    CPLAssert( FALSE );
-    return 0;
+    default:
+      CPLAssert(FALSE);
+      return 0;
+  }
+
+  CPLAssert(FALSE);
+  return 0;
 }
 
 /************************************************************************/
@@ -760,36 +717,29 @@ DDFSubfieldDefn::ExtractIntData( const char * pachSourceData,
  * @param fp File to write report to.
  */
 
-void DDFSubfieldDefn::DumpData( const char * pachData, int nMaxBytes,
-                                FILE * fp )
+void DDFSubfieldDefn::DumpData(const char *pachData, int nMaxBytes, FILE *fp)
 
 {
-    if( eType == DDFFloat )
-        fprintf( fp, "      Subfield `%s' = %f\n",
-                 pszName,
-                 ExtractFloatData( pachData, nMaxBytes, NULL ) );
-    else if( eType == DDFInt )
-        fprintf( fp, "      Subfield `%s' = %d\n",
-                 pszName,
-                 ExtractIntData( pachData, nMaxBytes, NULL ) );
-    else if( eType == DDFBinaryString )
-    {
-        int     nBytes, i;
-        GByte   *pabyBString = (GByte *) ExtractStringData( pachData, nMaxBytes, &nBytes );
+  if (eType == DDFFloat)
+    fprintf(fp, "      Subfield `%s' = %f\n", pszName,
+            ExtractFloatData(pachData, nMaxBytes, NULL));
+  else if (eType == DDFInt)
+    fprintf(fp, "      Subfield `%s' = %d\n", pszName,
+            ExtractIntData(pachData, nMaxBytes, NULL));
+  else if (eType == DDFBinaryString) {
+    int nBytes, i;
+    GByte *pabyBString =
+        (GByte *)ExtractStringData(pachData, nMaxBytes, &nBytes);
 
-        fprintf( fp, "      Subfield `%s' = 0x", pszName );
-        for( i = 0; i < MIN(nBytes,24); i++ )
-            fprintf( fp, "%02X", pabyBString[i] );
+    fprintf(fp, "      Subfield `%s' = 0x", pszName);
+    for (i = 0; i < MIN(nBytes, 24); i++) fprintf(fp, "%02X", pabyBString[i]);
 
-        if( nBytes > 24 )
-            fprintf( fp, "%s", "..." );
+    if (nBytes > 24) fprintf(fp, "%s", "...");
 
-        fprintf( fp, "\n" );
-    }
-    else
-        fprintf( fp, "      Subfield `%s' = `%s'\n",
-                 pszName,
-                 ExtractStringData( pachData, nMaxBytes, NULL ) );
+    fprintf(fp, "\n");
+  } else
+    fprintf(fp, "      Subfield `%s' = `%s'\n", pszName,
+            ExtractStringData(pachData, nMaxBytes, NULL));
 }
 
 /************************************************************************/
@@ -815,44 +765,36 @@ void DDFSubfieldDefn::DumpData( const char * pachData, int nMaxBytes,
  * small to hold the default.
  */
 
-int DDFSubfieldDefn::GetDefaultValue( char *pachData, int nBytesAvailable,
-                                      int *pnBytesUsed )
+int DDFSubfieldDefn::GetDefaultValue(char *pachData, int nBytesAvailable,
+                                     int *pnBytesUsed)
 
 {
-    int nDefaultSize;
+  int nDefaultSize;
 
-    if( !bIsVariable )
-        nDefaultSize = nFormatWidth;
-    else
-        nDefaultSize = 1;
+  if (!bIsVariable)
+    nDefaultSize = nFormatWidth;
+  else
+    nDefaultSize = 1;
 
-    if( pnBytesUsed != NULL )
-        *pnBytesUsed = nDefaultSize;
+  if (pnBytesUsed != NULL) *pnBytesUsed = nDefaultSize;
 
-    if( pachData == NULL )
-        return TRUE;
+  if (pachData == NULL) return TRUE;
 
-    if( nBytesAvailable < nDefaultSize )
-        return FALSE;
+  if (nBytesAvailable < nDefaultSize) return FALSE;
 
-    if( bIsVariable )
-    {
-        pachData[0] = DDF_UNIT_TERMINATOR;
-    }
-    else
-    {
-        if( GetBinaryFormat() == NotBinary )
-        {
-            if( GetType() == DDFInt || GetType() == DDFFloat )
-                memset( pachData, '0', nDefaultSize );
-            else
-                memset( pachData, ' ', nDefaultSize );
-        }
-        else
-            memset( pachData, 0, nDefaultSize );
-    }
+  if (bIsVariable) {
+    pachData[0] = DDF_UNIT_TERMINATOR;
+  } else {
+    if (GetBinaryFormat() == NotBinary) {
+      if (GetType() == DDFInt || GetType() == DDFFloat)
+        memset(pachData, '0', nDefaultSize);
+      else
+        memset(pachData, ' ', nDefaultSize);
+    } else
+      memset(pachData, 0, nDefaultSize);
+  }
 
-    return TRUE;
+  return TRUE;
 }
 
 /************************************************************************/
@@ -866,55 +808,41 @@ int DDFSubfieldDefn::GetDefaultValue( char *pachData, int nBytesAvailable,
  * suitable for storage in a DDFField for this subfield.
  */
 
-int DDFSubfieldDefn::FormatStringValue( char *pachData, int nBytesAvailable,
-                                        int *pnBytesUsed,
-                                        const char *pszValue,
-                                        int nValueLength )
+int DDFSubfieldDefn::FormatStringValue(char *pachData, int nBytesAvailable,
+                                       int *pnBytesUsed, const char *pszValue,
+                                       int nValueLength)
 
 {
-    int nSize;
+  int nSize;
 
-    if( nValueLength == -1 )
-        nValueLength = strlen(pszValue);
+  if (nValueLength == -1) nValueLength = strlen(pszValue);
 
-    if( bIsVariable )
-    {
-        nSize = nValueLength + 1;
+  if (bIsVariable) {
+    nSize = nValueLength + 1;
+  } else {
+    nSize = nFormatWidth;
+  }
+
+  if (pnBytesUsed != NULL) *pnBytesUsed = nSize;
+
+  if (pachData == NULL) return TRUE;
+
+  if (nBytesAvailable < nSize) return FALSE;
+
+  if (bIsVariable) {
+    strncpy(pachData, pszValue, nSize - 1);
+    pachData[nSize - 1] = DDF_UNIT_TERMINATOR;
+  } else {
+    if (GetBinaryFormat() == NotBinary) {
+      memset(pachData, ' ', nSize);
+      memcpy(pachData, pszValue, MIN(nValueLength, nSize));
+    } else {
+      memset(pachData, 0, nSize);
+      memcpy(pachData, pszValue, MIN(nValueLength, nSize));
     }
-    else
-    {
-        nSize = nFormatWidth;
-    }
+  }
 
-    if( pnBytesUsed != NULL )
-        *pnBytesUsed = nSize;
-
-    if( pachData == NULL )
-        return TRUE;
-
-    if( nBytesAvailable < nSize )
-        return FALSE;
-
-    if( bIsVariable )
-    {
-        strncpy( pachData, pszValue, nSize-1 );
-        pachData[nSize-1] = DDF_UNIT_TERMINATOR;
-    }
-    else
-    {
-        if( GetBinaryFormat() == NotBinary )
-        {
-            memset( pachData, ' ', nSize );
-            memcpy( pachData, pszValue, MIN(nValueLength,nSize) );
-        }
-        else
-        {
-            memset( pachData, 0, nSize );
-            memcpy( pachData, pszValue, MIN(nValueLength,nSize) );
-        }
-    }
-
-    return TRUE;
+  return TRUE;
 }
 
 /************************************************************************/
@@ -928,82 +856,70 @@ int DDFSubfieldDefn::FormatStringValue( char *pachData, int nBytesAvailable,
  * suitable for storage in a DDFField for this subfield.
  */
 
-int DDFSubfieldDefn::FormatIntValue( char *pachData, int nBytesAvailable,
-                                     int *pnBytesUsed, int nNewValue )
+int DDFSubfieldDefn::FormatIntValue(char *pachData, int nBytesAvailable,
+                                    int *pnBytesUsed, int nNewValue)
 
 {
-    int nSize;
-    char szWork[30];
+  int nSize;
+  char szWork[30];
 
-    sprintf( szWork, "%d", nNewValue );
+  sprintf(szWork, "%d", nNewValue);
 
-    if( bIsVariable )
-    {
-        nSize = strlen(szWork) + 1;
-    }
-    else
-    {
-        nSize = nFormatWidth;
+  if (bIsVariable) {
+    nSize = strlen(szWork) + 1;
+  } else {
+    nSize = nFormatWidth;
 
-        if( GetBinaryFormat() == NotBinary && (int) strlen(szWork) > nSize )
-            return FALSE;
-    }
+    if (GetBinaryFormat() == NotBinary && (int)strlen(szWork) > nSize)
+      return FALSE;
+  }
 
-    if( pnBytesUsed != NULL )
-        *pnBytesUsed = nSize;
+  if (pnBytesUsed != NULL) *pnBytesUsed = nSize;
 
-    if( pachData == NULL )
-        return TRUE;
+  if (pachData == NULL) return TRUE;
 
-    if( nBytesAvailable < nSize )
-        return FALSE;
+  if (nBytesAvailable < nSize) return FALSE;
 
-    if( bIsVariable )
-    {
-        strncpy( pachData, szWork, nSize-1 );
-        pachData[nSize-1] = DDF_UNIT_TERMINATOR;
-    }
-    else
-    {
-        GUInt32 nMask = 0xff;
-        int i;
+  if (bIsVariable) {
+    strncpy(pachData, szWork, nSize - 1);
+    pachData[nSize - 1] = DDF_UNIT_TERMINATOR;
+  } else {
+    GUInt32 nMask = 0xff;
+    int i;
 
-        switch( GetBinaryFormat() )
-        {
-          case NotBinary:
-            memset( pachData, '0', nSize );
-            strncpy( pachData + nSize - strlen(szWork), szWork,
-                     strlen(szWork) );
-            break;
+    switch (GetBinaryFormat()) {
+      case NotBinary:
+        memset(pachData, '0', nSize);
+        strncpy(pachData + nSize - strlen(szWork), szWork, strlen(szWork));
+        break;
 
-          case UInt:
-          case SInt:
-            for( i = 0; i < nFormatWidth; i++ )
-            {
-                int iOut;
+      case UInt:
+      case SInt:
+        for (i = 0; i < nFormatWidth; i++) {
+          int iOut;
 
-                // big endian required?
-                if( pszFormatString[0] == 'B' )
-                    iOut = nFormatWidth - i - 1;
-                else
-                    iOut = i;
+          // big endian required?
+          if (pszFormatString[0] == 'B')
+            iOut = nFormatWidth - i - 1;
+          else
+            iOut = i;
 
-                pachData[iOut] = (nNewValue & nMask) >> (i*8);
-                nMask *= 256;
-            }
-            break;
-
-          case FloatReal:
-            CPLAssert( FALSE );
-            break;
-
-          default:
-            CPLAssert( FALSE );
-            break;
+          pachData[iOut] = (nNewValue & nMask) >> (i * 8);
+          nMask *= 256;
         }
-    }
+        break;
 
-    return TRUE;
+      case FloatReal:
+        CPLAssert(FALSE);
+        break;
+
+      default:
+        CPLAssert(FALSE);
+        break;
+    }
+  }
+
+  return TRUE;
 }
 
 /************************************************************************/
@@ -1017,55 +933,42 @@ int DDFSubfieldDefn::FormatIntValue( char *pachData, int nBytesAvailable,
  * suitable for storage in a DDFField for this subfield.
  */
 
-int DDFSubfieldDefn::FormatFloatValue( char *pachData, int nBytesAvailable,
-                                       int *pnBytesUsed, double dfNewValue )
+int DDFSubfieldDefn::FormatFloatValue(char *pachData, int nBytesAvailable,
+                                      int *pnBytesUsed, double dfNewValue)
 
 {
-    int nSize;
-    char szWork[120];
+  int nSize;
+  char szWork[120];
 
-    sprintf( szWork, "%.16g", dfNewValue );
+  sprintf(szWork, "%.16g", dfNewValue);
 
-    if( bIsVariable )
-    {
-        nSize = strlen(szWork) + 1;
+  if (bIsVariable) {
+    nSize = strlen(szWork) + 1;
+  } else {
+    nSize = nFormatWidth;
+
+    if (GetBinaryFormat() == NotBinary && (int)strlen(szWork) > nSize)
+      return FALSE;
+  }
+
+  if (pnBytesUsed != NULL) *pnBytesUsed = nSize;
+
+  if (pachData == NULL) return TRUE;
+
+  if (nBytesAvailable < nSize) return FALSE;
+
+  if (bIsVariable) {
+    strncpy(pachData, szWork, nSize - 1);
+    pachData[nSize - 1] = DDF_UNIT_TERMINATOR;
+  } else {
+    if (GetBinaryFormat() == NotBinary) {
+      memset(pachData, '0', nSize);
+      strncpy(pachData + nSize - strlen(szWork), szWork, strlen(szWork));
+    } else {
+      CPLAssert(FALSE);
+      /* implement me */
     }
-    else
-    {
-        nSize = nFormatWidth;
+  }
 
-        if( GetBinaryFormat() == NotBinary && (int) strlen(szWork) > nSize )
-            return FALSE;
-    }
-
-    if( pnBytesUsed != NULL )
-        *pnBytesUsed = nSize;
-
-    if( pachData == NULL )
-        return TRUE;
-
-    if( nBytesAvailable < nSize )
-        return FALSE;
-
-    if( bIsVariable )
-    {
-        strncpy( pachData, szWork, nSize-1 );
-        pachData[nSize-1] = DDF_UNIT_TERMINATOR;
-    }
-    else
-    {
-        if( GetBinaryFormat() == NotBinary )
-        {
-            memset( pachData, '0', nSize );
-            strncpy( pachData + nSize - strlen(szWork), szWork,
-                     strlen(szWork) );
-        }
-        else
-        {
-            CPLAssert( FALSE );
-            /* implement me */
-        }
-    }
-
-    return TRUE;
+  return TRUE;
 }

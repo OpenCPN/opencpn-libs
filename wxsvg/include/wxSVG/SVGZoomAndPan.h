@@ -12,30 +12,27 @@
 #include "String_wxsvg.h"
 #include "Element.h"
 
-
-enum wxSVG_ZOOMANDPAN
-{
+enum wxSVG_ZOOMANDPAN {
   wxSVG_ZOOMANDPAN_UNKNOWN = 0,
   wxSVG_ZOOMANDPAN_DISABLE = 1,
   wxSVG_ZOOMANDPAN_MAGNIFY = 2
 };
 
-class wxSVGZoomAndPan
-{
-  protected:
-    wxSVG_ZOOMANDPAN m_zoomAndPan;
+class wxSVGZoomAndPan {
+protected:
+  wxSVG_ZOOMANDPAN m_zoomAndPan;
 
-  public:
-    inline wxSVG_ZOOMANDPAN GetZoomAndPan() const { return m_zoomAndPan; }
-    inline void SetZoomAndPan(const wxSVG_ZOOMANDPAN& n) { m_zoomAndPan = n; }
+public:
+  inline wxSVG_ZOOMANDPAN GetZoomAndPan() const { return m_zoomAndPan; }
+  inline void SetZoomAndPan(const wxSVG_ZOOMANDPAN& n) { m_zoomAndPan = n; }
 
-  public:
-    wxSVGZoomAndPan(): m_zoomAndPan(wxSVG_ZOOMANDPAN(0)) {}
-    virtual ~wxSVGZoomAndPan() {}
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
+public:
+  wxSVGZoomAndPan() : m_zoomAndPan(wxSVG_ZOOMANDPAN(0)) {}
+  virtual ~wxSVGZoomAndPan() {}
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
 };
 
-#endif // WX_SVG_ZOOM_AND_PAN_H
+#endif  // WX_SVG_ZOOM_AND_PAN_H

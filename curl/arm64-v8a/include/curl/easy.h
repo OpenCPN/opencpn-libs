@@ -21,12 +21,12 @@
  * KIND, either express or implied.
  *
  ***************************************************************************/
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 
 /* Flag bits in the curl_blob struct: */
-#define CURL_BLOB_COPY   1 /* tell libcurl to copy the data */
+#define CURL_BLOB_COPY 1   /* tell libcurl to copy the data */
 #define CURL_BLOB_NOCOPY 0 /* tell libcurl to NOT copy the data */
 
 struct curl_blob {
@@ -55,7 +55,6 @@ CURL_EXTERN void curl_easy_cleanup(CURL *curl);
  * transfer is completed.
  */
 CURL_EXTERN CURLcode curl_easy_getinfo(CURL *curl, CURLINFO info, ...);
-
 
 /*
  * NAME curl_easy_duphandle()
@@ -106,7 +105,6 @@ CURL_EXTERN CURLcode curl_easy_recv(CURL *curl, void *buffer, size_t buflen,
 CURL_EXTERN CURLcode curl_easy_send(CURL *curl, const void *buffer,
                                     size_t buflen, size_t *n);
 
-
 /*
  * NAME curl_easy_upkeep()
  *
@@ -116,7 +114,7 @@ CURL_EXTERN CURLcode curl_easy_send(CURL *curl, const void *buffer,
  */
 CURL_EXTERN CURLcode curl_easy_upkeep(CURL *curl);
 
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 

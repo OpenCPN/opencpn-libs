@@ -16,29 +16,27 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGStopElement:
-  public wxSVGElement,
-  public wxSVGStylable
-{
-  protected:
-    wxSVGAnimatedNumber m_offset;
+class wxSVGStopElement : public wxSVGElement, public wxSVGStylable {
+protected:
+  wxSVGAnimatedNumber m_offset;
 
-  public:
-    inline const wxSVGAnimatedNumber& GetOffset() const { return m_offset; }
-    inline void SetOffset(const wxSVGAnimatedNumber& n) { m_offset = n; }
-    inline void SetOffset(float n) { m_offset.SetBaseVal(n); }
+public:
+  inline const wxSVGAnimatedNumber& GetOffset() const { return m_offset; }
+  inline void SetOffset(const wxSVGAnimatedNumber& n) { m_offset = n; }
+  inline void SetOffset(float n) { m_offset.SetBaseVal(n); }
 
-  public:
-    wxSVGStopElement(wxString tagName = wxT("stop")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGStopElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGStopElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_STOP_ELEMENT; }
+public:
+  wxSVGStopElement(wxString tagName = wxT("stop")) : wxSVGElement(tagName) {}
+  virtual ~wxSVGStopElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGStopElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_STOP_ELEMENT; }
 };
 
-#endif // WX_SVG_STOP_ELEMENT_H
+#endif  // WX_SVG_STOP_ELEMENT_H

@@ -15,20 +15,23 @@
 
 #define wxBITMAP_TYPE_SVG 45
 
-class wxSVGHandler: public wxImageHandler {
+class wxSVGHandler : public wxImageHandler {
 public:
-	wxSVGHandler();
-	virtual ~wxSVGHandler();
+  wxSVGHandler();
+  virtual ~wxSVGHandler();
 
 #if wxUSE_STREAMS
-	virtual bool LoadFile(wxImage *image, wxInputStream& stream, bool verbose = true, int index = -1);
-	virtual bool SaveFile(wxImage *image, wxOutputStream& stream, bool verbose = true);
+  virtual bool LoadFile(wxImage* image, wxInputStream& stream,
+                        bool verbose = true, int index = -1);
+  virtual bool SaveFile(wxImage* image, wxOutputStream& stream,
+                        bool verbose = true);
+
 protected:
-	virtual bool DoCanRead(wxInputStream& stream);
+  virtual bool DoCanRead(wxInputStream& stream);
 #endif
 
 private:
-    DECLARE_DYNAMIC_CLASS(wxImageHandler)
+  DECLARE_DYNAMIC_CLASS(wxImageHandler)
 };
 
-#endif // IMAGE_SVG_H
+#endif  // IMAGE_SVG_H

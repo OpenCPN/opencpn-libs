@@ -8,7 +8,7 @@
 
 #if !defined(JSON_IS_AMALGAMATION)
 #include "forwards.h"
-#endif // if !defined(JSON_IS_AMALGAMATION)
+#endif  // if !defined(JSON_IS_AMALGAMATION)
 #include <string>
 #include <vector>
 
@@ -26,7 +26,7 @@
 #if defined(JSONCPP_DISABLE_DLL_INTERFACE_WARNING)
 #pragma warning(push)
 #pragma warning(disable : 4251)
-#endif // if defined(JSONCPP_DISABLE_DLL_INTERFACE_WARNING)
+#endif  // if defined(JSONCPP_DISABLE_DLL_INTERFACE_WARNING)
 
 /** \brief JSON (JavaScript Object Notation).
  */
@@ -35,20 +35,20 @@ namespace Json {
 /** \brief Type of the value held by a Value object.
  */
 enum ValueType {
-  nullValue = 0, ///< 'null' value
-  intValue,      ///< signed integer value
-  uintValue,     ///< unsigned integer value
-  realValue,     ///< double value
-  stringValue,   ///< UTF-8 string value
-  booleanValue,  ///< bool value
-  arrayValue,    ///< array value (ordered list)
-  objectValue    ///< object value (collection of name/value pairs).
+  nullValue = 0,  ///< 'null' value
+  intValue,       ///< signed integer value
+  uintValue,      ///< unsigned integer value
+  realValue,      ///< double value
+  stringValue,    ///< UTF-8 string value
+  booleanValue,   ///< bool value
+  arrayValue,     ///< array value (ordered list)
+  objectValue     ///< object value (collection of name/value pairs).
 };
 
 enum CommentPlacement {
-  commentBefore = 0,      ///< a comment placed on the line before a value
-  commentAfterOnSameLine, ///< a comment just after a value on the same line
-  commentAfter, ///< a comment on the line after a value (only make sense for
+  commentBefore = 0,       ///< a comment placed on the line before a value
+  commentAfterOnSameLine,  ///< a comment just after a value on the same line
+  commentAfter,  ///< a comment on the line after a value (only make sense for
   /// root value)
   numberOfCommentPlacement
 };
@@ -128,7 +128,7 @@ public:
 #if defined(JSON_HAS_INT64)
   typedef Json::UInt64 UInt64;
   typedef Json::Int64 Int64;
-#endif // defined(JSON_HAS_INT64)
+#endif  // defined(JSON_HAS_INT64)
   typedef Json::LargestInt LargestInt;
   typedef Json::LargestUInt LargestUInt;
   typedef Json::ArrayIndex ArrayIndex;
@@ -159,23 +159,19 @@ public:
   static const Int64 maxInt64;
   /// Maximum unsigned 64 bits int value that can be stored in a Json::Value.
   static const UInt64 maxUInt64;
-#endif // defined(JSON_HAS_INT64)
+#endif  // defined(JSON_HAS_INT64)
 
 private:
 #ifndef JSONCPP_DOC_EXCLUDE_IMPLEMENTATION
 #ifndef JSON_VALUE_USE_INTERNAL_MAP
   class CZString {
   public:
-    enum DuplicationPolicy {
-      noDuplication = 0,
-      duplicate,
-      duplicateOnCopy
-    };
+    enum DuplicationPolicy { noDuplication = 0, duplicate, duplicateOnCopy };
     CZString(ArrayIndex index);
     CZString(const char* cstr, DuplicationPolicy allocate);
     CZString(const CZString& other);
     ~CZString();
-    CZString &operator=(const CZString &other);
+    CZString& operator=(const CZString& other);
     bool operator<(const CZString& other) const;
     bool operator==(const CZString& other) const;
     ArrayIndex index() const;
@@ -193,9 +189,9 @@ public:
   typedef std::map<CZString, Value> ObjectValues;
 #else
   typedef CppTL::SmallMap<CZString, Value> ObjectValues;
-#endif // ifndef JSON_USE_CPPTL_SMALLMAP
-#endif // ifndef JSON_VALUE_USE_INTERNAL_MAP
-#endif // ifndef JSONCPP_DOC_EXCLUDE_IMPLEMENTATION
+#endif  // ifndef JSON_USE_CPPTL_SMALLMAP
+#endif  // ifndef JSON_VALUE_USE_INTERNAL_MAP
+#endif  // ifndef JSONCPP_DOC_EXCLUDE_IMPLEMENTATION
 
 public:
   /** \brief Create a default Value of the given type.
@@ -219,7 +215,7 @@ Json::Value obj_value(Json::objectValue); // {}
 #if defined(JSON_HAS_INT64)
   Value(Int64 value);
   Value(UInt64 value);
-#endif // if defined(JSON_HAS_INT64)
+#endif  // if defined(JSON_HAS_INT64)
   Value(double value);
   Value(const char* value);
   Value(const char* beginValue, const char* endValue);
@@ -244,7 +240,7 @@ Json::Value obj_value(Json::objectValue); // {}
   ~Value();
 
   // Deep copy, then swap(other).
-  Value &operator=(const Value &other);
+  Value& operator=(const Value& other);
   /// Swap everything.
   void swap(Value& other);
   /// Swap values but leave comments and source offsets in place.
@@ -271,7 +267,7 @@ Json::Value obj_value(Json::objectValue); // {}
 #if defined(JSON_HAS_INT64)
   Int64 asInt64() const;
   UInt64 asUInt64() const;
-#endif // if defined(JSON_HAS_INT64)
+#endif  // if defined(JSON_HAS_INT64)
   LargestInt asLargestInt() const;
   LargestUInt asLargestUInt() const;
   float asFloat() const;
@@ -469,7 +465,7 @@ private:
   inline void setMemberNameIsStatic(bool isStatic) {
     memberNameIsStatic_ = isStatic ? 1 : 0;
   }
-#endif // # ifdef JSON_VALUE_USE_INTERNAL_MAP
+#endif  // # ifdef JSON_VALUE_USE_INTERNAL_MAP
 
 private:
   struct CommentInfo {
@@ -504,10 +500,12 @@ private:
 #endif
   } value_;
   ValueType type_ : 8;
-  unsigned int allocated_ : 1; // Notes: if declared as bool, bitfield is useless.
+  unsigned int
+      allocated_ : 1;  // Notes: if declared as bool, bitfield is useless.
 #ifdef JSON_VALUE_USE_INTERNAL_MAP
-  unsigned int itemIsUsed_ : 1; // used by the ValueInternalMap container.
-  unsigned int memberNameIsStatic_ : 1;  // used by the ValueInternalMap container.
+  unsigned int itemIsUsed_ : 1;  // used by the ValueInternalMap container.
+  unsigned int
+      memberNameIsStatic_ : 1;  // used by the ValueInternalMap container.
 #endif
   CommentInfo* comments_;
 };
@@ -525,11 +523,7 @@ public:
   PathArgument(const std::string& key);
 
 private:
-  enum Kind {
-    kindNone = 0,
-    kindIndex,
-    kindKey
-  };
+  enum Kind { kindNone = 0, kindIndex, kindKey };
   std::string key_;
   ArrayIndex index_;
   Kind kind_;
@@ -548,8 +542,7 @@ private:
  */
 class JSON_API Path {
 public:
-  Path(const std::string& path,
-       const PathArgument& a1 = PathArgument(),
+  Path(const std::string& path, const PathArgument& a1 = PathArgument(),
        const PathArgument& a2 = PathArgument(),
        const PathArgument& a3 = PathArgument(),
        const PathArgument& a4 = PathArgument(),
@@ -566,10 +559,8 @@ private:
   typedef std::vector<PathArgument> Args;
 
   void makePath(const std::string& path, const InArgs& in);
-  void addPathInArg(const std::string& path,
-                    const InArgs& in,
-                    InArgs::const_iterator& itInArg,
-                    PathArgument::Kind kind);
+  void addPathInArg(const std::string& path, const InArgs& in,
+                    InArgs::const_iterator& itInArg, PathArgument::Kind kind);
   void invalidPath(const std::string& path, int location);
 
   Args args_;
@@ -640,11 +631,8 @@ class JSON_API ValueInternalLink {
 public:
   enum {
     itemPerLink = 6
-  }; // sizeof(ValueInternalLink) = 128 on 32 bits architecture.
-  enum InternalFlags {
-    flagAvailable = 0,
-    flagUsed = 1
-  };
+  };  // sizeof(ValueInternalLink) = 128 on 32 bits architecture.
+  enum InternalFlags { flagAvailable = 0, flagUsed = 1 };
 
   ValueInternalLink();
 
@@ -689,7 +677,7 @@ public:
     BucketIndex itemIndex_;
     BucketIndex bucketIndex_;
   };
-#endif // ifndef JSONCPP_DOC_EXCLUDE_IMPLEMENTATION
+#endif  // ifndef JSONCPP_DOC_EXCLUDE_IMPLEMENTATION
 
   ValueInternalMap();
   ValueInternalMap(const ValueInternalMap& other);
@@ -714,15 +702,12 @@ public:
 
   void remove(const char* key);
 
-  void doActualRemove(ValueInternalLink* link,
-                      BucketIndex index,
+  void doActualRemove(ValueInternalLink* link, BucketIndex index,
                       BucketIndex bucketIndex);
 
   ValueInternalLink*& getLastLinkInBucket(BucketIndex bucketIndex);
 
-  Value& setNewItem(const char* key,
-                    bool isStatic,
-                    ValueInternalLink* link,
+  Value& setNewItem(const char* key, bool isStatic, ValueInternalLink* link,
                     BucketIndex index);
 
   Value& unsafeAdd(const char* key, bool isStatic, HashKey hashedKey);
@@ -751,19 +736,19 @@ private:
 };
 
 /** \brief A simplified deque implementation used internally by Value.
-* \internal
-* It is based on a list of fixed "page", each page contains a fixed number of
-*items.
-* Instead of using a linked-list, a array of pointer is used for fast item
-*look-up.
-* Look-up for an element is as follow:
-* - compute page index: pageIndex = itemIndex / itemsPerPage
-* - look-up item in page: pages_[pageIndex][itemIndex % itemsPerPage]
-*
-* Insertion is amortized constant time (only the array containing the index of
-*pointers
-* need to be reallocated when items are appended).
-*/
+ * \internal
+ * It is based on a list of fixed "page", each page contains a fixed number of
+ *items.
+ * Instead of using a linked-list, a array of pointer is used for fast item
+ *look-up.
+ * Look-up for an element is as follow:
+ * - compute page index: pageIndex = itemIndex / itemsPerPage
+ * - look-up item in page: pages_[pageIndex][itemIndex % itemsPerPage]
+ *
+ * Insertion is amortized constant time (only the array containing the index of
+ *pointers
+ * need to be reallocated when items are appended).
+ */
 class JSON_API ValueInternalArray {
   friend class Value;
   friend class ValueIteratorBase;
@@ -771,19 +756,19 @@ class JSON_API ValueInternalArray {
 public:
   enum {
     itemsPerPage = 8
-  }; // should be a power of 2 for fast divide and modulo.
+  };  // should be a power of 2 for fast divide and modulo.
   typedef Value::ArrayIndex ArrayIndex;
   typedef unsigned int PageIndex;
 
 #ifndef JSONCPP_DOC_EXCLUDE_IMPLEMENTATION
-  struct IteratorState // Must be a POD
-      {
+  struct IteratorState  // Must be a POD
+  {
     IteratorState() : array_(0), currentPageIndex_(0), currentItemIndex_(0) {}
     ValueInternalArray* array_;
     Value** currentPageIndex_;
     unsigned int currentItemIndex_;
   };
-#endif // ifndef JSONCPP_DOC_EXCLUDE_IMPLEMENTATION
+#endif  // ifndef JSONCPP_DOC_EXCLUDE_IMPLEMENTATION
 
   ValueInternalArray();
   ValueInternalArray(const ValueInternalArray& other);
@@ -902,17 +887,15 @@ public:
    * to
    *                         handle.
    */
-  virtual void
-  reallocateArrayPageIndex(Value**& indexes,
-                           ValueInternalArray::PageIndex& indexCount,
-                           ValueInternalArray::PageIndex minNewIndexCount) = 0;
-  virtual void
-  releaseArrayPageIndex(Value** indexes,
-                        ValueInternalArray::PageIndex indexCount) = 0;
+  virtual void reallocateArrayPageIndex(
+      Value**& indexes, ValueInternalArray::PageIndex& indexCount,
+      ValueInternalArray::PageIndex minNewIndexCount) = 0;
+  virtual void releaseArrayPageIndex(
+      Value** indexes, ValueInternalArray::PageIndex indexCount) = 0;
   virtual Value* allocateArrayPage() = 0;
   virtual void releaseArrayPage(Value* value) = 0;
 };
-#endif // #ifdef JSON_VALUE_USE_INTERNAL_MAP
+#endif  // #ifdef JSON_VALUE_USE_INTERNAL_MAP
 
 /** \brief base class for Value iterators.
  *
@@ -1089,18 +1072,18 @@ public:
   pointer operator->() const { return &deref(); }
 };
 
-} // namespace Json
-
+}  // namespace Json
 
 namespace std {
 /// Specialize std::swap() for Json::Value.
-template<>
-inline void swap(Json::Value& a, Json::Value& b) { a.swap(b); }
+template <>
+inline void swap(Json::Value& a, Json::Value& b) {
+  a.swap(b);
 }
-
+}  // namespace std
 
 #if defined(JSONCPP_DISABLE_DLL_INTERFACE_WARNING)
 #pragma warning(pop)
-#endif // if defined(JSONCPP_DISABLE_DLL_INTERFACE_WARNING)
+#endif  // if defined(JSONCPP_DISABLE_DLL_INTERFACE_WARNING)
 
-#endif // CPPTL_JSON_H_INCLUDED
+#endif  // CPPTL_JSON_H_INCLUDED

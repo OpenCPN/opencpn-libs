@@ -15,28 +15,28 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGFEMergeNodeElement:
-  public wxSVGElement
-{
-  protected:
-    wxSVGAnimatedString m_in1;
+class wxSVGFEMergeNodeElement : public wxSVGElement {
+protected:
+  wxSVGAnimatedString m_in1;
 
-  public:
-    inline const wxSVGAnimatedString& GetIn1() const { return m_in1; }
-    inline void SetIn1(const wxSVGAnimatedString& n) { m_in1 = n; }
-    inline void SetIn1(const wxString& n) { m_in1.SetBaseVal(n); }
+public:
+  inline const wxSVGAnimatedString& GetIn1() const { return m_in1; }
+  inline void SetIn1(const wxSVGAnimatedString& n) { m_in1 = n; }
+  inline void SetIn1(const wxString& n) { m_in1.SetBaseVal(n); }
 
-  public:
-    wxSVGFEMergeNodeElement(wxString tagName = wxT("feMergeNode")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGFEMergeNodeElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGFEMergeNodeElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_FEMERGENODE_ELEMENT; }
+public:
+  wxSVGFEMergeNodeElement(wxString tagName = wxT("feMergeNode"))
+      : wxSVGElement(tagName) {}
+  virtual ~wxSVGFEMergeNodeElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGFEMergeNodeElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_FEMERGENODE_ELEMENT; }
 };
 
-#endif // WX_SVG_FE_MERGE_NODE_ELEMENT_H
+#endif  // WX_SVG_FE_MERGE_NODE_ELEMENT_H

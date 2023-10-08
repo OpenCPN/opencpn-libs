@@ -13,28 +13,29 @@
 #include "SVGRenderingIntent.h"
 #include "String_wxsvg.h"
 
-class wxSVGColorProfileRule:
-  public wxSVGCSSRule,
-  public wxSVGRenderingIntent
-{
-  protected:
-    wxString m_src;
-    wxString m_name;
-    wxRENDERING_INTENT m_renderingIntent;
+class wxSVGColorProfileRule : public wxSVGCSSRule, public wxSVGRenderingIntent {
+protected:
+  wxString m_src;
+  wxString m_name;
+  wxRENDERING_INTENT m_renderingIntent;
 
-  public:
-    inline const wxString& GetSrc() const { return m_src; }
-    inline void SetSrc(const wxString& n) { m_src = n; }
+public:
+  inline const wxString& GetSrc() const { return m_src; }
+  inline void SetSrc(const wxString& n) { m_src = n; }
 
-    inline const wxString& GetName() const { return m_name; }
-    inline void SetName(const wxString& n) { m_name = n; }
+  inline const wxString& GetName() const { return m_name; }
+  inline void SetName(const wxString& n) { m_name = n; }
 
-    inline wxRENDERING_INTENT GetRenderingIntent() const { return m_renderingIntent; }
-    inline void SetRenderingIntent(const wxRENDERING_INTENT& n) { m_renderingIntent = n; }
+  inline wxRENDERING_INTENT GetRenderingIntent() const {
+    return m_renderingIntent;
+  }
+  inline void SetRenderingIntent(const wxRENDERING_INTENT& n) {
+    m_renderingIntent = n;
+  }
 
-  public:
-    wxSVGColorProfileRule(): m_renderingIntent(wxRENDERING_INTENT(0)) {}
-    virtual ~wxSVGColorProfileRule() {}
+public:
+  wxSVGColorProfileRule() : m_renderingIntent(wxRENDERING_INTENT(0)) {}
+  virtual ~wxSVGColorProfileRule() {}
 };
 
-#endif // WX_SVG_COLOR_PROFILE_RULE_H
+#endif  // WX_SVG_COLOR_PROFILE_RULE_H

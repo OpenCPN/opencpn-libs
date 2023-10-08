@@ -20,30 +20,34 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGDefsElement:
-  public wxSVGElement,
-  public wxSVGTests,
-  public wxSVGLangSpace,
-  public wxSVGExternalResourcesRequired,
-  public wxSVGStylable,
-  public wxSVGTransformable,
-  public wxEventTarget
-{
-  public:
-    wxSVGDefsElement(wxString tagName = wxT("defs")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGDefsElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGDefsElement(*this); }
-    wxSVGRect GetBBox(wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER) { return wxSVGLocatable::GetChildrenBBox(this, coordinates); }
-    wxSVGRect GetResultBBox(wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER) { return wxSVGLocatable::GetChildrenResultBBox(this, coordinates); }
-    wxSVGMatrix GetCTM() { return wxSVGLocatable::GetCTM(this); }
-    wxSVGMatrix GetScreenCTM() { return wxSVGLocatable::GetScreenCTM(this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_DEFS_ELEMENT; }
+class wxSVGDefsElement : public wxSVGElement,
+                         public wxSVGTests,
+                         public wxSVGLangSpace,
+                         public wxSVGExternalResourcesRequired,
+                         public wxSVGStylable,
+                         public wxSVGTransformable,
+                         public wxEventTarget {
+public:
+  wxSVGDefsElement(wxString tagName = wxT("defs")) : wxSVGElement(tagName) {}
+  virtual ~wxSVGDefsElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGDefsElement(*this);
+  }
+  wxSVGRect GetBBox(wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER) {
+    return wxSVGLocatable::GetChildrenBBox(this, coordinates);
+  }
+  wxSVGRect GetResultBBox(
+      wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER) {
+    return wxSVGLocatable::GetChildrenResultBBox(this, coordinates);
+  }
+  wxSVGMatrix GetCTM() { return wxSVGLocatable::GetCTM(this); }
+  wxSVGMatrix GetScreenCTM() { return wxSVGLocatable::GetScreenCTM(this); }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_DEFS_ELEMENT; }
 };
 
-#endif // WX_SVG_DEFS_ELEMENT_H
+#endif  // WX_SVG_DEFS_ELEMENT_H

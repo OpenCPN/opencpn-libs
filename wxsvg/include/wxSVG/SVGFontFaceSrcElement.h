@@ -13,19 +13,19 @@
 #include "String_wxsvg.h"
 #include "Element.h"
 
-class wxSVGFontFaceSrcElement:
-  public wxSVGElement
-{
-  public:
-    wxSVGFontFaceSrcElement(wxString tagName = wxT("font-face-src")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGFontFaceSrcElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGFontFaceSrcElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    virtual wxSVGDTD GetDtd() const { return wxSVG_FONT_FACE_SRC_ELEMENT; }
+class wxSVGFontFaceSrcElement : public wxSVGElement {
+public:
+  wxSVGFontFaceSrcElement(wxString tagName = wxT("font-face-src"))
+      : wxSVGElement(tagName) {}
+  virtual ~wxSVGFontFaceSrcElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGFontFaceSrcElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  virtual wxSVGDTD GetDtd() const { return wxSVG_FONT_FACE_SRC_ELEMENT; }
 };
 
-#endif // WX_SVG_FONT_FACE_SRC_ELEMENT_H
+#endif  // WX_SVG_FONT_FACE_SRC_ELEMENT_H

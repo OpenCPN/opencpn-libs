@@ -13,5 +13,4 @@
 
 struct wxViewCSS {};
 
-#endif //wxSVG_VIEW_CSS_H
-
+#endif  // wxSVG_VIEW_CSS_H

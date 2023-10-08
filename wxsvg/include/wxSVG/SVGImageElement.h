@@ -27,68 +27,89 @@ class wxProgressDialog;
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGImageElement:
-  public wxSVGElement,
-  public wxSVGURIReference,
-  public wxSVGTests,
-  public wxSVGLangSpace,
-  public wxSVGExternalResourcesRequired,
-  public wxSVGStylable,
-  public wxSVGTransformable,
-  public wxEventTarget
-{
-  protected:
-    wxSVGAnimatedLength m_x;
-    wxSVGAnimatedLength m_y;
-    wxSVGAnimatedLength m_width;
-    wxSVGAnimatedLength m_height;
-    wxSVGAnimatedPreserveAspectRatio m_preserveAspectRatio;
-    wxSVGCanvasItem* m_canvasItem;
+class wxSVGImageElement : public wxSVGElement,
+                          public wxSVGURIReference,
+                          public wxSVGTests,
+                          public wxSVGLangSpace,
+                          public wxSVGExternalResourcesRequired,
+                          public wxSVGStylable,
+                          public wxSVGTransformable,
+                          public wxEventTarget {
+protected:
+  wxSVGAnimatedLength m_x;
+  wxSVGAnimatedLength m_y;
+  wxSVGAnimatedLength m_width;
+  wxSVGAnimatedLength m_height;
+  wxSVGAnimatedPreserveAspectRatio m_preserveAspectRatio;
+  wxSVGCanvasItem* m_canvasItem;
 
-  public:
-    inline const wxSVGAnimatedLength& GetX() const { WX_SVG_ANIM_LENGTH_CALC_WIDTH(m_x, GetViewportElement()); return m_x; }
-    inline void SetX(const wxSVGAnimatedLength& n) { m_x = n; }
-    inline void SetX(const wxSVGLength& n) { m_x.SetBaseVal(n); }
+public:
+  inline const wxSVGAnimatedLength& GetX() const {
+    WX_SVG_ANIM_LENGTH_CALC_WIDTH(m_x, GetViewportElement());
+    return m_x;
+  }
+  inline void SetX(const wxSVGAnimatedLength& n) { m_x = n; }
+  inline void SetX(const wxSVGLength& n) { m_x.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedLength& GetY() const { WX_SVG_ANIM_LENGTH_CALC_HEIGHT(m_y, GetViewportElement()); return m_y; }
-    inline void SetY(const wxSVGAnimatedLength& n) { m_y = n; }
-    inline void SetY(const wxSVGLength& n) { m_y.SetBaseVal(n); }
+  inline const wxSVGAnimatedLength& GetY() const {
+    WX_SVG_ANIM_LENGTH_CALC_HEIGHT(m_y, GetViewportElement());
+    return m_y;
+  }
+  inline void SetY(const wxSVGAnimatedLength& n) { m_y = n; }
+  inline void SetY(const wxSVGLength& n) { m_y.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedLength& GetWidth() const { WX_SVG_ANIM_LENGTH_CALC_WIDTH(m_width, GetViewportElement()); return m_width; }
-    inline void SetWidth(const wxSVGAnimatedLength& n) { m_width = n; }
-    inline void SetWidth(const wxSVGLength& n) { m_width.SetBaseVal(n); }
+  inline const wxSVGAnimatedLength& GetWidth() const {
+    WX_SVG_ANIM_LENGTH_CALC_WIDTH(m_width, GetViewportElement());
+    return m_width;
+  }
+  inline void SetWidth(const wxSVGAnimatedLength& n) { m_width = n; }
+  inline void SetWidth(const wxSVGLength& n) { m_width.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedLength& GetHeight() const { WX_SVG_ANIM_LENGTH_CALC_HEIGHT(m_height, GetViewportElement()); return m_height; }
-    inline void SetHeight(const wxSVGAnimatedLength& n) { m_height = n; }
-    inline void SetHeight(const wxSVGLength& n) { m_height.SetBaseVal(n); }
+  inline const wxSVGAnimatedLength& GetHeight() const {
+    WX_SVG_ANIM_LENGTH_CALC_HEIGHT(m_height, GetViewportElement());
+    return m_height;
+  }
+  inline void SetHeight(const wxSVGAnimatedLength& n) { m_height = n; }
+  inline void SetHeight(const wxSVGLength& n) { m_height.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedPreserveAspectRatio& GetPreserveAspectRatio() const { return m_preserveAspectRatio; }
-    inline void SetPreserveAspectRatio(const wxSVGAnimatedPreserveAspectRatio& n) { m_preserveAspectRatio = n; }
-    inline void SetPreserveAspectRatio(const wxSVGPreserveAspectRatio& n) { m_preserveAspectRatio.SetBaseVal(n); }
+  inline const wxSVGAnimatedPreserveAspectRatio& GetPreserveAspectRatio()
+      const {
+    return m_preserveAspectRatio;
+  }
+  inline void SetPreserveAspectRatio(
+      const wxSVGAnimatedPreserveAspectRatio& n) {
+    m_preserveAspectRatio = n;
+  }
+  inline void SetPreserveAspectRatio(const wxSVGPreserveAspectRatio& n) {
+    m_preserveAspectRatio.SetBaseVal(n);
+  }
 
-  public:
-    inline wxSVGCanvasItem* GetCanvasItem() { return m_canvasItem; }
-    void SetCanvasItem(wxSVGCanvasItem* canvasItem);
+public:
+  inline wxSVGCanvasItem* GetCanvasItem() { return m_canvasItem; }
+  void SetCanvasItem(wxSVGCanvasItem* canvasItem);
 
-  public:
-    wxSVGImageElement(wxString tagName = wxT("image")):
-      wxSVGElement(tagName), m_canvasItem(NULL) {}
-    wxSVGImageElement(wxSVGImageElement& src);
-    virtual ~wxSVGImageElement();
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGImageElement(*this); }
-    wxSVGRect GetBBox(wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER);
-    wxSVGRect GetResultBBox(wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER);
-    wxSVGMatrix GetCTM() { return wxSVGLocatable::GetCTM(this); }
-    wxSVGMatrix GetScreenCTM() { return wxSVGLocatable::GetScreenCTM(this); }
-    int GetDefaultWidth(wxProgressDialog* progressDlg = NULL);
-    int GetDefaultHeight(wxProgressDialog* progressDlg = NULL);
-    void SetDefaultSize(wxProgressDialog* progressDlg = NULL);
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_IMAGE_ELEMENT; }
+public:
+  wxSVGImageElement(wxString tagName = wxT("image"))
+      : wxSVGElement(tagName), m_canvasItem(NULL) {}
+  wxSVGImageElement(wxSVGImageElement& src);
+  virtual ~wxSVGImageElement();
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGImageElement(*this);
+  }
+  wxSVGRect GetBBox(wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER);
+  wxSVGRect GetResultBBox(
+      wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER);
+  wxSVGMatrix GetCTM() { return wxSVGLocatable::GetCTM(this); }
+  wxSVGMatrix GetScreenCTM() { return wxSVGLocatable::GetScreenCTM(this); }
+  int GetDefaultWidth(wxProgressDialog* progressDlg = NULL);
+  int GetDefaultHeight(wxProgressDialog* progressDlg = NULL);
+  void SetDefaultSize(wxProgressDialog* progressDlg = NULL);
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_IMAGE_ELEMENT; }
 };
 
-#endif // WX_SVG_IMAGE_ELEMENT_H
+#endif  // WX_SVG_IMAGE_ELEMENT_H

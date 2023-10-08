@@ -15,21 +15,21 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGFEMergeElement:
-  public wxSVGElement,
-  public wxSVGFilterPrimitiveStandardAttributes
-{
-  public:
-    wxSVGFEMergeElement(wxString tagName = wxT("feMerge")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGFEMergeElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGFEMergeElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_FEMERGE_ELEMENT; }
+class wxSVGFEMergeElement : public wxSVGElement,
+                            public wxSVGFilterPrimitiveStandardAttributes {
+public:
+  wxSVGFEMergeElement(wxString tagName = wxT("feMerge"))
+      : wxSVGElement(tagName) {}
+  virtual ~wxSVGFEMergeElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGFEMergeElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_FEMERGE_ELEMENT; }
 };
 
-#endif // WX_SVG_FE_MERGE_ELEMENT_H
+#endif  // WX_SVG_FE_MERGE_ELEMENT_H

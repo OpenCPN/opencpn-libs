@@ -16,22 +16,21 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGFontElement:
-  public wxSVGElement,
-  public wxSVGExternalResourcesRequired,
-  public wxSVGStylable
-{
-  public:
-    wxSVGFontElement(wxString tagName = wxT("font")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGFontElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGFontElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_FONT_ELEMENT; }
+class wxSVGFontElement : public wxSVGElement,
+                         public wxSVGExternalResourcesRequired,
+                         public wxSVGStylable {
+public:
+  wxSVGFontElement(wxString tagName = wxT("font")) : wxSVGElement(tagName) {}
+  virtual ~wxSVGFontElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGFontElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_FONT_ELEMENT; }
 };
 
-#endif // WX_SVG_FONT_ELEMENT_H
+#endif  // WX_SVG_FONT_ELEMENT_H

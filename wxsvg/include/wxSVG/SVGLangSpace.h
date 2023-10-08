@@ -12,25 +12,24 @@
 #include "String_wxsvg.h"
 #include "Element.h"
 
-class wxSVGLangSpace
-{
-  protected:
-    wxString m_xmllang;
-    wxString m_xmlspace;
+class wxSVGLangSpace {
+protected:
+  wxString m_xmllang;
+  wxString m_xmlspace;
 
-  public:
-    inline const wxString& GetXmllang() const { return m_xmllang; }
-    inline void SetXmllang(const wxString& n) { m_xmllang = n; }
+public:
+  inline const wxString& GetXmllang() const { return m_xmllang; }
+  inline void SetXmllang(const wxString& n) { m_xmllang = n; }
 
-    inline const wxString& GetXmlspace() const { return m_xmlspace; }
-    inline void SetXmlspace(const wxString& n) { m_xmlspace = n; }
+  inline const wxString& GetXmlspace() const { return m_xmlspace; }
+  inline void SetXmlspace(const wxString& n) { m_xmlspace = n; }
 
-  public:
-    virtual ~wxSVGLangSpace() {}
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
+public:
+  virtual ~wxSVGLangSpace() {}
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
 };
 
-#endif // WX_SVG_LANG_SPACE_H
+#endif  // WX_SVG_LANG_SPACE_H

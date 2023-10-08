@@ -9,8 +9,7 @@
 #ifndef WX_CSS_VALUES_H
 #define WX_CSS_VALUES_H
 
-enum wxCSS_VALUE
-{
+enum wxCSS_VALUE {
   wxCSS_VALUE_UNKNOWN,
   wxCSS_VALUE_100,
   wxCSS_VALUE_200,
@@ -133,4 +132,4 @@ enum wxCSS_VALUE
   wxCSS_VALUE_WIDER
 };
 
-#endif // WX_CSS_VALUES_H
+#endif  // WX_CSS_VALUES_H

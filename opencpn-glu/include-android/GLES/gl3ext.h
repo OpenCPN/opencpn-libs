@@ -10,9 +10,9 @@
 
 /* OpenGL ES 3 Extensions
  *
- * After an OES extension's interactions with OpenGl ES 3.0 have been documented,
- * its tokens and function definitions should be added to this file in a manner
- * that does not conflict with gl2ext.h or gl3.h.
+ * After an OES extension's interactions with OpenGl ES 3.0 have been
+ * documented, its tokens and function definitions should be added to this file
+ * in a manner that does not conflict with gl2ext.h or gl3.h.
  *
  * Tokens and function definitions for extensions that have become standard
  * features in OpenGL ES 3.0 will not be added to this file.
@@ -21,4 +21,3 @@
  */
 
 #endif /* __gl3ext_h_ */
-

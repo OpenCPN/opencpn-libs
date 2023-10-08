@@ -15,21 +15,19 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGGlyphElement:
-  public wxSVGElement,
-  public wxSVGStylable
-{
-  public:
-    wxSVGGlyphElement(wxString tagName = wxT("glyph")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGGlyphElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGGlyphElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_GLYPH_ELEMENT; }
+class wxSVGGlyphElement : public wxSVGElement, public wxSVGStylable {
+public:
+  wxSVGGlyphElement(wxString tagName = wxT("glyph")) : wxSVGElement(tagName) {}
+  virtual ~wxSVGGlyphElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGGlyphElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_GLYPH_ELEMENT; }
 };
 
-#endif // WX_SVG_GLYPH_ELEMENT_H
+#endif  // WX_SVG_GLYPH_ELEMENT_H
