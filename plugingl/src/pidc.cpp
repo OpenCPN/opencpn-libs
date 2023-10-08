@@ -48,22 +48,6 @@
 
 #include "pidc.h"
 
-#ifdef __ANDROID__
-#include <qopengl.h>
-#include "GL/gl_private.h"
-
-#elif defined(__WXOSX__)
-#include "OpenGL/gl.h"
-#include "OpenGL/glu.h"
-#include "OpenGL/glext.h"
-typedef void (*_GLUfuncptr)();
-
-#else
-#include "GL/gl.h"
-#include "GL/glu.h"
-#include "GL/glext.h"
-#endif
-
 #include "linmath.h"
 #include "pi_shaders.h"
 
