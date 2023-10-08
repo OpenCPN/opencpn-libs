@@ -1,12 +1,12 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  Layer to use wxDC or opengl
- * Author:   Jon Gough based on work by Sean D'Epagnier
+ * Purpose:  Layer to perform wxDC drawing using wxDC or opengl
  *
  ***************************************************************************
  *   Copyright (C) 2011 by Sean D'Epagnier                                 *
  *   sean at depagnier dot com                                             *
+ *   Copyright (C) 2023 by Jon Gough                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -24,9 +24,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.             *
  ***************************************************************************
  *
- *f
  */
-
 
 #ifndef __PIDC_H__
 #define __PIDC_H__
@@ -198,7 +196,7 @@ protected:
 
     bool m_buseTex;
 
-#if  wxUSE_GRAPHICS_CONTEXT == 1
+#if wxUSE_GRAPHICS_CONTEXT
     wxGraphicsContext *pgc;
 #endif
 
