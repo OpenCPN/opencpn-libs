@@ -5,8 +5,8 @@
  * Author:   Jon Gough based on work by Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2011 by Sean D'Epagnier                                 *
- *   sean at depagnier dot com                                             *
+ *   Copyright (C) 2011 by Sean D'Epagnier.
+ *   Copyright (C) 2023 Jon Gough.
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
