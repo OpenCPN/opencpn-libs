@@ -2,7 +2,6 @@
  *
  * Project:  OpenCPN
  * Purpose:  Layer to perform wxDC drawing using wxDC or opengl
- * Author:   Jon Gough based on work by Sean D'Epagnier
  *
  ***************************************************************************
  *   Copyright (C) 2011 by Sean D'Epagnier.
