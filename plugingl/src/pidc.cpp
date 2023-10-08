@@ -49,7 +49,7 @@
 
 #include "pidc.h"
 
-#if defined(__ANDROID__) || defined(__OCPN__ANDROID__)
+#ifdef __ANDROID__
 #include <qopengl.h>
 #include "GL/gl_private.h"
 
@@ -68,7 +68,7 @@ typedef void (*  _GLUfuncptr)();
 #include "linmath.h"
 #include "pi_shaders.h"
 
-#ifdef __OCPN__ANDROID__
+#ifdef __ANDROID__
 #include "qdebug.h"
 #endif
 
@@ -365,8 +365,8 @@ void piDC::SetGLStipple() const
         }
         default: break;
     }
-#endif
-#endif
+#endif  // USE_ANDROID_GLES2
+#endif  // ocpnUSE_GL
 }
 
 #ifdef ocpnUSE_GL
@@ -393,7 +393,8 @@ void piDC::DrawEndCap(float x1, float y1, float t1, float angle)
     }
 #endif
 }
-#endif
+#endif  //ocpnUSE_GL
+
 
 // Draws a line between (x1,y1) - (x2,y2) with a start thickness of t1
 void piDC::DrawGLThickLine( float x1, float y1, float x2, float y2, wxPen pen, bool b_hiqual )
@@ -595,7 +596,8 @@ void piDC::DrawGLThickLine( float x1, float y1, float x2, float y2, wxPen pen, b
 
 #endif
 
-#endif
+#endif //ocpnUSE_GL
+
 }
 
 void piDC::DrawLine( wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2, bool b_hiqual )
@@ -788,7 +790,8 @@ void piDC::DrawLine( wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2, bool b_hiqu
             glDisable( GL_BLEND );
         }
     }
-#endif
+#endif //ocpnUSE_GL
+
 }
 
 
@@ -899,7 +902,7 @@ void piDC::DrawGLThickLines( int n, wxPoint points[],wxCoord xoffset, wxCoord yo
     delete [] cpoints;
 
  #endif
-#endif
+#endif  //ocpnUSE_GL
  }
 
 void piDC::DrawLines( int n, wxPoint points[], wxCoord xoffset, wxCoord yoffset, bool b_hiqual )
@@ -999,7 +1002,7 @@ void piDC::DrawLines( int n, wxPoint points[], wxCoord xoffset, wxCoord yoffset,
 
         SetGLAttrs( false );
     }
-#endif
+#endif  //ocpnUSE_GL
 }
 
 void piDC::DrawArc( wxCoord xc, wxCoord yc, wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2, bool b_hiqual )
@@ -1097,7 +1100,7 @@ void piDC::DrawArc( wxCoord xc, wxCoord yc, wxCoord x1, wxCoord y1, wxCoord x2, 
             glDisable( GL_BLEND );
         }
     }
-    #endif
+    #endif  //ocpnUSE_GL
 #endif
 }
 void piDC::DrawSector( wxCoord xc, wxCoord yc, wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2, wxCoord x3, wxCoord y3, wxCoord x4, wxCoord y4 )
@@ -1154,7 +1157,7 @@ void piDC::DrawSector( wxCoord xc, wxCoord yc, wxCoord x1, wxCoord y1, wxCoord x
         DrawPolygon( numpoints, points, 0, 0 );
         delete [] points;
     }
-#endif
+#endif  //ocpnUSE_GL
 }
 
 void piDC::StrokeLine( wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2 )
@@ -1192,7 +1195,7 @@ void piDC::StrokeLines( int n, wxPoint *points) {
 
 void piDC::DrawGLLineArray( int n, float *vertex_array, float *color_array,  bool b_hiqual )
 {
-    #ifdef ocpnUSE_GL
+#ifdef ocpnUSE_GL
     if( ConfigurePen() ) {
 
         #ifdef __WXQT__
@@ -1340,7 +1343,7 @@ void piDC::DrawRectangle( wxCoord x, wxCoord y, wxCoord w, wxCoord h )
         DrawRoundedRectangle( x, y, w, h, 0);
 #endif
     }
-#endif
+#endif  //ocpnUSE_GL
 }
 
 /* draw the arc along corners */
@@ -1363,7 +1366,7 @@ static void drawrrhelper( wxCoord x0, wxCoord y0, wxCoord r, int quadrant, int s
         dx += ddx,      dy += ddy;
     }
     glVertex2i( x0 + floor(x), y0 + floor(y) );
-#endif
+#endif  //ocpnUSE_GL
 #endif
 }
 
@@ -1389,7 +1392,7 @@ void piDC::drawrrhelperGLES2( wxCoord x0, wxCoord y0, wxCoord r, int quadrant, i
 
     workBuf[workBufIndex++] = x0 + floor(x);
     workBuf[workBufIndex++] = y0 + floor(y);
-#endif
+#endif  //ocpnUSE_GL
 }
  void piDC::DrawRoundedRectangle( wxCoord x, wxCoord y, wxCoord w, wxCoord h, wxCoord r )
 {
@@ -1490,7 +1493,7 @@ void piDC::drawrrhelperGLES2( wxCoord x0, wxCoord y0, wxCoord r, int quadrant, i
         }
 #endif
     }
-#endif
+#endif  //ocpnUSE_GL
 }
 
 void piDC::DrawCircle( wxCoord x, wxCoord y, wxCoord radius )
@@ -1640,7 +1643,7 @@ void piDC::DrawDisk( wxCoord x, wxCoord y, wxCoord innerRadius, wxCoord outerRad
         DrawPolygonsTessellated( 2, npoints, disk, 0, 0 );
         delete [] disk;
     }
-#endif
+#endif  //ocpnUSE_GL
 }
 
 void piDC::DrawDiskPattern( wxCoord x, wxCoord y, wxCoord innerRadius, wxCoord outerRadius, GLint textureID, wxSize textureSize )
@@ -1672,7 +1675,7 @@ void piDC::DrawDiskPattern( wxCoord x, wxCoord y, wxCoord innerRadius, wxCoord o
         DrawPolygonsPattern( 2, npoints, disk, textureID, textureSize, 0, 0);
         delete [] disk;
     }
-#endif
+#endif  //ocpnUSE_GL
 }
 
 void piDC::StrokeCircle( wxCoord x, wxCoord y, wxCoord radius )
@@ -1729,7 +1732,7 @@ void piDC::DrawEllipse( wxCoord x, wxCoord y, wxCoord width, wxCoord height )
 #endif
         glDisable( GL_BLEND );
     }
-#endif
+#endif  //ocpnUSE_GL
 }
 
 void piDC::DrawPolygon( int n, wxPoint points[], wxCoord xoffset, wxCoord yoffset, float scale, float angle )
@@ -2018,7 +2021,7 @@ void piDC::DrawPolygon( int n, wxPoint points[], wxCoord xoffset, wxCoord yoffse
         SetGLAttrs( false );
 
     }
-#endif
+#endif  //ocpnUSE_GL
 }
 
 void piDC::DrawPolygonPattern( int n, wxPoint points[], int textureID, wxSize textureSize, wxCoord xoffset, wxCoord yoffset, float scale, float angle )
@@ -2139,7 +2142,7 @@ void piDC::DrawPolygonPattern( int n, wxPoint points[], int textureID, wxSize te
         SetGLAttrs( false );
 
     }
-#endif
+#endif  //ocpnUSE_GL
 }
 
 #ifdef ocpnUSE_GL
@@ -2470,11 +2473,11 @@ void piDC::DrawPolygonTessellated( int n, wxPoint points[], wxCoord xoffset, wxC
 
     }
 #endif
-#endif
+#endif  //ocpnUSE_GL
 }
 
 #ifdef ocpnUSE_GL
-#ifndef __OCPN__ANDROID__
+#ifndef __ANDROID__
 
 void __CALL_CONVENTION piDCPatterncombineCallback(GLdouble coords[3], GLdouble *vertex_data[4], GLfloat weight[4], GLdouble **dataOut)
 {
@@ -2518,7 +2521,7 @@ void __CALL_CONVENTION piDCPatternendCallback()
     glEnd();
 }
 #endif
-#endif          //#ifdef ocpnUSE_GL
+#endif          // ocpnUSE_GL
 
 
 void piDC::DrawPolygonTessellatedPattern( int n, wxPoint points[], int textureID, wxSize textureSize, wxCoord xoffset, wxCoord yoffset )
@@ -2720,7 +2723,7 @@ void piDC::DrawPolygonTessellatedPattern( int n, wxPoint points[], int textureID
 
     }
 #else
-#ifndef __OCPN__ANDROID__
+#ifndef __ANDROID__
         m_tobj = gluNewTess();
 
         gluTessCallback( m_tobj, GLU_TESS_VERTEX, (_GLUfuncptr) &piDCPatternvertexCallback );
@@ -2764,7 +2767,7 @@ void piDC::DrawPolygonTessellatedPattern( int n, wxPoint points[], int textureID
     }
 #endif
 #endif
-#endif
+#endif  //ocpnUSE_GL
 }
 
 #if 0
@@ -2831,7 +2834,7 @@ void piDC::DrawPolygonTessellated( int n, wxPoint points[], wxCoord xoffset, wxC
 
         gluTessNormal( m_tobj, 0, 0, 1);
         gluTessProperty(m_tobj, GLU_TESS_WINDING_RULE, GLU_TESS_WINDING_ODD);
-#ifndef __OCPN__ANDROID__
+#ifndef __ANDROID__
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 #else
         //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL_NV);
@@ -2883,7 +2886,7 @@ void piDC::DrawPolygonsTessellated( int n, int npoints[], wxPoint points[], wxCo
     }
 #ifdef ocpnUSE_GL
     else {
-        #ifndef __OCPN__ANDROID__
+        #ifndef __ANDROID__
         m_tobj = gluNewTess();
 
         gluTessCallback( m_tobj, GLU_TESS_VERTEX, (_GLUfuncptr) &piDCPatternvertexCallback );
@@ -2929,7 +2932,7 @@ void piDC::DrawPolygonsTessellated( int n, int npoints[], wxPoint points[], wxCo
             delete (GLvertex*)pi_gTesselatorVertices.Item(i);
         pi_gTesselatorVertices.Clear();
 
-#endif          //__OCPN__ANDROID__
+#endif          //__ANDROID__
     }
 #endif
 #endif
@@ -2943,7 +2946,7 @@ void piDC::DrawPolygons(int n, int npoint[], wxPoint points[], wxCoord xoffset, 
 
 void piDC::DrawPolygonsPattern( int n, int npoint[], wxPoint points[], int textureID, wxSize textureSize, wxCoord xoffset, wxCoord yoffset, float scale, float angle)
 {
-#ifndef __OCPN__ANDROID__
+#ifndef __ANDROID__
 
     DrawPolygonsTessellated( n, npoint, points);
 
@@ -3171,7 +3174,7 @@ void piDC::DrawBitmap( const wxBitmap &bitmap, wxCoord x, wxCoord y, bool usemas
         }
 #endif  // GLES2
     }
-#endif
+#endif  //ocpnUSE_GL
 }
 
 
@@ -3322,7 +3325,7 @@ void piDC::DrawTextEx( const wxString &text, wxCoord x, wxCoord y, float scaleFa
             delete[] data;
         }
     }
-#endif
+#endif  //ocpnUSE_GL
 }
 
 void piDC::GetTextExtent( const wxString &string, wxCoord *w, wxCoord *h, wxCoord *descent,
@@ -3432,7 +3435,7 @@ void piDC::DrawTexture( wxRect texRect, int width, int height, float scaleFactor
         float h = height;
 
 #ifndef USE_ANDROID_GLES2
-#ifndef __OCPN__ANDROID__
+#ifndef __ANDROID__
         glColor3f(1,1,1);
 #endif
 
