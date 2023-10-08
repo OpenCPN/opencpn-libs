@@ -186,7 +186,7 @@ protected:
 
     bool m_buseTex;
 
-#if  wxUSE_GRAPHICS_CONTEXT == 1
+#if  wxUSE_GRAPHICS_CONTEXT
     wxGraphicsContext *pgc;
 #endif
 

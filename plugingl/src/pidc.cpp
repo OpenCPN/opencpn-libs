@@ -127,7 +127,7 @@ static int NextPow2(int size)
 piDC::piDC( wxGLCanvas &canvas ) :
         glcanvas( &canvas ), dc( NULL ), m_pen( wxNullPen ), m_brush( wxNullBrush )
 {
-#ifdef wxUSE_GRAPHICS_CONTEXT
+#if wxUSE_GRAPHICS_CONTEXT
     #define VALUE_TO_STRING(x) #x
     #define VALUE(x) VALUE_TO_STRING(x)
     #define VAR_NAME_VALUE(var) #var "="  VALUE(var)
@@ -141,7 +141,7 @@ piDC::piDC( wxDC &pdc ) :
         glcanvas( NULL ), dc( &pdc ), m_pen( wxNullPen ), m_brush( wxNullBrush )
 {
     Init();
-#if wxUSE_GRAPHICS_CONTEXT == 1
+#if wxUSE_GRAPHICS_CONTEXT
     pgc = NULL;
     wxMemoryDC *pmdc = wxDynamicCast(dc, wxMemoryDC);
     if( pmdc ) pgc = wxGraphicsContext::Create( *pmdc );
@@ -160,7 +160,7 @@ piDC::piDC() :
 
 piDC::~piDC()
 {
-#if wxUSE_GRAPHICS_CONTEXT == 1
+#if wxUSE_GRAPHICS_CONTEXT
     if( pgc ) delete pgc;
 #endif
 
@@ -174,7 +174,7 @@ void piDC::Init()
 {
     m_buseTex = GetLocaleCanonicalName().IsSameAs(_T("en_US"));
 
-#if wxUSE_GRAPHICS_CONTEXT == 1
+#if wxUSE_GRAPHICS_CONTEXT
     pgc = NULL;
 #endif
 
@@ -1117,7 +1117,7 @@ void piDC::DrawSector( wxCoord xc, wxCoord yc, wxCoord x1, wxCoord y1, wxCoord x
         wxDouble  l_OuterRadius = sqrt(pow((y2-yc), 2.0) + pow((x2-xc), 2.0));
         wxDouble l_InnerRadius = sqrt(pow((y1-yc), 2.0) + pow((x1-xc), 2.0));
 
-#if wxUSE_GRAPHICS_CONTEXT == 1
+#if wxUSE_GRAPHICS_CONTEXT
         wxGraphicsContext *wxGC = NULL;
         wxMemoryDC *pmdc = wxDynamicCast(GetDC(), wxMemoryDC);
         if( pmdc ) wxGC = wxGraphicsContext::Create( *pmdc );
@@ -1159,7 +1159,7 @@ void piDC::DrawSector( wxCoord xc, wxCoord yc, wxCoord x1, wxCoord y1, wxCoord x
 
 void piDC::StrokeLine( wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2 )
 {
-#if wxUSE_GRAPHICS_CONTEXT == 1
+#if wxUSE_GRAPHICS_CONTEXT
     if( pgc ) {
         pgc->SetPen( dc->GetPen() );
         pgc->StrokeLine( x1, y1, x2, y2 );
@@ -1175,7 +1175,7 @@ void piDC::StrokeLines( int n, wxPoint *points) {
     if(n < 2) /* optimization and also to avoid assertion in pgc->StrokeLines */
         return;
 
-#if wxUSE_GRAPHICS_CONTEXT == 1
+#if wxUSE_GRAPHICS_CONTEXT
     if( pgc ) {
         wxPoint2DDouble* dPoints = (wxPoint2DDouble*) malloc( n * sizeof( wxPoint2DDouble ) );
         for( int i=0; i<n; i++ ) {
@@ -1255,7 +1255,7 @@ void piDC::DrawGLLineArray( int n, float *vertex_array, float *color_array,  boo
 
 void piDC::StrokeArc( wxCoord xc, wxCoord yc, wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2 )
 {
-#if wxUSE_GRAPHICS_CONTEXT == 1
+#if wxUSE_GRAPHICS_CONTEXT
     if( pgc ) {
         pgc->SetPen( dc->GetPen() );
         pgc->SetBrush(dc->GetBrush());
@@ -1277,7 +1277,7 @@ void piDC::StrokeArc( wxCoord xc, wxCoord yc, wxCoord x1, wxCoord y1, wxCoord x2
 
 void piDC::StrokeSector( wxCoord xc, wxCoord yc, wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2, wxCoord x3, wxCoord y3, wxCoord x4, wxCoord y4  )
 {
-#if wxUSE_GRAPHICS_CONTEXT == 1
+#if wxUSE_GRAPHICS_CONTEXT
     if( pgc ) {
         pgc->SetPen( dc->GetPen() );
         pgc->SetBrush(dc->GetBrush());
@@ -1571,7 +1571,7 @@ void piDC::DrawCircle( wxCoord x, wxCoord y, wxCoord radius )
 void piDC::DrawDisk( wxCoord x, wxCoord y, wxCoord innerRadius, wxCoord outerRadius )
 {
     if( dc ) {
-#if wxUSE_GRAPHICS_CONTEXT == 1
+#if wxUSE_GRAPHICS_CONTEXT
         wxGraphicsContext *wxGC = NULL;
         wxMemoryDC *pmdc = wxDynamicCast(GetDC(), wxMemoryDC);
         if( pmdc ) wxGC = wxGraphicsContext::Create( *pmdc );
@@ -1677,7 +1677,7 @@ void piDC::DrawDiskPattern( wxCoord x, wxCoord y, wxCoord innerRadius, wxCoord o
 
 void piDC::StrokeCircle( wxCoord x, wxCoord y, wxCoord radius )
 {
-#if wxUSE_GRAPHICS_CONTEXT == 1
+#if wxUSE_GRAPHICS_CONTEXT
     if( pgc ) {
         wxGraphicsPath gpath = pgc->CreatePath();
         gpath.AddCircle( x, y, radius );
@@ -3079,7 +3079,7 @@ void piDC::DrawPolygonsPattern( int n, int npoint[], wxPoint points[], int textu
 
 void piDC::StrokePolygon( int n, wxPoint points[], wxCoord xoffset, wxCoord yoffset, float scale )
 {
-#if wxUSE_GRAPHICS_CONTEXT == 1
+#if wxUSE_GRAPHICS_CONTEXT
     if( pgc ) {
         wxGraphicsPath gpath = pgc->CreatePath();
         gpath.MoveToPoint( points[0].x + xoffset, points[0].y + yoffset );
