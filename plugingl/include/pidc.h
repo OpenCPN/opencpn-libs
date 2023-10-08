@@ -41,18 +41,6 @@
 #include <wx/glcanvas.h>
 #endif
 
-#ifndef DECL_EXP
-#ifdef __WXMSW__
-#  define DECL_EXP     __declspec(dllexport)
-#else
-# ifdef __GNUC__
-# define DECL_EXP       __attribute__((visibility("default")))
-#else
-#  define DECL_EXP
-# endif
-#endif
-#endif
-
 class ViewPort;
 class GLUtesselator;
 
