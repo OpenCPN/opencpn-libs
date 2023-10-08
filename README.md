@@ -53,8 +53,12 @@ Removing the submodule.
 
 Normally not required, but if:
 
-    $ git submodule deinit opencpn-libs
+    $ git submodule deinit -f opencpn-libs
     $ git rm --cached opencpn-libs
+    $ rm -rf .git/modules/opencpn-libs
+    $ rm -rf opencpn-libs
+    $ git config -f .gitmodules --remove-section submodule.opencpn-libs
+    $ git add .gitmodules
     $ git commit -m "Remove opencpn-libs submodule."
 
 More: https://stackoverflow.com/questions/1260748
