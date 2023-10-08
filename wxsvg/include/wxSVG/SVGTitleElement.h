@@ -16,22 +16,21 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGTitleElement:
-  public wxSVGElement,
-  public wxSVGLangSpace,
-  public wxSVGStylable
-{
-  public:
-    wxSVGTitleElement(wxString tagName = wxT("title")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGTitleElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGTitleElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_TITLE_ELEMENT; }
+class wxSVGTitleElement : public wxSVGElement,
+                          public wxSVGLangSpace,
+                          public wxSVGStylable {
+public:
+  wxSVGTitleElement(wxString tagName = wxT("title")) : wxSVGElement(tagName) {}
+  virtual ~wxSVGTitleElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGTitleElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_TITLE_ELEMENT; }
 };
 
-#endif // WX_SVG_TITLE_ELEMENT_H
+#endif  // WX_SVG_TITLE_ELEMENT_H

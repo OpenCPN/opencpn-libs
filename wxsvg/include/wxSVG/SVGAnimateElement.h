@@ -13,19 +13,19 @@
 #include "String_wxsvg.h"
 #include "Element.h"
 
-class wxSVGAnimateElement:
-  public wxSVGAnimationElement
-{
-  public:
-    wxSVGAnimateElement(wxString tagName = wxT("animate")):
-      wxSVGAnimationElement(tagName) {}
-    virtual ~wxSVGAnimateElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGAnimateElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    virtual wxSVGDTD GetDtd() const { return wxSVG_ANIMATE_ELEMENT; }
+class wxSVGAnimateElement : public wxSVGAnimationElement {
+public:
+  wxSVGAnimateElement(wxString tagName = wxT("animate"))
+      : wxSVGAnimationElement(tagName) {}
+  virtual ~wxSVGAnimateElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGAnimateElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  virtual wxSVGDTD GetDtd() const { return wxSVG_ANIMATE_ELEMENT; }
 };
 
-#endif // WX_SVG_ANIMATE_ELEMENT_H
+#endif  // WX_SVG_ANIMATE_ELEMENT_H

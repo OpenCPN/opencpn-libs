@@ -20,42 +20,49 @@ class wxSVGDocument;
 
 typedef wxSVGElement* wxSVGElementP;
 
-class wxSVGElement:
-  public wxSvgXmlElement
-{
-  protected:
-    wxString m_id;
-    wxString m_xmlbase;
-    wxSVGSVGElement* m_ownerSVGElement;
-    wxSVGElement* m_viewportElement;
+class wxSVGElement : public wxSvgXmlElement {
+protected:
+  wxString m_id;
+  wxString m_xmlbase;
+  wxSVGSVGElement* m_ownerSVGElement;
+  wxSVGElement* m_viewportElement;
 
-  public:
-    inline const wxString& GetId() const { return m_id; }
-    inline void SetId(const wxString& n) { m_id = n; }
+public:
+  inline const wxString& GetId() const { return m_id; }
+  inline void SetId(const wxString& n) { m_id = n; }
 
-    inline const wxString& GetXmlbase() const { return m_xmlbase; }
-    inline void SetXmlbase(const wxString& n) { m_xmlbase = n; }
+  inline const wxString& GetXmlbase() const { return m_xmlbase; }
+  inline void SetXmlbase(const wxString& n) { m_xmlbase = n; }
 
-    inline wxSVGSVGElement* GetOwnerSVGElement() const { return m_ownerSVGElement; }
-    inline void SetOwnerSVGElement(wxSVGSVGElement* n) { m_ownerSVGElement = n; }
+  inline wxSVGSVGElement* GetOwnerSVGElement() const {
+    return m_ownerSVGElement;
+  }
+  inline void SetOwnerSVGElement(wxSVGSVGElement* n) { m_ownerSVGElement = n; }
 
-    inline wxSVGElement* GetViewportElement() const { return m_viewportElement; }
-    inline void SetViewportElement(wxSVGElement* n) { m_viewportElement = n; }
+  inline wxSVGElement* GetViewportElement() const { return m_viewportElement; }
+  inline void SetViewportElement(wxSVGElement* n) { m_viewportElement = n; }
 
-  public:
-    wxSVGElement(wxString tagName = wxT("")): wxSvgXmlElement(wxSVGXML_ELEMENT_NODE, tagName),
-      m_ownerSVGElement(NULL), m_viewportElement(NULL) { }
-    virtual ~wxSVGElement() {}
+public:
+  wxSVGElement(wxString tagName = wxT(""))
+      : wxSvgXmlElement(wxSVGXML_ELEMENT_NODE, tagName),
+        m_ownerSVGElement(NULL),
+        m_viewportElement(NULL) {}
+  virtual ~wxSVGElement() {}
 
-    virtual wxSVGElement* GetSvgElement() { return this; }
-    virtual wxSVGDTD GetDtd() const = 0;
+  virtual wxSVGElement* GetSvgElement() { return this; }
+  virtual wxSVGDTD GetDtd() const = 0;
 
-    virtual void AddProperty(const wxString& name, const wxString& value) { SetAttribute(name, value); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    virtual bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value) { return false; }
+  virtual void AddProperty(const wxString& name, const wxString& value) {
+    SetAttribute(name, value);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  virtual bool SetAnimatedValue(const wxString& name,
+                                const wxSVGAnimatedType& value) {
+    return false;
+  }
 };
 
-#endif // WX_SVG_ELEMENT_H
+#endif  // WX_SVG_ELEMENT_H

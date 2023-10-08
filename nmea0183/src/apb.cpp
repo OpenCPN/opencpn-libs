@@ -29,7 +29,6 @@
  *         "It is BSD license, do with it what you will"                   *
  */
 
-
 #include "nmea0183.h"
 
 /*
@@ -40,160 +39,154 @@
 ** You can use it any way you like.
 */
 
-
-APB::APB()
-{
-   Mnemonic = _T("APB");
-   Empty();
+APB::APB() {
+  Mnemonic = _T("APB");
+  Empty();
 }
 
-APB::~APB()
-{
-   Mnemonic.Empty();
-   Empty();
+APB::~APB() {
+  Mnemonic.Empty();
+  Empty();
 }
 
-void APB::Empty( void )
-{
-//   ASSERT_VALID( this );
+void APB::Empty(void) {
+  //   ASSERT_VALID( this );
 
-   CrossTrackErrorMagnitude = 0.0;
-   DirectionToSteer         = LR_Unknown;
-   CrossTrackUnits.Empty();
-   To.Empty();
-   IsArrivalCircleEntered   = Unknown0183;
-   IsPerpendicular          = Unknown0183;
+  CrossTrackErrorMagnitude = 0.0;
+  DirectionToSteer = LR_Unknown;
+  CrossTrackUnits.Empty();
+  To.Empty();
+  IsArrivalCircleEntered = Unknown0183;
+  IsPerpendicular = Unknown0183;
 }
 
-bool APB::Parse( const SENTENCE& sentence )
-{
-//   ASSERT_VALID( this );
+bool APB::Parse(const SENTENCE& sentence) {
+  //   ASSERT_VALID( this );
 
-   wxString field_data;
+  wxString field_data;
 
-   /*
-   ** APB - Autopilot Sentence "B"
-   **                                         13    15
-   **        1 2 3   4 5 6 7 8   9 10   11  12|   14|
-   **        | | |   | | | | |   | |    |   | |   | |
-   ** $--APB,A,A,x.x,a,N,A,A,x.x,a,c--c,x.x,a,x.x,a*hh<CR><LF>
-   **
-   **  1) Status
-   **     V = LORAN-C Blink or SNR warning
-   **     V = general warning flag or other navigation systems when a reliable
-   **         fix is not available
-   **  2) Status
-   **     V = Loran-C Cycle Lock warning flag
-   **     A = OK or not used
-   **  3) Cross Track Error Magnitude
-   **  4) Direction to steer, L or R
-   **  5) Cross Track Units, N = Nautical Miles
-   **  6) Status
-   **     A = Arrival Circle Entered
-   **  7) Status
-   **     A = Perpendicular passed at waypoint
-   **  8) Bearing origin to destination
-   **  9) M = Magnetic, T = True
-   ** 10) Destination Waypoint ID
-   ** 11) Bearing, present position to Destination
-   ** 12) M = Magnetic, T = True
-   ** 13) Heading to steer to destination waypoint
-   ** 14) M = Magnetic, T = True
-   ** 15) Checksum
-   */
+  /*
+  ** APB - Autopilot Sentence "B"
+  **                                         13    15
+  **        1 2 3   4 5 6 7 8   9 10   11  12|   14|
+  **        | | |   | | | | |   | |    |   | |   | |
+  ** $--APB,A,A,x.x,a,N,A,A,x.x,a,c--c,x.x,a,x.x,a*hh<CR><LF>
+  **
+  **  1) Status
+  **     V = LORAN-C Blink or SNR warning
+  **     V = general warning flag or other navigation systems when a reliable
+  **         fix is not available
+  **  2) Status
+  **     V = Loran-C Cycle Lock warning flag
+  **     A = OK or not used
+  **  3) Cross Track Error Magnitude
+  **  4) Direction to steer, L or R
+  **  5) Cross Track Units, N = Nautical Miles
+  **  6) Status
+  **     A = Arrival Circle Entered
+  **  7) Status
+  **     A = Perpendicular passed at waypoint
+  **  8) Bearing origin to destination
+  **  9) M = Magnetic, T = True
+  ** 10) Destination Waypoint ID
+  ** 11) Bearing, present position to Destination
+  ** 12) M = Magnetic, T = True
+  ** 13) Heading to steer to destination waypoint
+  ** 14) M = Magnetic, T = True
+  ** 15) Checksum
+  */
 
-   /*
-   ** First we check the checksum...
-   */
+  /*
+  ** First we check the checksum...
+  */
 
-   NMEA0183_BOOLEAN check = sentence.IsChecksumBad( 15 );
+  NMEA0183_BOOLEAN check = sentence.IsChecksumBad(15);
 
-   if ( check == NTrue )
-   {
-      SetErrorMessage( _T("Invalid Checksum") );
-      return( FALSE );
-   }
+  if (check == NTrue) {
+    SetErrorMessage(_T("Invalid Checksum"));
+    return (FALSE);
+  }
 
-   /*
-   ** Line has already been checked for checksum validity
-   */
+  /*
+  ** Line has already been checked for checksum validity
+  */
 
-   IsLoranBlinkOK                           = sentence.Boolean( 1 );
-   IsLoranCCycleLockOK                      = sentence.Boolean( 2 );
-   CrossTrackErrorMagnitude                 = sentence.Double( 3 );
-   DirectionToSteer                         = sentence.LeftOrRight( 4 );
-   CrossTrackUnits                          = sentence.Field( 5 );
-   IsArrivalCircleEntered                   = sentence.Boolean( 6 );
-   IsPerpendicular                          = sentence.Boolean( 7 );
-   BearingOriginToDestination               = sentence.Double( 8 );
-   BearingOriginToDestinationUnits          = sentence.Field( 9 );
-   To                                       = sentence.Field( 10 );
-   BearingPresentPositionToDestination      = sentence.Double( 11 );
-   BearingPresentPositionToDestinationUnits = sentence.Field( 12 );
-   HeadingToSteer                           = sentence.Double( 13 );
-   HeadingToSteerUnits                      = sentence.Field( 14 );
+  IsLoranBlinkOK = sentence.Boolean(1);
+  IsLoranCCycleLockOK = sentence.Boolean(2);
+  CrossTrackErrorMagnitude = sentence.Double(3);
+  DirectionToSteer = sentence.LeftOrRight(4);
+  CrossTrackUnits = sentence.Field(5);
+  IsArrivalCircleEntered = sentence.Boolean(6);
+  IsPerpendicular = sentence.Boolean(7);
+  BearingOriginToDestination = sentence.Double(8);
+  BearingOriginToDestinationUnits = sentence.Field(9);
+  To = sentence.Field(10);
+  BearingPresentPositionToDestination = sentence.Double(11);
+  BearingPresentPositionToDestinationUnits = sentence.Field(12);
+  HeadingToSteer = sentence.Double(13);
+  HeadingToSteerUnits = sentence.Field(14);
 
-   return( TRUE );
+  return (TRUE);
 }
 
-bool APB::Write( SENTENCE& sentence )
-{
-//   ASSERT_VALID( this );
+bool APB::Write(SENTENCE& sentence) {
+  //   ASSERT_VALID( this );
 
-   /*
-   ** Let the parent do its thing
-   */
+  /*
+  ** Let the parent do its thing
+  */
 
-   RESPONSE::Write( sentence );
+  RESPONSE::Write(sentence);
 
-   int NmeaApbPrecision = 3;
-   if (container_p) {
-     NmeaApbPrecision = container_p->caller_ctx.get_apb_precision();
-   }
+  int NmeaApbPrecision = 3;
+  if (container_p) {
+    NmeaApbPrecision = container_p->caller_ctx.get_apb_precision();
+  }
 
-   sentence += IsLoranBlinkOK;
-   sentence += IsLoranCCycleLockOK;
-   sentence.Add( CrossTrackErrorMagnitude, NmeaApbPrecision);
+  sentence += IsLoranBlinkOK;
+  sentence += IsLoranCCycleLockOK;
+  sentence.Add(CrossTrackErrorMagnitude, NmeaApbPrecision);
 
-   if(DirectionToSteer == Left)
-       sentence += _T("L");
-   else
-       sentence += _T("R");
+  if (DirectionToSteer == Left)
+    sentence += _T("L");
+  else
+    sentence += _T("R");
 
-   sentence += CrossTrackUnits;
-   sentence += IsArrivalCircleEntered;
-   sentence += IsPerpendicular;
-   sentence.Add( BearingOriginToDestination, NmeaApbPrecision);
-   sentence += BearingOriginToDestinationUnits;
-   sentence += To;
-   sentence.Add( BearingPresentPositionToDestination, NmeaApbPrecision );
-   sentence += BearingPresentPositionToDestinationUnits;
-   sentence.Add( HeadingToSteer, NmeaApbPrecision );
-   sentence += HeadingToSteerUnits;
+  sentence += CrossTrackUnits;
+  sentence += IsArrivalCircleEntered;
+  sentence += IsPerpendicular;
+  sentence.Add(BearingOriginToDestination, NmeaApbPrecision);
+  sentence += BearingOriginToDestinationUnits;
+  sentence += To;
+  sentence.Add(BearingPresentPositionToDestination, NmeaApbPrecision);
+  sentence += BearingPresentPositionToDestinationUnits;
+  sentence.Add(HeadingToSteer, NmeaApbPrecision);
+  sentence += HeadingToSteerUnits;
 
-   sentence.Finish();
+  sentence.Finish();
 
-   return( TRUE );
+  return (TRUE);
 }
 
-const APB& APB::operator = ( const APB& source )
-{
-//   ASSERT_VALID( this );
+const APB& APB::operator=(const APB& source) {
+  //   ASSERT_VALID( this );
 
-   IsLoranBlinkOK                           = source.IsLoranBlinkOK;
-   IsLoranCCycleLockOK                      = source.IsLoranCCycleLockOK;
-   CrossTrackErrorMagnitude                 = source.CrossTrackErrorMagnitude;
-   DirectionToSteer                         = source.DirectionToSteer;
-   CrossTrackUnits                          = source.CrossTrackUnits;
-   IsArrivalCircleEntered                   = source.IsArrivalCircleEntered;
-   IsPerpendicular                          = source.IsPerpendicular;
-   BearingOriginToDestination               = source.BearingOriginToDestination;
-   BearingOriginToDestinationUnits          = source.BearingOriginToDestinationUnits;
-   To                                       = source.To;
-   BearingPresentPositionToDestination      = source.BearingPresentPositionToDestination;
-   BearingPresentPositionToDestinationUnits = source.BearingPresentPositionToDestinationUnits;
-   HeadingToSteer                           = source.HeadingToSteer;
-   HeadingToSteerUnits                      = source.HeadingToSteerUnits;
+  IsLoranBlinkOK = source.IsLoranBlinkOK;
+  IsLoranCCycleLockOK = source.IsLoranCCycleLockOK;
+  CrossTrackErrorMagnitude = source.CrossTrackErrorMagnitude;
+  DirectionToSteer = source.DirectionToSteer;
+  CrossTrackUnits = source.CrossTrackUnits;
+  IsArrivalCircleEntered = source.IsArrivalCircleEntered;
+  IsPerpendicular = source.IsPerpendicular;
+  BearingOriginToDestination = source.BearingOriginToDestination;
+  BearingOriginToDestinationUnits = source.BearingOriginToDestinationUnits;
+  To = source.To;
+  BearingPresentPositionToDestination =
+      source.BearingPresentPositionToDestination;
+  BearingPresentPositionToDestinationUnits =
+      source.BearingPresentPositionToDestinationUnits;
+  HeadingToSteer = source.HeadingToSteer;
+  HeadingToSteerUnits = source.HeadingToSteerUnits;
 
-   return( *this );
+  return (*this);
 }

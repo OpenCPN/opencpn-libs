@@ -8,10 +8,8 @@
  */
 #include <nlohmann/json.hpp>
 
-namespace nlohmann
-{
-namespace json_schema
-{
+namespace nlohmann {
+namespace json_schema {
 
 json draft7_schema_builtin = R"( {
     "$schema": "http://json-schema.org/draft-07/schema#",
@@ -182,4 +180,4 @@ json draft7_schema_builtin = R"( {
     "default": true
 } )"_json;
 }
-} // namespace nlohmann
+}  // namespace nlohmann

@@ -26,11 +26,14 @@
  ***************************************************************************
  */
 
-/* The header file contains the schema for the JSON messages that are being used. However it relies on Draf7 of the JSON schema 
- * which is not fully implemented yet in a C++ library. The code is defined out that will use this as the implementation changes the 
- * ABI code of the executable and is then not compatible with OpenCPN. There is basic checking for schema compliance but 
- * it is not robust and it is possible to crash OpenCPN if the values are not valid.
- * 
+/* The header file contains the schema for the JSON messages that are being
+ * used. However it relies on Draf7 of the JSON schema which is not fully
+ * implemented yet in a C++ library. The code is defined out that will use this
+ * as the implementation changes the ABI code of the executable and is then not
+ * compatible with OpenCPN. There is basic checking for schema compliance but it
+ * is not robust and it is possible to crash OpenCPN if the values are not
+ * valid.
+ *
  */
 
 static json jSchema = R"(
@@ -337,4 +340,3 @@ static json jSchema = R"(
     ]
 }
 )"_json;
-    

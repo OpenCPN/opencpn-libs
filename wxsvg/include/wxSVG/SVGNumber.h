@@ -9,19 +9,18 @@
 #ifndef WX_SVG_NUMBER_H
 #define WX_SVG_NUMBER_H
 
-class wxSVGNumber
-{
-  protected:
-    double m_value;
+class wxSVGNumber {
+protected:
+  double m_value;
 
-  public:
-    inline double GetValue() const { return m_value; }
-    inline void SetValue(double n) { m_value = n; }
+public:
+  inline double GetValue() const { return m_value; }
+  inline void SetValue(double n) { m_value = n; }
 
-  public:
-    wxSVGNumber(): m_value(0) {}
-    wxSVGNumber(double value): m_value(value) {}
-    virtual ~wxSVGNumber() {}
+public:
+  wxSVGNumber() : m_value(0) {}
+  wxSVGNumber(double value) : m_value(value) {}
+  virtual ~wxSVGNumber() {}
 };
 
-#endif // WX_SVG_NUMBER_H
+#endif  // WX_SVG_NUMBER_H

@@ -18,30 +18,29 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGViewElement:
-  public wxSVGElement,
-  public wxSVGExternalResourcesRequired,
-  public wxSVGFitToViewBox,
-  public wxSVGZoomAndPan
-{
-  protected:
-    wxSVGStringList m_viewTarget;
+class wxSVGViewElement : public wxSVGElement,
+                         public wxSVGExternalResourcesRequired,
+                         public wxSVGFitToViewBox,
+                         public wxSVGZoomAndPan {
+protected:
+  wxSVGStringList m_viewTarget;
 
-  public:
-    inline const wxSVGStringList& GetViewTarget() const { return m_viewTarget; }
-    inline void SetViewTarget(const wxSVGStringList& n) { m_viewTarget = n; }
+public:
+  inline const wxSVGStringList& GetViewTarget() const { return m_viewTarget; }
+  inline void SetViewTarget(const wxSVGStringList& n) { m_viewTarget = n; }
 
-  public:
-    wxSVGViewElement(wxString tagName = wxT("view")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGViewElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGViewElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_VIEW_ELEMENT; }
+public:
+  wxSVGViewElement(wxString tagName = wxT("view")) : wxSVGElement(tagName) {}
+  virtual ~wxSVGViewElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGViewElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_VIEW_ELEMENT; }
 };
 
-#endif // WX_SVG_VIEW_ELEMENT_H
+#endif  // WX_SVG_VIEW_ELEMENT_H

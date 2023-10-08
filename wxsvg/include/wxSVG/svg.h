@@ -94,5 +94,4 @@
 #include "SVGVKernElement.h"
 #include "SVGDocument.h"
 
-
-#endif // WX_SVG_H
+#endif  // WX_SVG_H

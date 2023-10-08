@@ -13,19 +13,19 @@
 #include "String_wxsvg.h"
 #include "Element.h"
 
-class wxSVGFontFaceFormatElement:
-  public wxSVGElement
-{
-  public:
-    wxSVGFontFaceFormatElement(wxString tagName = wxT("font-face-format")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGFontFaceFormatElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGFontFaceFormatElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    virtual wxSVGDTD GetDtd() const { return wxSVG_FONT_FACE_FORMAT_ELEMENT; }
+class wxSVGFontFaceFormatElement : public wxSVGElement {
+public:
+  wxSVGFontFaceFormatElement(wxString tagName = wxT("font-face-format"))
+      : wxSVGElement(tagName) {}
+  virtual ~wxSVGFontFaceFormatElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGFontFaceFormatElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  virtual wxSVGDTD GetDtd() const { return wxSVG_FONT_FACE_FORMAT_ELEMENT; }
 };
 
-#endif // WX_SVG_FONT_FACE_FORMAT_ELEMENT_H
+#endif  // WX_SVG_FONT_FACE_FORMAT_ELEMENT_H

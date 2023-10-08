@@ -13,20 +13,20 @@
 #include "String_wxsvg.h"
 #include "Element.h"
 
-class wxSVGAnimateMotionElement:
-  public wxSVGAnimationElement
-{
-  public:
-    wxSVGAnimateMotionElement(wxString tagName = wxT("animateMotion")):
-      wxSVGAnimationElement(tagName) {}
-    virtual ~wxSVGAnimateMotionElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGAnimateMotionElement(*this); }
-    virtual void ApplyAnimation();
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    virtual wxSVGDTD GetDtd() const { return wxSVG_ANIMATEMOTION_ELEMENT; }
+class wxSVGAnimateMotionElement : public wxSVGAnimationElement {
+public:
+  wxSVGAnimateMotionElement(wxString tagName = wxT("animateMotion"))
+      : wxSVGAnimationElement(tagName) {}
+  virtual ~wxSVGAnimateMotionElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGAnimateMotionElement(*this);
+  }
+  virtual void ApplyAnimation();
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  virtual wxSVGDTD GetDtd() const { return wxSVG_ANIMATEMOTION_ELEMENT; }
 };
 
-#endif // WX_SVG_ANIMATE_MOTION_ELEMENT_H
+#endif  // WX_SVG_ANIMATE_MOTION_ELEMENT_H

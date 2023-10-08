@@ -82,6 +82,6 @@ static inline void fixNumericLocale(char* begin, char* end) {
   }
 }
 
-} // namespace Json {
+}  // namespace Json
 
-#endif // LIB_JSONCPP_JSON_TOOL_H_INCLUDED
+#endif  // LIB_JSONCPP_JSON_TOOL_H_INCLUDED

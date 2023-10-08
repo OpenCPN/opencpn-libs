@@ -14,4 +14,4 @@
 #include <wx/colour.h>
 typedef wxColour wxRGBColor;
 
-#endif //wxSVG_RGB_COLOR_H
+#endif  // wxSVG_RGB_COLOR_H

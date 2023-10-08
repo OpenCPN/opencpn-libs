@@ -13,35 +13,37 @@
 #include "SVGRect.h"
 #include "SVGPoint.h"
 
-class wxSVGZoomEvent:
-  public wxUIEvent
-{
-  protected:
-    wxSVGRect m_zoomRectScreen;
-    double m_previousScale;
-    wxSVGPoint m_previousTranslate;
-    double m_newScale;
-    wxSVGPoint m_newTranslate;
+class wxSVGZoomEvent : public wxUIEvent {
+protected:
+  wxSVGRect m_zoomRectScreen;
+  double m_previousScale;
+  wxSVGPoint m_previousTranslate;
+  double m_newScale;
+  wxSVGPoint m_newTranslate;
 
-  public:
-    inline const wxSVGRect& GetZoomRectScreen() const { return m_zoomRectScreen; }
-    inline void SetZoomRectScreen(const wxSVGRect& n) { m_zoomRectScreen = n; }
+public:
+  inline const wxSVGRect& GetZoomRectScreen() const { return m_zoomRectScreen; }
+  inline void SetZoomRectScreen(const wxSVGRect& n) { m_zoomRectScreen = n; }
 
-    inline double GetPreviousScale() const { return m_previousScale; }
-    inline void SetPreviousScale(double n) { m_previousScale = n; }
+  inline double GetPreviousScale() const { return m_previousScale; }
+  inline void SetPreviousScale(double n) { m_previousScale = n; }
 
-    inline const wxSVGPoint& GetPreviousTranslate() const { return m_previousTranslate; }
-    inline void SetPreviousTranslate(const wxSVGPoint& n) { m_previousTranslate = n; }
+  inline const wxSVGPoint& GetPreviousTranslate() const {
+    return m_previousTranslate;
+  }
+  inline void SetPreviousTranslate(const wxSVGPoint& n) {
+    m_previousTranslate = n;
+  }
 
-    inline double GetNewScale() const { return m_newScale; }
-    inline void SetNewScale(double n) { m_newScale = n; }
+  inline double GetNewScale() const { return m_newScale; }
+  inline void SetNewScale(double n) { m_newScale = n; }
 
-    inline const wxSVGPoint& GetNewTranslate() const { return m_newTranslate; }
-    inline void SetNewTranslate(const wxSVGPoint& n) { m_newTranslate = n; }
+  inline const wxSVGPoint& GetNewTranslate() const { return m_newTranslate; }
+  inline void SetNewTranslate(const wxSVGPoint& n) { m_newTranslate = n; }
 
-  public:
-    wxSVGZoomEvent(): m_previousScale(0), m_newScale(0) {}
-    virtual ~wxSVGZoomEvent() {}
+public:
+  wxSVGZoomEvent() : m_previousScale(0), m_newScale(0) {}
+  virtual ~wxSVGZoomEvent() {}
 };
 
-#endif // WX_SVG_ZOOM_EVENT_H
+#endif  // WX_SVG_ZOOM_EVENT_H

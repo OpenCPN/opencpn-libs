@@ -629,7 +629,6 @@ public:
   Plugin_WaypointList *pWaypointList;
 };
 
-
 //----------------------------------------------------------------------------------------------------------
 //    The PlugIn CallBack API Definition
 //
@@ -1452,30 +1451,26 @@ extern DECL_EXP int GetLatLonFormat(void);
 // API 1.17
 extern "C" DECL_EXP void ZeroXTE();
 
-
 // Extended Waypoint manipulation API
 class DECL_EXP PlugIn_Waypoint_Ex {
 public:
   PlugIn_Waypoint_Ex();
-  PlugIn_Waypoint_Ex(double lat, double lon,
-                                 const wxString &icon_ident,
-                                 const wxString &wp_name,
-                                 const wxString &GUID = "",
-                                 const double ScaMin = 1e9,
-                                 const bool bNameVisible = false,
-                                 const int nRanges = 0,
-                                 const double RangeDistance = 1.0,
-                                 const wxColor RangeColor = wxColor( 255,0,0 ) );
+  PlugIn_Waypoint_Ex(double lat, double lon, const wxString &icon_ident,
+                     const wxString &wp_name, const wxString &GUID = "",
+                     const double ScaMin = 1e9, const bool bNameVisible = false,
+                     const int nRanges = 0, const double RangeDistance = 1.0,
+                     const wxColor RangeColor = wxColor(255, 0, 0));
   ~PlugIn_Waypoint_Ex();
   void InitDefaults();
 
-  bool GetFSStatus();     // return "free standing" status
-                          // To be a "free standing waypoint"(FSWP),
-                          // the RoutePoint will have been created by GUI dropping a point;
-                          // by importing a waypoint in a GPX file
-                          // or by the AddSingleWaypoint API.
+  bool GetFSStatus();  // return "free standing" status
+                       // To be a "free standing waypoint"(FSWP),
+                       // the RoutePoint will have been created by GUI dropping
+                       // a point; by importing a waypoint in a GPX file or by
+                       // the AddSingleWaypoint API.
 
-  int GetRouteMembershipCount();    // Return the number of routes to which this WP belongs
+  int GetRouteMembershipCount();  // Return the number of routes to which this
+                                  // WP belongs
 
   double m_lat;
   double m_lon;
@@ -1523,17 +1518,22 @@ extern DECL_EXP wxArrayString GetTrackGUIDArray(void);
 extern DECL_EXP bool GetSingleWaypointEx(wxString GUID,
                                          PlugIn_Waypoint_Ex *pwaypoint);
 
-extern DECL_EXP bool AddSingleWaypointEx(PlugIn_Waypoint_Ex *pwaypoint, bool b_permanent = true);
+extern DECL_EXP bool AddSingleWaypointEx(PlugIn_Waypoint_Ex *pwaypoint,
+                                         bool b_permanent = true);
 extern DECL_EXP bool UpdateSingleWaypointEx(PlugIn_Waypoint_Ex *pwaypoint);
 
-extern DECL_EXP bool AddPlugInRouteEx(PlugIn_Route_Ex *proute, bool b_permanent = true);
+extern DECL_EXP bool AddPlugInRouteEx(PlugIn_Route_Ex *proute,
+                                      bool b_permanent = true);
 extern DECL_EXP bool UpdatePlugInRouteEx(PlugIn_Route_Ex *proute);
 
-extern DECL_EXP std::unique_ptr<PlugIn_Waypoint_Ex> GetWaypointEx_Plugin(const wxString &);
-extern DECL_EXP std::unique_ptr<PlugIn_Route_Ex> GetRouteEx_Plugin(const wxString &);
+extern DECL_EXP std::unique_ptr<PlugIn_Waypoint_Ex> GetWaypointEx_Plugin(
+    const wxString &);
+extern DECL_EXP std::unique_ptr<PlugIn_Route_Ex> GetRouteEx_Plugin(
+    const wxString &);
 
-extern DECL_EXP wxString GetActiveWaypointGUID(void);	// if no active waypoint, returns wxEmptyString
-extern DECL_EXP wxString GetActiveRouteGUID(void);	// if no active route, returns wxEmptyString
-
+extern DECL_EXP wxString
+GetActiveWaypointGUID(void);  // if no active waypoint, returns wxEmptyString
+extern DECL_EXP wxString
+GetActiveRouteGUID(void);  // if no active route, returns wxEmptyString
 
 #endif  //_PLUGIN_H_

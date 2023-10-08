@@ -9,26 +9,24 @@
 #ifndef WX_SVG_ANIMATED_ENUMERATION_H
 #define WX_SVG_ANIMATED_ENUMERATION_H
 
+class wxSVGAnimatedEnumeration {
+public:
+  wxSVGAnimatedEnumeration() : m_baseVal(0), m_animVal(0) {}
+  wxSVGAnimatedEnumeration(unsigned char value)
+      : m_baseVal(value), m_animVal(value) {}
 
-class wxSVGAnimatedEnumeration
-{
-  public:
-    wxSVGAnimatedEnumeration(): m_baseVal(0), m_animVal(0) {}
-	wxSVGAnimatedEnumeration(unsigned char value): m_baseVal(value), m_animVal(value) {}
+  inline unsigned char GetBaseVal() const { return m_baseVal; };
+  inline void SetBaseVal(unsigned char value) { m_baseVal = m_animVal = value; }
 
-    inline unsigned char GetBaseVal() const { return m_baseVal; };
-	inline void SetBaseVal(unsigned char value) { m_baseVal = m_animVal = value; }
+  inline unsigned char GetAnimVal() const { return m_animVal; }
+  inline void SetAnimVal(unsigned char value) { m_animVal = value; }
 
-    inline unsigned char GetAnimVal() const { return m_animVal; }
-	inline void SetAnimVal(unsigned char value) { m_animVal = value; }
+public:
+  inline operator unsigned char() const { return GetAnimVal(); }
 
-  public:
-    inline operator unsigned char() const { return GetAnimVal(); }
-
-  protected:
-    unsigned char m_baseVal;
-    unsigned char m_animVal;
+protected:
+  unsigned char m_baseVal;
+  unsigned char m_animVal;
 };
 
-
-#endif // WX_SVG_ANIMATED_ENUMERATION_H
+#endif  // WX_SVG_ANIMATED_ENUMERATION_H

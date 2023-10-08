@@ -13,19 +13,19 @@
 #include "String_wxsvg.h"
 #include "Element.h"
 
-class wxSVGTBreakElement:
-  public wxSVGElement
-{
-  public:
-    wxSVGTBreakElement(wxString tagName = wxT("tbreak")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGTBreakElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGTBreakElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    virtual wxSVGDTD GetDtd() const { return wxSVG_TBREAK_ELEMENT; }
+class wxSVGTBreakElement : public wxSVGElement {
+public:
+  wxSVGTBreakElement(wxString tagName = wxT("tbreak"))
+      : wxSVGElement(tagName) {}
+  virtual ~wxSVGTBreakElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGTBreakElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  virtual wxSVGDTD GetDtd() const { return wxSVG_TBREAK_ELEMENT; }
 };
 
-#endif // WX_SVG_T_BREAK_ELEMENT_H
+#endif  // WX_SVG_T_BREAK_ELEMENT_H

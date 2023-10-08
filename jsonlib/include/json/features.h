@@ -8,7 +8,7 @@
 
 #if !defined(JSON_IS_AMALGAMATION)
 #include "forwards.h"
-#endif // if !defined(JSON_IS_AMALGAMATION)
+#endif  // if !defined(JSON_IS_AMALGAMATION)
 
 namespace Json {
 
@@ -46,6 +46,6 @@ public:
   bool strictRoot_;
 };
 
-} // namespace Json
+}  // namespace Json
 
-#endif // CPPTL_JSON_FEATURES_H_INCLUDED
+#endif  // CPPTL_JSON_FEATURES_H_INCLUDED

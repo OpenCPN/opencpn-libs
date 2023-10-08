@@ -18,11 +18,10 @@
 #include <wx/curl/base.h>
 
 //! A specialized interface to TELNET derived from wxCurlBase.
-class WXDLLIMPEXP_CURL wxCurlTelnet : public wxCurlBase
-{
+class WXDLLIMPEXP_CURL wxCurlTelnet : public wxCurlBase {
 public:
-	wxCurlTelnet();
-	virtual ~wxCurlTelnet();
+  wxCurlTelnet();
+  virtual ~wxCurlTelnet();
 };
 
-#endif // _WXCURLTELNET_H__INCLUDED_
+#endif  // _WXCURLTELNET_H__INCLUDED_

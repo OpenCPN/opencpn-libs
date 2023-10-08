@@ -13,4 +13,4 @@
 
 #include <wx/string.h>
 
-#endif //wxSVG_STRING_H
+#endif  // wxSVG_STRING_H

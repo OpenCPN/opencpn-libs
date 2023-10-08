@@ -22,7 +22,6 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-
 #ifndef GLX_MANGLE_H
 #define GLX_MANGLE_H
 
@@ -77,6 +76,5 @@
 /* GLX 1.4 */
 #define glXGetProcAddress mglXGetProcAddress
 #define glXGetProcAddressARB mglXGetProcAddressARB
-
 
 #endif

@@ -17,48 +17,66 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGTextPositioningElement:
-  public wxSVGTextContentElement
-{
-  protected:
-    wxSVGAnimatedLengthList m_x;
-    wxSVGAnimatedLengthList m_y;
-    wxSVGAnimatedLengthList m_dx;
-    wxSVGAnimatedLengthList m_dy;
-    wxSVGAnimatedNumberList m_rotate;
+class wxSVGTextPositioningElement : public wxSVGTextContentElement {
+protected:
+  wxSVGAnimatedLengthList m_x;
+  wxSVGAnimatedLengthList m_y;
+  wxSVGAnimatedLengthList m_dx;
+  wxSVGAnimatedLengthList m_dy;
+  wxSVGAnimatedNumberList m_rotate;
 
-  public:
-    inline const wxSVGAnimatedLengthList& GetX() const { WX_SVG_ANIM_LENGTH_LIST_CALC_WIDTH(m_x, GetViewportElement()); return m_x; }
-    inline void SetX(const wxSVGAnimatedLengthList& n) { m_x = n; }
-    inline void SetX(const wxSVGLengthList& n) { m_x.SetBaseVal(n); }
+public:
+  inline const wxSVGAnimatedLengthList& GetX() const {
+    WX_SVG_ANIM_LENGTH_LIST_CALC_WIDTH(m_x, GetViewportElement());
+    return m_x;
+  }
+  inline void SetX(const wxSVGAnimatedLengthList& n) { m_x = n; }
+  inline void SetX(const wxSVGLengthList& n) { m_x.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedLengthList& GetY() const { WX_SVG_ANIM_LENGTH_LIST_CALC_HEIGHT(m_y, GetViewportElement()); return m_y; }
-    inline void SetY(const wxSVGAnimatedLengthList& n) { m_y = n; }
-    inline void SetY(const wxSVGLengthList& n) { m_y.SetBaseVal(n); }
+  inline const wxSVGAnimatedLengthList& GetY() const {
+    WX_SVG_ANIM_LENGTH_LIST_CALC_HEIGHT(m_y, GetViewportElement());
+    return m_y;
+  }
+  inline void SetY(const wxSVGAnimatedLengthList& n) { m_y = n; }
+  inline void SetY(const wxSVGLengthList& n) { m_y.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedLengthList& GetDx() const { WX_SVG_ANIM_LENGTH_LIST_CALC_WIDTH(m_dx, GetViewportElement()); return m_dx; }
-    inline void SetDx(const wxSVGAnimatedLengthList& n) { m_dx = n; }
-    inline void SetDx(const wxSVGLengthList& n) { m_dx.SetBaseVal(n); }
+  inline const wxSVGAnimatedLengthList& GetDx() const {
+    WX_SVG_ANIM_LENGTH_LIST_CALC_WIDTH(m_dx, GetViewportElement());
+    return m_dx;
+  }
+  inline void SetDx(const wxSVGAnimatedLengthList& n) { m_dx = n; }
+  inline void SetDx(const wxSVGLengthList& n) { m_dx.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedLengthList& GetDy() const { WX_SVG_ANIM_LENGTH_LIST_CALC_HEIGHT(m_dy, GetViewportElement()); return m_dy; }
-    inline void SetDy(const wxSVGAnimatedLengthList& n) { m_dy = n; }
-    inline void SetDy(const wxSVGLengthList& n) { m_dy.SetBaseVal(n); }
+  inline const wxSVGAnimatedLengthList& GetDy() const {
+    WX_SVG_ANIM_LENGTH_LIST_CALC_HEIGHT(m_dy, GetViewportElement());
+    return m_dy;
+  }
+  inline void SetDy(const wxSVGAnimatedLengthList& n) { m_dy = n; }
+  inline void SetDy(const wxSVGLengthList& n) { m_dy.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedNumberList& GetRotate() const { return m_rotate; }
-    inline void SetRotate(const wxSVGAnimatedNumberList& n) { m_rotate = n; }
-    inline void SetRotate(const wxSVGNumberList& n) { m_rotate.SetBaseVal(n); }
+  inline const wxSVGAnimatedNumberList& GetRotate() const { return m_rotate; }
+  inline void SetRotate(const wxSVGAnimatedNumberList& n) { m_rotate = n; }
+  inline void SetRotate(const wxSVGNumberList& n) { m_rotate.SetBaseVal(n); }
 
-  public:
-    wxSVGTextPositioningElement(wxString tagName = wxT("")):
-      wxSVGTextContentElement(tagName) {}
-    virtual ~wxSVGTextPositioningElement() {}
-    inline void SetX(const wxSVGLength& n) { wxSVGLengthList list; list.Add(n); SetX(list); }
-    inline void SetY(const wxSVGLength& n) { wxSVGLengthList list; list.Add(n); SetY(list); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+public:
+  wxSVGTextPositioningElement(wxString tagName = wxT(""))
+      : wxSVGTextContentElement(tagName) {}
+  virtual ~wxSVGTextPositioningElement() {}
+  inline void SetX(const wxSVGLength& n) {
+    wxSVGLengthList list;
+    list.Add(n);
+    SetX(list);
+  }
+  inline void SetY(const wxSVGLength& n) {
+    wxSVGLengthList list;
+    list.Add(n);
+    SetY(list);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
 };
 
-#endif // WX_SVG_TEXT_POSITIONING_ELEMENT_H
+#endif  // WX_SVG_TEXT_POSITIONING_ELEMENT_H

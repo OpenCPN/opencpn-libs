@@ -9,26 +9,23 @@
 #ifndef WX_SVG_ANIMATED_NUMBER_H
 #define WX_SVG_ANIMATED_NUMBER_H
 
+class wxSVGAnimatedNumber {
+public:
+  wxSVGAnimatedNumber() : m_baseVal(0), m_animVal(0) {}
+  wxSVGAnimatedNumber(float value) : m_baseVal(value), m_animVal(value) {}
 
-class wxSVGAnimatedNumber
-{
-  public:
-    wxSVGAnimatedNumber(): m_baseVal(0), m_animVal(0) {}
-	wxSVGAnimatedNumber(float value): m_baseVal(value), m_animVal(value) {}
+  inline float GetBaseVal() const { return m_baseVal; };
+  inline void SetBaseVal(float value) { m_baseVal = m_animVal = value; }
 
-    inline float GetBaseVal() const { return m_baseVal; };
-	inline void SetBaseVal(float value) { m_baseVal = m_animVal = value; }
+  inline float GetAnimVal() const { return m_animVal; }
+  inline void SetAnimVal(float value) { m_animVal = value; }
 
-    inline float GetAnimVal() const { return m_animVal; }
-	inline void SetAnimVal(float value) { m_animVal = value; }
+public:
+  inline operator float() const { return GetAnimVal(); }
 
-  public:
-    inline operator float() const { return GetAnimVal(); }
-
-  protected:
-    float m_baseVal;
-    float m_animVal;
+protected:
+  float m_baseVal;
+  float m_animVal;
 };
 
-
-#endif // WX_SVG_ANIMATED_NUMBER_H
+#endif  // WX_SVG_ANIMATED_NUMBER_H

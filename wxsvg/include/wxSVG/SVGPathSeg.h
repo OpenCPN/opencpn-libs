@@ -11,9 +11,7 @@
 
 #include "String_wxsvg.h"
 
-
-enum wxPATHSEG
-{
+enum wxPATHSEG {
   wxPATHSEG_UNKNOWN = 0,
   wxPATHSEG_CLOSEPATH = 1,
   wxPATHSEG_MOVETO_ABS = 2,
@@ -36,22 +34,25 @@ enum wxPATHSEG
   wxPATHSEG_CURVETO_QUADRATIC_SMOOTH_REL = 19
 };
 
-class wxSVGPathSeg
-{
-  protected:
-    wxPATHSEG m_pathSegType;
-    wxString m_pathSegTypeAsLetter;
+class wxSVGPathSeg {
+protected:
+  wxPATHSEG m_pathSegType;
+  wxString m_pathSegTypeAsLetter;
 
-  public:
-    inline wxPATHSEG GetPathSegType() const { return m_pathSegType; }
-    inline void SetPathSegType(const wxPATHSEG& n) { m_pathSegType = n; }
+public:
+  inline wxPATHSEG GetPathSegType() const { return m_pathSegType; }
+  inline void SetPathSegType(const wxPATHSEG& n) { m_pathSegType = n; }
 
-    inline const wxString& GetPathSegTypeAsLetter() const { return m_pathSegTypeAsLetter; }
-    inline void SetPathSegTypeAsLetter(const wxString& n) { m_pathSegTypeAsLetter = n; }
+  inline const wxString& GetPathSegTypeAsLetter() const {
+    return m_pathSegTypeAsLetter;
+  }
+  inline void SetPathSegTypeAsLetter(const wxString& n) {
+    m_pathSegTypeAsLetter = n;
+  }
 
-  public:
-    wxSVGPathSeg(wxPATHSEG type = wxPATHSEG_UNKNOWN) { m_pathSegType = type; }
-    virtual ~wxSVGPathSeg() {}
+public:
+  wxSVGPathSeg(wxPATHSEG type = wxPATHSEG_UNKNOWN) { m_pathSegType = type; }
+  virtual ~wxSVGPathSeg() {}
 };
 
-#endif // WX_SVG_PATH_SEG_H
+#endif  // WX_SVG_PATH_SEG_H

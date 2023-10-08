@@ -11,20 +11,18 @@
 
 #include "SVGPathSeg.h"
 
-class wxSVGPathSegLinetoVerticalAbs:
-  public wxSVGPathSeg
-{
-  protected:
-    double m_y;
+class wxSVGPathSegLinetoVerticalAbs : public wxSVGPathSeg {
+protected:
+  double m_y;
 
-  public:
-    inline double GetY() const { return m_y; }
-    inline void SetY(double n) { m_y = n; }
+public:
+  inline double GetY() const { return m_y; }
+  inline void SetY(double n) { m_y = n; }
 
-  public:
-    wxSVGPathSegLinetoVerticalAbs():
-      wxSVGPathSeg(wxPATHSEG_LINETO_VERTICAL_ABS), m_y(0) {}
-    virtual ~wxSVGPathSegLinetoVerticalAbs() {}
+public:
+  wxSVGPathSegLinetoVerticalAbs()
+      : wxSVGPathSeg(wxPATHSEG_LINETO_VERTICAL_ABS), m_y(0) {}
+  virtual ~wxSVGPathSegLinetoVerticalAbs() {}
 };
 
-#endif // WX_SVG_PATH_SEG_LINETO_VERTICAL_ABS_H
+#endif  // WX_SVG_PATH_SEG_LINETO_VERTICAL_ABS_H

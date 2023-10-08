@@ -11,32 +11,39 @@
 
 #if !defined(JSON_IS_AMALGAMATION)
 #include "config.h"
-#endif // if !defined(JSON_IS_AMALGAMATION)
+#endif  // if !defined(JSON_IS_AMALGAMATION)
 
 #if JSON_USE_EXCEPTION
 #include <stdexcept>
-#define JSON_ASSERT(condition)                                                 \
-  if (!(condition)) {throw std::runtime_error( "assert json failed" );} // @todo <= add detail about condition in exception
-#define JSON_FAIL_MESSAGE(message) do{std::ostringstream oss; oss << message; throw std::runtime_error(oss.str());}while(0)
+#define JSON_ASSERT(condition)                      \
+  if (!(condition)) {                               \
+    throw std::runtime_error("assert json failed"); \
+  }  // @todo <= add detail about condition in exception
+#define JSON_FAIL_MESSAGE(message)       \
+  do {                                   \
+    std::ostringstream oss;              \
+    oss << message;                      \
+    throw std::runtime_error(oss.str()); \
+  } while (0)
 //#define JSON_FAIL_MESSAGE(message) throw std::runtime_error(message)
-#else // JSON_USE_EXCEPTION
+#else  // JSON_USE_EXCEPTION
 #define JSON_ASSERT(condition) assert(condition);
 
 // The call to assert() will show the failure message in debug builds. In
 // release bugs we abort, for a core-dump or debugger.
-#define JSON_FAIL_MESSAGE(message)                                             \
-  {                                                                            \
-    std::ostringstream oss; oss << message;                                    \
-    assert(false && oss.str().c_str());                                        \
-    abort();                                                                   \
+#define JSON_FAIL_MESSAGE(message)      \
+  {                                     \
+    std::ostringstream oss;             \
+    oss << message;                     \
+    assert(false && oss.str().c_str()); \
+    abort();                            \
   }
-
 
 #endif
 
-#define JSON_ASSERT_MESSAGE(condition, message)                                \
-  if (!(condition)) {                                                          \
-    JSON_FAIL_MESSAGE(message);                                                \
+#define JSON_ASSERT_MESSAGE(condition, message) \
+  if (!(condition)) {                           \
+    JSON_FAIL_MESSAGE(message);                 \
   }
 
-#endif // CPPTL_JSON_ASSERTIONS_H_INCLUDED
+#endif  // CPPTL_JSON_ASSERTIONS_H_INCLUDED

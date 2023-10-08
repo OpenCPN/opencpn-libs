@@ -17,44 +17,57 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGFESpecularLightingElement:
-  public wxSVGElement,
-  public wxSVGFilterPrimitiveStandardAttributes
-{
-  protected:
-    wxSVGAnimatedString m_in1;
-    wxSVGAnimatedNumber m_surfaceScale;
-    wxSVGAnimatedNumber m_specularConstant;
-    wxSVGAnimatedNumber m_specularExponent;
+class wxSVGFESpecularLightingElement
+    : public wxSVGElement,
+      public wxSVGFilterPrimitiveStandardAttributes {
+protected:
+  wxSVGAnimatedString m_in1;
+  wxSVGAnimatedNumber m_surfaceScale;
+  wxSVGAnimatedNumber m_specularConstant;
+  wxSVGAnimatedNumber m_specularExponent;
 
-  public:
-    inline const wxSVGAnimatedString& GetIn1() const { return m_in1; }
-    inline void SetIn1(const wxSVGAnimatedString& n) { m_in1 = n; }
-    inline void SetIn1(const wxString& n) { m_in1.SetBaseVal(n); }
+public:
+  inline const wxSVGAnimatedString& GetIn1() const { return m_in1; }
+  inline void SetIn1(const wxSVGAnimatedString& n) { m_in1 = n; }
+  inline void SetIn1(const wxString& n) { m_in1.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedNumber& GetSurfaceScale() const { return m_surfaceScale; }
-    inline void SetSurfaceScale(const wxSVGAnimatedNumber& n) { m_surfaceScale = n; }
-    inline void SetSurfaceScale(float n) { m_surfaceScale.SetBaseVal(n); }
+  inline const wxSVGAnimatedNumber& GetSurfaceScale() const {
+    return m_surfaceScale;
+  }
+  inline void SetSurfaceScale(const wxSVGAnimatedNumber& n) {
+    m_surfaceScale = n;
+  }
+  inline void SetSurfaceScale(float n) { m_surfaceScale.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedNumber& GetSpecularConstant() const { return m_specularConstant; }
-    inline void SetSpecularConstant(const wxSVGAnimatedNumber& n) { m_specularConstant = n; }
-    inline void SetSpecularConstant(float n) { m_specularConstant.SetBaseVal(n); }
+  inline const wxSVGAnimatedNumber& GetSpecularConstant() const {
+    return m_specularConstant;
+  }
+  inline void SetSpecularConstant(const wxSVGAnimatedNumber& n) {
+    m_specularConstant = n;
+  }
+  inline void SetSpecularConstant(float n) { m_specularConstant.SetBaseVal(n); }
 
-    inline const wxSVGAnimatedNumber& GetSpecularExponent() const { return m_specularExponent; }
-    inline void SetSpecularExponent(const wxSVGAnimatedNumber& n) { m_specularExponent = n; }
-    inline void SetSpecularExponent(float n) { m_specularExponent.SetBaseVal(n); }
+  inline const wxSVGAnimatedNumber& GetSpecularExponent() const {
+    return m_specularExponent;
+  }
+  inline void SetSpecularExponent(const wxSVGAnimatedNumber& n) {
+    m_specularExponent = n;
+  }
+  inline void SetSpecularExponent(float n) { m_specularExponent.SetBaseVal(n); }
 
-  public:
-    wxSVGFESpecularLightingElement(wxString tagName = wxT("feSpecularLighting")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGFESpecularLightingElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGFESpecularLightingElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_FESPECULARLIGHTING_ELEMENT; }
+public:
+  wxSVGFESpecularLightingElement(wxString tagName = wxT("feSpecularLighting"))
+      : wxSVGElement(tagName) {}
+  virtual ~wxSVGFESpecularLightingElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGFESpecularLightingElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_FESPECULARLIGHTING_ELEMENT; }
 };
 
-#endif // WX_SVG_FE_SPECULAR_LIGHTING_ELEMENT_H
+#endif  // WX_SVG_FE_SPECULAR_LIGHTING_ELEMENT_H

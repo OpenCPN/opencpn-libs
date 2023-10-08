@@ -15,38 +15,43 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGTransformable:
-  public wxSVGLocatable
-{
-  protected:
-    wxSVGAnimatedTransformList m_transform;
+class wxSVGTransformable : public wxSVGLocatable {
+protected:
+  wxSVGAnimatedTransformList m_transform;
 
-  public:
-    inline const wxSVGAnimatedTransformList& GetTransform() const { return m_transform; }
-    inline void SetTransform(const wxSVGAnimatedTransformList& n) { m_transform = n; }
-    inline void SetTransform(const wxSVGTransformList& n) { m_transform.SetBaseVal(n); }
+public:
+  inline const wxSVGAnimatedTransformList& GetTransform() const {
+    return m_transform;
+  }
+  inline void SetTransform(const wxSVGAnimatedTransformList& n) {
+    m_transform = n;
+  }
+  inline void SetTransform(const wxSVGTransformList& n) {
+    m_transform.SetBaseVal(n);
+  }
 
-  public:
-    virtual ~wxSVGTransformable() {}
-    void Transform(const wxSVGMatrix& matrix);
-    void Translate(double tx, double ty);
-    void Scale(double s);
-    void Scale(double sx, double sy);
-    void Rotate(double angle, double cx = 0, double cy = 0);
-    void SkewX(double angle);
-    void SkewY(double angle);
-    void UpdateMatrix(wxSVGMatrix& matrix) const;
-    static wxSVGTransformable* GetSVGTransformable(wxSVGElement& element);
-    static const wxSVGTransformable* GetSVGTransformable(const wxSVGElement& element);
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+public:
+  virtual ~wxSVGTransformable() {}
+  void Transform(const wxSVGMatrix& matrix);
+  void Translate(double tx, double ty);
+  void Scale(double s);
+  void Scale(double sx, double sy);
+  void Rotate(double angle, double cx = 0, double cy = 0);
+  void SkewX(double angle);
+  void SkewY(double angle);
+  void UpdateMatrix(wxSVGMatrix& matrix) const;
+  static wxSVGTransformable* GetSVGTransformable(wxSVGElement& element);
+  static const wxSVGTransformable* GetSVGTransformable(
+      const wxSVGElement& element);
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
 
-  protected:
-    inline wxSVGAnimatedTransformList& GetTransformList() { return m_transform; }
-    friend class wxSVGAnimateTransformElement;
+protected:
+  inline wxSVGAnimatedTransformList& GetTransformList() { return m_transform; }
+  friend class wxSVGAnimateTransformElement;
 };
 
-#endif // WX_SVG_TRANSFORMABLE_H
+#endif  // WX_SVG_TRANSFORMABLE_H

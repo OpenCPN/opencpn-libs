@@ -16,29 +16,30 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGFEComponentTransferElement:
-  public wxSVGElement,
-  public wxSVGFilterPrimitiveStandardAttributes
-{
-  protected:
-    wxSVGAnimatedString m_in1;
+class wxSVGFEComponentTransferElement
+    : public wxSVGElement,
+      public wxSVGFilterPrimitiveStandardAttributes {
+protected:
+  wxSVGAnimatedString m_in1;
 
-  public:
-    inline const wxSVGAnimatedString& GetIn1() const { return m_in1; }
-    inline void SetIn1(const wxSVGAnimatedString& n) { m_in1 = n; }
-    inline void SetIn1(const wxString& n) { m_in1.SetBaseVal(n); }
+public:
+  inline const wxSVGAnimatedString& GetIn1() const { return m_in1; }
+  inline void SetIn1(const wxSVGAnimatedString& n) { m_in1 = n; }
+  inline void SetIn1(const wxString& n) { m_in1.SetBaseVal(n); }
 
-  public:
-    wxSVGFEComponentTransferElement(wxString tagName = wxT("feComponentTransfer")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGFEComponentTransferElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGFEComponentTransferElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_FECOMPONENTTRANSFER_ELEMENT; }
+public:
+  wxSVGFEComponentTransferElement(wxString tagName = wxT("feComponentTransfer"))
+      : wxSVGElement(tagName) {}
+  virtual ~wxSVGFEComponentTransferElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGFEComponentTransferElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_FECOMPONENTTRANSFER_ELEMENT; }
 };
 
-#endif // WX_SVG_FE_COMPONENT_TRANSFER_ELEMENT_H
+#endif  // WX_SVG_FE_COMPONENT_TRANSFER_ELEMENT_H

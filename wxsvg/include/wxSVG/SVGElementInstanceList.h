@@ -13,4 +13,4 @@
 #include <wx/dynarray.h>
 WX_DECLARE_OBJARRAY(wxSVGElementInstance, wxSVGElementInstanceList);
 
-#endif // WX_SVG_ELEMENT_INSTANCE_LIST_H
+#endif  // WX_SVG_ELEMENT_INSTANCE_LIST_H

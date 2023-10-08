@@ -23,40 +23,41 @@ class wxSVGCanvasItem;
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGPolylineElement:
-  public wxSVGElement,
-  public wxSVGTests,
-  public wxSVGLangSpace,
-  public wxSVGExternalResourcesRequired,
-  public wxSVGStylable,
-  public wxSVGTransformable,
-  public wxEventTarget,
-  public wxSVGAnimatedPoints
-{
-  protected:
-    wxSVGCanvasItem* m_canvasItem;
+class wxSVGPolylineElement : public wxSVGElement,
+                             public wxSVGTests,
+                             public wxSVGLangSpace,
+                             public wxSVGExternalResourcesRequired,
+                             public wxSVGStylable,
+                             public wxSVGTransformable,
+                             public wxEventTarget,
+                             public wxSVGAnimatedPoints {
+protected:
+  wxSVGCanvasItem* m_canvasItem;
 
-  public:
-  public:
-    inline wxSVGCanvasItem* GetCanvasItem() { return m_canvasItem; }
-    void SetCanvasItem(wxSVGCanvasItem* canvasItem);
+public:
+public:
+  inline wxSVGCanvasItem* GetCanvasItem() { return m_canvasItem; }
+  void SetCanvasItem(wxSVGCanvasItem* canvasItem);
 
-  public:
-    wxSVGPolylineElement(wxString tagName = wxT("polyline")):
-      wxSVGElement(tagName), m_canvasItem(NULL) {}
-    wxSVGPolylineElement(wxSVGPolylineElement& src);
-    virtual ~wxSVGPolylineElement();
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGPolylineElement(*this); }
-    wxSVGRect GetBBox(wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER);
-    wxSVGRect GetResultBBox(wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER);
-    wxSVGMatrix GetCTM() { return wxSVGLocatable::GetCTM(this); }
-    wxSVGMatrix GetScreenCTM() { return wxSVGLocatable::GetScreenCTM(this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_POLYLINE_ELEMENT; }
+public:
+  wxSVGPolylineElement(wxString tagName = wxT("polyline"))
+      : wxSVGElement(tagName), m_canvasItem(NULL) {}
+  wxSVGPolylineElement(wxSVGPolylineElement& src);
+  virtual ~wxSVGPolylineElement();
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGPolylineElement(*this);
+  }
+  wxSVGRect GetBBox(wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER);
+  wxSVGRect GetResultBBox(
+      wxSVG_COORDINATES coordinates = wxSVG_COORDINATES_USER);
+  wxSVGMatrix GetCTM() { return wxSVGLocatable::GetCTM(this); }
+  wxSVGMatrix GetScreenCTM() { return wxSVGLocatable::GetScreenCTM(this); }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_POLYLINE_ELEMENT; }
 };
 
-#endif // WX_SVG_POLYLINE_ELEMENT_H
+#endif  // WX_SVG_POLYLINE_ELEMENT_H

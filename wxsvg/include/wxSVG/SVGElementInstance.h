@@ -20,47 +20,59 @@ class wxSVGElementInstance;
 
 #include "EventTarget.h"
 
-class wxSVGElementInstance:
-  public wxEventTarget
-{
-  protected:
-    wxSVGElement* m_correspondingElement;
-    wxSVGUseElement* m_correspondingUseElement;
-    wxSVGElementInstance* m_parentNode;
-    wxSVGElementInstanceList* m_childNodes;
-    wxSVGElementInstance* m_firstChild;
-    wxSVGElementInstance* m_lastChild;
-    wxSVGElementInstance* m_previousSibling;
-    wxSVGElementInstance* m_nextSibling;
+class wxSVGElementInstance : public wxEventTarget {
+protected:
+  wxSVGElement* m_correspondingElement;
+  wxSVGUseElement* m_correspondingUseElement;
+  wxSVGElementInstance* m_parentNode;
+  wxSVGElementInstanceList* m_childNodes;
+  wxSVGElementInstance* m_firstChild;
+  wxSVGElementInstance* m_lastChild;
+  wxSVGElementInstance* m_previousSibling;
+  wxSVGElementInstance* m_nextSibling;
 
-  public:
-    inline wxSVGElement* GetCorrespondingElement() const { return m_correspondingElement; }
-    inline void SetCorrespondingElement(wxSVGElement* n) { m_correspondingElement = n; }
+public:
+  inline wxSVGElement* GetCorrespondingElement() const {
+    return m_correspondingElement;
+  }
+  inline void SetCorrespondingElement(wxSVGElement* n) {
+    m_correspondingElement = n;
+  }
 
-    inline wxSVGUseElement* GetCorrespondingUseElement() const { return m_correspondingUseElement; }
-    inline void SetCorrespondingUseElement(wxSVGUseElement* n) { m_correspondingUseElement = n; }
+  inline wxSVGUseElement* GetCorrespondingUseElement() const {
+    return m_correspondingUseElement;
+  }
+  inline void SetCorrespondingUseElement(wxSVGUseElement* n) {
+    m_correspondingUseElement = n;
+  }
 
-    inline wxSVGElementInstance* GetParentNode() const { return m_parentNode; }
-    inline void SetParentNode(wxSVGElementInstance* n) { m_parentNode = n; }
+  inline wxSVGElementInstance* GetParentNode() const { return m_parentNode; }
+  inline void SetParentNode(wxSVGElementInstance* n) { m_parentNode = n; }
 
-    inline wxSVGElementInstanceList* GetChildNodes() const { return m_childNodes; }
-    inline void SetChildNodes(wxSVGElementInstanceList* n) { m_childNodes = n; }
+  inline wxSVGElementInstanceList* GetChildNodes() const {
+    return m_childNodes;
+  }
+  inline void SetChildNodes(wxSVGElementInstanceList* n) { m_childNodes = n; }
 
-    inline wxSVGElementInstance* GetFirstChild() const { return m_firstChild; }
-    inline void SetFirstChild(wxSVGElementInstance* n) { m_firstChild = n; }
+  inline wxSVGElementInstance* GetFirstChild() const { return m_firstChild; }
+  inline void SetFirstChild(wxSVGElementInstance* n) { m_firstChild = n; }
 
-    inline wxSVGElementInstance* GetLastChild() const { return m_lastChild; }
-    inline void SetLastChild(wxSVGElementInstance* n) { m_lastChild = n; }
+  inline wxSVGElementInstance* GetLastChild() const { return m_lastChild; }
+  inline void SetLastChild(wxSVGElementInstance* n) { m_lastChild = n; }
 
-    inline wxSVGElementInstance* GetPreviousSibling() const { return m_previousSibling; }
-    inline void SetPreviousSibling(wxSVGElementInstance* n) { m_previousSibling = n; }
+  inline wxSVGElementInstance* GetPreviousSibling() const {
+    return m_previousSibling;
+  }
+  inline void SetPreviousSibling(wxSVGElementInstance* n) {
+    m_previousSibling = n;
+  }
 
-    inline wxSVGElementInstance* GetNextSibling() const { return m_nextSibling; }
-    inline void SetNextSibling(wxSVGElementInstance* n) { m_nextSibling = n; }
+  inline wxSVGElementInstance* GetNextSibling() const { return m_nextSibling; }
+  inline void SetNextSibling(wxSVGElementInstance* n) { m_nextSibling = n; }
 
-  public:
-    wxSVGElementInstance() {}
-    virtual ~wxSVGElementInstance() {}
+public:
+  wxSVGElementInstance() {}
+  virtual ~wxSVGElementInstance() {}
 };
 
-#endif // WX_SVG_ELEMENT_INSTANCE_H
+#endif  // WX_SVG_ELEMENT_INSTANCE_H

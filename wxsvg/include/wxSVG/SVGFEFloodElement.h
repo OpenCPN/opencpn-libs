@@ -16,29 +16,29 @@
 #include "Element.h"
 #include "SVGAnimatedType.h"
 
-class wxSVGFEFloodElement:
-  public wxSVGElement,
-  public wxSVGFilterPrimitiveStandardAttributes
-{
-  protected:
-    wxSVGAnimatedString m_in1;
+class wxSVGFEFloodElement : public wxSVGElement,
+                            public wxSVGFilterPrimitiveStandardAttributes {
+protected:
+  wxSVGAnimatedString m_in1;
 
-  public:
-    inline const wxSVGAnimatedString& GetIn1() const { return m_in1; }
-    inline void SetIn1(const wxSVGAnimatedString& n) { m_in1 = n; }
-    inline void SetIn1(const wxString& n) { m_in1.SetBaseVal(n); }
+public:
+  inline const wxSVGAnimatedString& GetIn1() const { return m_in1; }
+  inline void SetIn1(const wxSVGAnimatedString& n) { m_in1 = n; }
+  inline void SetIn1(const wxString& n) { m_in1.SetBaseVal(n); }
 
-  public:
-    wxSVGFEFloodElement(wxString tagName = wxT("feFlood")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGFEFloodElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGFEFloodElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
-    virtual wxSVGDTD GetDtd() const { return wxSVG_FEFLOOD_ELEMENT; }
+public:
+  wxSVGFEFloodElement(wxString tagName = wxT("feFlood"))
+      : wxSVGElement(tagName) {}
+  virtual ~wxSVGFEFloodElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGFEFloodElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  bool SetAnimatedValue(const wxString& name, const wxSVGAnimatedType& value);
+  virtual wxSVGDTD GetDtd() const { return wxSVG_FEFLOOD_ELEMENT; }
 };
 
-#endif // WX_SVG_FE_FLOOD_ELEMENT_H
+#endif  // WX_SVG_FE_FLOOD_ELEMENT_H

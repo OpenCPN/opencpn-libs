@@ -14,20 +14,22 @@
 #include "SVGElement.h"
 #include "NodeList.h"
 
-class wxNodeListCls
-{
-	protected:
-		int list_size;
-		wxNodeList my_list;
+class wxNodeListCls {
+protected:
+  int list_size;
+  wxNodeList my_list;
 
-	public:
-		wxNodeListCls(){ list_size=0;}
-		wxNodeListCls(wxNodeList m_list){ my_list = m_list; list_size = my_list.size(); }
-		~wxNodeListCls();
+public:
+  wxNodeListCls() { list_size = 0; }
+  wxNodeListCls(wxNodeList m_list) {
+    my_list = m_list;
+    list_size = my_list.size();
+  }
+  ~wxNodeListCls();
 
-		wxSVGElement *GetFirstElement(){return my_list[0];}
-		wxSVGElement *GetElement(int i){return my_list[i];}
-		int GetSize(){return list_size;}
+  wxSVGElement *GetFirstElement() { return my_list[0]; }
+  wxSVGElement *GetElement(int i) { return my_list[i]; }
+  int GetSize() { return list_size; }
 };
 
-#endif //wxSVG_NODE_LIST_CLS_H
+#endif  // wxSVG_NODE_LIST_CLS_H

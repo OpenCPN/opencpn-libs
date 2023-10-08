@@ -15,4 +15,4 @@
 #include <wx/dynarray.h>
 WX_DECLARE_OBJARRAY(wxSVGElementP, wxNodeList);
 
-#endif //wxSVG_NODE_LIST_H
+#endif  // wxSVG_NODE_LIST_H

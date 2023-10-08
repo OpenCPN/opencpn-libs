@@ -11,24 +11,22 @@
 
 #include "SVGPathSeg.h"
 
-class wxSVGPathSegLinetoAbs:
-  public wxSVGPathSeg
-{
-  protected:
-    double m_x;
-    double m_y;
+class wxSVGPathSegLinetoAbs : public wxSVGPathSeg {
+protected:
+  double m_x;
+  double m_y;
 
-  public:
-    inline double GetX() const { return m_x; }
-    inline void SetX(double n) { m_x = n; }
+public:
+  inline double GetX() const { return m_x; }
+  inline void SetX(double n) { m_x = n; }
 
-    inline double GetY() const { return m_y; }
-    inline void SetY(double n) { m_y = n; }
+  inline double GetY() const { return m_y; }
+  inline void SetY(double n) { m_y = n; }
 
-  public:
-    wxSVGPathSegLinetoAbs():
-      wxSVGPathSeg(wxPATHSEG_LINETO_ABS), m_x(0), m_y(0) {}
-    virtual ~wxSVGPathSegLinetoAbs() {}
+public:
+  wxSVGPathSegLinetoAbs()
+      : wxSVGPathSeg(wxPATHSEG_LINETO_ABS), m_x(0), m_y(0) {}
+  virtual ~wxSVGPathSegLinetoAbs() {}
 };
 
-#endif // WX_SVG_PATH_SEG_LINETO_ABS_H
+#endif  // WX_SVG_PATH_SEG_LINETO_ABS_H

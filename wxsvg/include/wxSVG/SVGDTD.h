@@ -9,8 +9,7 @@
 #ifndef WX_SVG_DT_D_H
 #define WX_SVG_DT_D_H
 
-enum wxSVGDTD
-{
+enum wxSVGDTD {
   wxSVG_A_ELEMENT,
   wxSVG_ALTGLYPH_ELEMENT,
   wxSVG_ALTGLYPHDEF_ELEMENT,
@@ -97,4 +96,4 @@ enum wxSVGDTD
   wxSVG_UNKNOWN_ELEMENT
 };
 
-#endif // WX_SVG_DT_D_H
+#endif  // WX_SVG_DT_D_H

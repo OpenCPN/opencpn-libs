@@ -13,30 +13,41 @@
 #include "String_wxsvg.h"
 #include "Element.h"
 
-class wxSVGTests
-{
-  protected:
-    wxSVGStringList m_requiredFeatures;
-    wxSVGStringList m_requiredExtensions;
-    wxSVGStringList m_systemLanguage;
+class wxSVGTests {
+protected:
+  wxSVGStringList m_requiredFeatures;
+  wxSVGStringList m_requiredExtensions;
+  wxSVGStringList m_systemLanguage;
 
-  public:
-    inline const wxSVGStringList& GetRequiredFeatures() const { return m_requiredFeatures; }
-    inline void SetRequiredFeatures(const wxSVGStringList& n) { m_requiredFeatures = n; }
+public:
+  inline const wxSVGStringList& GetRequiredFeatures() const {
+    return m_requiredFeatures;
+  }
+  inline void SetRequiredFeatures(const wxSVGStringList& n) {
+    m_requiredFeatures = n;
+  }
 
-    inline const wxSVGStringList& GetRequiredExtensions() const { return m_requiredExtensions; }
-    inline void SetRequiredExtensions(const wxSVGStringList& n) { m_requiredExtensions = n; }
+  inline const wxSVGStringList& GetRequiredExtensions() const {
+    return m_requiredExtensions;
+  }
+  inline void SetRequiredExtensions(const wxSVGStringList& n) {
+    m_requiredExtensions = n;
+  }
 
-    inline const wxSVGStringList& GetSystemLanguage() const { return m_systemLanguage; }
-    inline void SetSystemLanguage(const wxSVGStringList& n) { m_systemLanguage = n; }
+  inline const wxSVGStringList& GetSystemLanguage() const {
+    return m_systemLanguage;
+  }
+  inline void SetSystemLanguage(const wxSVGStringList& n) {
+    m_systemLanguage = n;
+  }
 
-  public:
-    virtual ~wxSVGTests() {}
-    virtual bool HasExtension(const wxString& extension);
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
+public:
+  virtual ~wxSVGTests() {}
+  virtual bool HasExtension(const wxString& extension);
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
 };
 
-#endif // WX_SVG_TESTS_H
+#endif  // WX_SVG_TESTS_H

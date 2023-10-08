@@ -11,44 +11,49 @@
 
 #include "SVGPathSeg.h"
 
-class wxSVGPathSegArcRel:
-  public wxSVGPathSeg
-{
-  protected:
-    double m_x;
-    double m_y;
-    double m_r1;
-    double m_r2;
-    double m_angle;
-    bool m_largeArcFlag;
-    bool m_sweepFlag;
+class wxSVGPathSegArcRel : public wxSVGPathSeg {
+protected:
+  double m_x;
+  double m_y;
+  double m_r1;
+  double m_r2;
+  double m_angle;
+  bool m_largeArcFlag;
+  bool m_sweepFlag;
 
-  public:
-    inline double GetX() const { return m_x; }
-    inline void SetX(double n) { m_x = n; }
+public:
+  inline double GetX() const { return m_x; }
+  inline void SetX(double n) { m_x = n; }
 
-    inline double GetY() const { return m_y; }
-    inline void SetY(double n) { m_y = n; }
+  inline double GetY() const { return m_y; }
+  inline void SetY(double n) { m_y = n; }
 
-    inline double GetR1() const { return m_r1; }
-    inline void SetR1(double n) { m_r1 = n; }
+  inline double GetR1() const { return m_r1; }
+  inline void SetR1(double n) { m_r1 = n; }
 
-    inline double GetR2() const { return m_r2; }
-    inline void SetR2(double n) { m_r2 = n; }
+  inline double GetR2() const { return m_r2; }
+  inline void SetR2(double n) { m_r2 = n; }
 
-    inline double GetAngle() const { return m_angle; }
-    inline void SetAngle(double n) { m_angle = n; }
+  inline double GetAngle() const { return m_angle; }
+  inline void SetAngle(double n) { m_angle = n; }
 
-    inline bool GetLargeArcFlag() const { return m_largeArcFlag; }
-    inline void SetLargeArcFlag(bool n) { m_largeArcFlag = n; }
+  inline bool GetLargeArcFlag() const { return m_largeArcFlag; }
+  inline void SetLargeArcFlag(bool n) { m_largeArcFlag = n; }
 
-    inline bool GetSweepFlag() const { return m_sweepFlag; }
-    inline void SetSweepFlag(bool n) { m_sweepFlag = n; }
+  inline bool GetSweepFlag() const { return m_sweepFlag; }
+  inline void SetSweepFlag(bool n) { m_sweepFlag = n; }
 
-  public:
-    wxSVGPathSegArcRel():
-      wxSVGPathSeg(wxPATHSEG_ARC_REL), m_x(0), m_y(0), m_r1(0), m_r2(0), m_angle(0), m_largeArcFlag(0), m_sweepFlag(0) {}
-    virtual ~wxSVGPathSegArcRel() {}
+public:
+  wxSVGPathSegArcRel()
+      : wxSVGPathSeg(wxPATHSEG_ARC_REL),
+        m_x(0),
+        m_y(0),
+        m_r1(0),
+        m_r2(0),
+        m_angle(0),
+        m_largeArcFlag(0),
+        m_sweepFlag(0) {}
+  virtual ~wxSVGPathSegArcRel() {}
 };
 
-#endif // WX_SVG_PATH_SEG_ARC_REL_H
+#endif  // WX_SVG_PATH_SEG_ARC_REL_H

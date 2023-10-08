@@ -13,19 +13,19 @@
 #include "String_wxsvg.h"
 #include "Element.h"
 
-class wxSVGMetadataElement:
-  public wxSVGElement
-{
-  public:
-    wxSVGMetadataElement(wxString tagName = wxT("metadata")):
-      wxSVGElement(tagName) {}
-    virtual ~wxSVGMetadataElement() {}
-    wxSvgXmlNode* CloneNode(bool deep = true) { return new wxSVGMetadataElement(*this); }
-    bool HasAttribute(const wxString& name) const;
-    wxString GetAttribute(const wxString& name) const;
-    bool SetAttribute(const wxString& name, const wxString& value);
-    wxSvgXmlAttrHash GetAttributes() const;
-    virtual wxSVGDTD GetDtd() const { return wxSVG_METADATA_ELEMENT; }
+class wxSVGMetadataElement : public wxSVGElement {
+public:
+  wxSVGMetadataElement(wxString tagName = wxT("metadata"))
+      : wxSVGElement(tagName) {}
+  virtual ~wxSVGMetadataElement() {}
+  wxSvgXmlNode* CloneNode(bool deep = true) {
+    return new wxSVGMetadataElement(*this);
+  }
+  bool HasAttribute(const wxString& name) const;
+  wxString GetAttribute(const wxString& name) const;
+  bool SetAttribute(const wxString& name, const wxString& value);
+  wxSvgXmlAttrHash GetAttributes() const;
+  virtual wxSVGDTD GetDtd() const { return wxSVG_METADATA_ELEMENT; }
 };
 
-#endif // WX_SVG_METADATA_ELEMENT_H
+#endif  // WX_SVG_METADATA_ELEMENT_H

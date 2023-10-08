@@ -17,5 +17,4 @@
 
 #include "wxSVGXML/svgxml.h"
 
-#endif //wxSVG_DOCUMENT_H
-
+#endif  // wxSVG_DOCUMENT_H

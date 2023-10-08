@@ -13,5 +13,4 @@
 
 struct wxDocumentEvent {};
 
-#endif //wxSVG_DOCUMENT_EVENT_H
-
+#endif  // wxSVG_DOCUMENT_EVENT_H

@@ -14,13 +14,12 @@
 #include <wx/dynarray.h>
 WX_DECLARE_OBJARRAY(wxSVGLength, wxSVGLengthListBase);
 
-class wxSVGLengthList: public wxSVGLengthListBase
-{
-  public:
-    wxSVGLengthList() {}
+class wxSVGLengthList : public wxSVGLengthListBase {
+public:
+  wxSVGLengthList() {}
 
-    wxString GetValueAsString() const;
-    void SetValueAsString(const wxString& value);
+  wxString GetValueAsString() const;
+  void SetValueAsString(const wxString& value);
 };
 
-#endif // WX_SVG_LENGTH_LIST_H
+#endif  // WX_SVG_LENGTH_LIST_H
