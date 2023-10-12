@@ -232,7 +232,7 @@ public:  // event handlers
 
 private:
   DECLARE_EVENT_TABLE()
-  DECLARE_DYNAMIC_CLASS(wxCurlDownloadDialog)
+  //DECLARE_DYNAMIC_CLASS(wxCurlDownloadDialog)
 };
 
 // ----------------------------------------------------------------------------
