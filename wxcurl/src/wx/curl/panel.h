@@ -90,7 +90,7 @@ protected:  // controls
 
 private:
   DECLARE_EVENT_TABLE()
-  DECLARE_DYNAMIC_CLASS(wxCurlConnectionSettingsPanel)
+  //CLARE_DYNAMIC_CLASS(wxCurlConnectionSettingsPanel)
 };
 
 #endif  // _WXCURL_PANEL_H_
