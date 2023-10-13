@@ -159,6 +159,7 @@ void piDC::Init() {
   m_textforegroundcolour = wxColour(0, 0, 0);
 #endif
 
+  m_textbackgroundcolour = wxTransparentColour;
   workBuf = NULL;
   workBufSize = 0;
 
@@ -272,6 +273,13 @@ void piDC::SetTextForeground(const wxColour &colour) {
     dc->SetTextForeground(colour);
   else
     m_textforegroundcolour = colour;
+}
+
+void piDC::SetTextBackground( const wxColour &colour )
+{
+    if( dc ) dc->SetTextBackground( colour );
+    else
+        m_textbackgroundcolour = colour;
 }
 
 void piDC::SetFont(const wxFont &font) {
@@ -3210,6 +3218,16 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
       m_texfont.SetColor(m_textforegroundcolour);
 
       if (w && h) {
+        if(m_textbackgroundcolour.Alpha() != 0) {
+            wxPen p = m_pen;
+            wxBrush b = m_brush;
+            SetPen(*wxTRANSPARENT_PEN);
+            SetBrush(wxBrush(m_textbackgroundcolour));
+            DrawRoundedRectangle(x, y, w, h, 3);
+            SetPen(p);
+            SetBrush(b);
+        }
+
         glEnable(GL_BLEND);
         glEnable(GL_TEXTURE_2D);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -3294,6 +3312,16 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
             glDisable( GL_BLEND );
 #else
       unsigned int texobj;
+
+      if(m_textbackgroundcolour.Alpha() != 0) {
+        wxPen p = m_pen;
+        wxBrush b = m_brush;
+        SetPen(*wxTRANSPARENT_PEN);
+        SetBrush(wxBrush(m_textbackgroundcolour));
+        DrawRoundedRectangle(x, y, w, h, 3);
+        SetPen(p);
+        SetBrush(b);
+      }
 
       glGenTextures(1, &texobj);
       glBindTexture(GL_TEXTURE_2D, texobj);
