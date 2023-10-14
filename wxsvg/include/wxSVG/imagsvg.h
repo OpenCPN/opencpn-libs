@@ -30,8 +30,6 @@ protected:
   virtual bool DoCanRead(wxInputStream& stream);
 #endif
 
-private:
-  DECLARE_DYNAMIC_CLASS(wxImageHandler)
 };
 
 #endif  // IMAGE_SVG_H
