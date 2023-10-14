@@ -76,9 +76,6 @@ public:
             const wxPoint& pos = wxDefaultPosition,
             const wxSize& size = wxDefaultSize, long style = 0,
             const wxString& name = wxPanelNameStr);
-
-private:
-  DECLARE_DYNAMIC_CLASS(wxSVGCtrl)
 };
 
 #endif  // wxSVG_CTRL_H
