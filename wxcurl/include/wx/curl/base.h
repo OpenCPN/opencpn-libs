@@ -196,7 +196,7 @@ protected:
   double m_rDownloadTotal, m_rDownloadNow;
 
 private:
-  DECLARE_DYNAMIC_CLASS(wxCurlDownloadEvent);
+  //DECLARE_DYNAMIC_CLASS(wxCurlDownloadEvent);
 };
 
 typedef void (wxEvtHandler::*wxCurlDownloadEventFunction)(wxCurlDownloadEvent&);
@@ -243,7 +243,7 @@ protected:
   double m_rUploadTotal, m_rUploadNow;
 
 private:
-  DECLARE_DYNAMIC_CLASS(wxCurlUploadEvent);
+  //DECLARE_DYNAMIC_CLASS(wxCurlUploadEvent);
 };
 
 typedef void (wxEvtHandler::*wxCurlUploadEventFunction)(wxCurlUploadEvent&);
@@ -276,7 +276,7 @@ protected:
   std::string m_szURL;
 
 private:
-  DECLARE_DYNAMIC_CLASS(wxCurlBeginPerformEvent);
+  //DECLARE_DYNAMIC_CLASS(wxCurlBeginPerformEvent);
 };
 
 typedef void (wxEvtHandler::*wxCurlBeginPerformEventFunction)(
@@ -321,7 +321,7 @@ protected:
   long m_iResponseCode;
 
 private:
-  DECLARE_DYNAMIC_CLASS(wxCurlEndPerformEvent);
+  //DECLARE_DYNAMIC_CLASS(wxCurlEndPerformEvent);
 };
 
 typedef void (wxEvtHandler::*wxCurlEndPerformEventFunction)(
