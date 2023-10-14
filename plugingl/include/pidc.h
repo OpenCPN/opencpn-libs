@@ -81,6 +81,7 @@ public:
   void SetPen(const wxPen &pen);
   void SetBrush(const wxBrush &brush);
   void SetTextForeground(const wxColour &colour);
+  void SetTextBackground(const wxColour &colour);
   void SetFont(const wxFont &font);
   static void SetGLAttrs(bool highQuality);
   void SetGLStipple() const;
