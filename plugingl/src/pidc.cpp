@@ -101,6 +101,39 @@ static int NextPow2(int size) {
 
   return n + 1;
 }
+
+void checkGlError(const char* op, const char* filename, int linenumber) {
+#ifdef ANDROID
+    bool berror = false;
+
+    wxString l_ErrorTxt = "";
+    for (GLint error = glGetError(); error; error = glGetError()) {
+        berror = true;
+        switch(error) {
+            case GL_INVALID_ENUM:
+                l_ErrorTxt +=_("GL_INVALID_ENUM ");
+                break;
+            case GL_INVALID_VALUE:
+                l_ErrorTxt += _("GL_INVALID_VALUE ");
+                break;
+            case GL_INVALID_OPERATION:
+                l_ErrorTxt += _("GL_INVALID_OPERATION ");
+                break;
+            case GL_INVALID_FRAMEBUFFER_OPERATION:
+                l_ErrorTxt += _("GL_INVALID_FRAMEBUFFER_OPERATION ");
+                break;
+            case GL_OUT_OF_MEMORY:
+                l_ErrorTxt += _("GL_OUT_OF_MEMORY ");
+                break;
+        }
+    }
+#ifdef _DEBUG
+    if(berror == true)
+        wxLogMessage( _("%s:%i %s(), %s\n"), filename, linenumber, op, l_ErrorTxt);
+#endif
+#endif
+}
+
 #endif
 
 //----------------------------------------------------------------------------
@@ -458,7 +491,7 @@ void piDC::DrawGLThickLine(float x1, float y1, float x2, float y2, wxPen pen,
     float ldraw = t1 * dashes[0];
     float lspace = t1 * dashes[1];
 
-    GLint program = pi_colorv_tri_shader_program;
+    GLint program = pi_color_tri_shader_program;
     glUseProgram(program);
 
     float vert[12];
@@ -467,7 +500,7 @@ void piDC::DrawGLThickLine(float x1, float y1, float x2, float y2, wxPen pen,
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    GLint pos = glGetAttribLocation(program, "aPos");
+    GLint pos = glGetAttribLocation(program, "position");
     glEnableVertexAttribArray(pos);
     glVertexAttribPointer(pos, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), vert);
 
@@ -485,7 +518,7 @@ void piDC::DrawGLThickLine(float x1, float y1, float x2, float y2, wxPen pen,
     colorv[2] = c.Blue() / float(256);
     colorv[3] = c.Alpha() / float(256);
 
-    GLint colloc = glGetUniformLocation(program, "uColour");
+    GLint colloc = glGetUniformLocation(program, "color");
     glUniform4fv(colloc, 1, colorv);
 
     while (lrun < lpix) {
@@ -543,14 +576,14 @@ void piDC::DrawGLThickLine(float x1, float y1, float x2, float y2, wxPen pen,
     vert[10] = x1 + t2sina1;
     vert[11] = y1 - t2cosa1;
 
-    GLint program = pi_colorv_tri_shader_program;
+    GLint program = pi_color_tri_shader_program;
     glUseProgram(program);
 
     // Disable VBO's (vertex buffer objects) for attributes.
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    GLint pos = glGetAttribLocation(program, "aPos");
+    GLint pos = glGetAttribLocation(program, "position");
     glEnableVertexAttribArray(pos);
     glVertexAttribPointer(pos, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), vert);
 
@@ -568,7 +601,7 @@ void piDC::DrawGLThickLine(float x1, float y1, float x2, float y2, wxPen pen,
     colorv[2] = c.Blue() / float(256);
     colorv[3] = c.Alpha() / float(256);
 
-    GLint colloc = glGetUniformLocation(program, "uColour");
+    GLint colloc = glGetUniformLocation(program, "color");
     glUniform4fv(colloc, 1, colorv);
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -637,12 +670,12 @@ void piDC::DrawLine(wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2,
       DrawGLThickLine(x1, y1, x2, y2, m_pen, b_hiqual);
     } else {
       checkGlError("Before glUseProgram", "piDC", __LINE__);
-      GLint program = pi_colorv_tri_shader_program;
+      GLint program = pi_color_tri_shader_program;
       glUseProgram(program);
       checkGlError("After glUseProgram", "piDC", __LINE__);
 
       float fBuf[4];
-      GLint pos = glGetAttribLocation(program, "aPos");
+      GLint pos = glGetAttribLocation(program, "position");
       glVertexAttribPointer(pos, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float),
                             fBuf);
       glEnableVertexAttribArray(pos);
@@ -657,7 +690,7 @@ void piDC::DrawLine(wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2,
       colorv[2] = m_pen.GetColour().Blue() / float(256);
       colorv[3] = 1.0;
 
-      GLint colloc = glGetUniformLocation(program, "uColour");
+      GLint colloc = glGetUniformLocation(program, "color");
       glUniform4fv(colloc, 1, colorv);
 
       wxDash *dashes;
@@ -953,10 +986,10 @@ void piDC::DrawLines(int n, wxPoint points[], wxCoord xoffset, wxCoord yoffset,
       workBuf[(i * 2) + 1] = points[i].y + yoffset;
     }
 
-    GLint program = pi_colorv_tri_shader_program;
+    GLint program = pi_color_tri_shader_program;
     glUseProgram(program);
 
-    GLint pos = glGetAttribLocation(program, "aPos");
+    GLint pos = glGetAttribLocation(program, "position");
     glVertexAttribPointer(pos, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float),
                           workBuf);
     glEnableVertexAttribArray(pos);
@@ -967,10 +1000,11 @@ void piDC::DrawLines(int n, wxPoint points[], wxCoord xoffset, wxCoord yoffset,
     colorv[2] = m_pen.GetColour().Blue() / float(256);
     colorv[3] = m_pen.GetColour().Alpha() / float(256);
 
-    GLint colloc = glGetUniformLocation(program, "uColour");
+    GLint colloc = glGetUniformLocation(program, "color");
     glUniform4fv(colloc, 1, colorv);
 
     glDrawArrays(GL_LINE_STRIP, 0, n);
+    glUseProgram(0);
 
 #endif
     if (b_hiqual) {
@@ -1231,6 +1265,7 @@ void piDC::DrawGLLineArray(int n, float *vertex_array, float *color_array,
     glEnableVertexAttribArray(colloc);
 
     glDrawArrays(GL_LINES, 0, n);
+    glUseProgram(0);
 #endif
     if (b_hiqual) {
       glDisable(GL_LINE_STIPPLE);
@@ -1422,13 +1457,13 @@ void piDC::DrawRoundedRectangle(wxCoord x, wxCoord y, wxCoord w, wxCoord h,
     drawrrhelperGLES2(x1, y2, r, 2, steps);
     drawrrhelperGLES2(x2, y2, r, 3, steps);
 
-    GLint program = pi_colorv_tri_shader_program;
+    GLint program = pi_color_tri_shader_program;
     checkGlError("Before glUseProgram", "piDC", __LINE__);
     glUseProgram(program);
     checkGlError("After glUseProgram", "piDC", __LINE__);
 
     // Get pointers to the attributes in the program.
-    GLint mPosAttrib = glGetAttribLocation(program, "aPos");
+    GLint mPosAttrib = glGetAttribLocation(program, "position");
 
     // Disable VBO's (vertex buffer objects) for attributes.
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -1445,7 +1480,7 @@ void piDC::DrawRoundedRectangle(wxCoord x, wxCoord y, wxCoord w, wxCoord h,
     bcolorv[2] = m_brush.GetColour().Blue() / float(256);
     bcolorv[3] = m_brush.GetColour().Alpha() / float(256);
 
-    GLint bcolloc = glGetUniformLocation(program, "uColour");
+    GLint bcolloc = glGetUniformLocation(program, "color");
     glUniform4fv(bcolloc, 1, bcolorv);
 
     float angle = 0.;
@@ -1472,6 +1507,7 @@ void piDC::DrawRoundedRectangle(wxCoord x, wxCoord y, wxCoord w, wxCoord h,
     mat4x4_identity(IM);
     GLint matlocf = glGetUniformLocation(program, "TransformMatrix");
     glUniformMatrix4fv(matlocf, 1, GL_FALSE, (const GLfloat *)IM);
+    glUseProgram(0);
 
 #else
 
@@ -1799,14 +1835,14 @@ void piDC::DrawPolygon(int n, wxPoint points[], wxCoord xoffset,
         workBuf[i * 2 + 1] = (points[i].y * scale);  // + yoffset;
       }
 
-      GLint program = pi_texture_2D_shader_program;
+      GLint program = pi_color_tri_shader_program;
       checkGlError("Before glUseProgram", "piDC", __LINE__);
       glUseProgram(program);
       checkGlError("After glUseProgram", "piDC", __LINE__);
       checkGlError("glUseProgram", "piDC", __LINE__);
 
       // Get pointers to the attributes in the program.
-      GLint mPosAttrib = glGetAttribLocation(program, "aPos");
+      GLint mPosAttrib = glGetAttribLocation(program, "position");
       checkGlError("aPos", "piDC", __LINE__);
 
       // Disable VBO's (vertex buffer objects) for attributes.
@@ -1824,7 +1860,7 @@ void piDC::DrawPolygon(int n, wxPoint points[], wxCoord xoffset,
       bcolorv[2] = m_pen.GetColour().Blue() / float(256);
       bcolorv[3] = m_pen.GetColour().Alpha() / float(256);
 
-      GLint bcolloc = glGetUniformLocation(program, "uColour");
+      GLint bcolloc = glGetUniformLocation(program, "color");
       checkGlError("uColour", "piDC", __LINE__);
       glUniform4fv(bcolloc, 1, bcolorv);
       if (bcolloc == -1) wxLogMessage(_("piDC::DrawPolygon: bcolloc -1"));
@@ -1937,7 +1973,7 @@ void piDC::DrawPolygon(int n, wxPoint points[], wxCoord xoffset,
       glUseProgram(program);
 
       // Get pointers to the attributes in the program.
-      GLint mPosAttrib = glGetAttribLocation(program, "aPos");
+      GLint mPosAttrib = glGetAttribLocation(program, "position");
       checkGlError("mPosAttrib", "piDC", __LINE__);
 
       // Disable VBO's (vertex buffer objects) for attributes.
@@ -1955,7 +1991,7 @@ void piDC::DrawPolygon(int n, wxPoint points[], wxCoord xoffset,
       bcolorv[2] = m_pen.GetColour().Blue() / float(256);
       bcolorv[3] = m_pen.GetColour().Alpha() / float(256);
 
-      GLint bcolloc = glGetUniformLocation(program, "uColour");
+      GLint bcolloc = glGetUniformLocation(program, "color");
       checkGlError("uColour", "piDC", __LINE__);
       glUniform4fv(bcolloc, 1, bcolorv);
 
@@ -2006,6 +2042,8 @@ void piDC::DrawPolygon(int n, wxPoint points[], wxCoord xoffset,
       mat4x4_identity(IM);
       GLint matlocf = glGetUniformLocation(program, "TransformMatrix");
       glUniformMatrix4fv(matlocf, 1, GL_FALSE, (const GLfloat *)IM);
+
+      glUseProgram(0);
     }
 
 #else
@@ -2110,7 +2148,7 @@ void piDC::DrawPolygonPattern(int n, wxPoint points[], int textureID,
       checkGlError("TransformMatrix", "piDC", __LINE__);
 
       // Set up the texture sampler to texture unit 0
-      GLint texUni = glGetUniformLocation(program, "uTexture");
+      GLint texUni = glGetUniformLocation(program, "uTex");
       checkGlError("texUni", "piDC", __LINE__);
 
       // Disable VBO's (vertex buffer objects) for attributes.
@@ -2413,7 +2451,7 @@ void piDC::DrawPolygonTessellated(int n, wxPoint points[], wxCoord xoffset,
       gluTessEndContour(m_tobj);
       gluTessEndPolygon(m_tobj);
 
-      GLint program = pi_colorv_tri_shader_program;
+      GLint program = pi_color_tri_shader_program;
       // GLint program = pi_texture_2D_shader_program;
       glUseProgram(program);
 
@@ -2422,7 +2460,7 @@ void piDC::DrawPolygonTessellated(int n, wxPoint points[], wxCoord xoffset,
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
       float *bufPt = &(s_odc_tess_work_buf[s_odc_tess_vertex_idx_this]);
-      GLint pos = glGetAttribLocation(program, "aPos");
+      GLint pos = glGetAttribLocation(program, "position");
       glVertexAttribPointer(pos, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float),
                             bufPt);
       glEnableVertexAttribArray(pos);
@@ -2433,7 +2471,7 @@ void piDC::DrawPolygonTessellated(int n, wxPoint points[], wxCoord xoffset,
       colorv[1] = c.Green() / float(256);
       colorv[2] = c.Blue() / float(256);
       colorv[3] = c.Alpha() / float(256);
-      GLint colloc = glGetUniformLocation(program, "uColour");
+      GLint colloc = glGetUniformLocation(program, "color");
       glUniform4fv(colloc, 1, colorv);
 
       glDrawArrays(s_odc_tess_mode, 0, s_odc_nvertex);
@@ -2994,7 +3032,7 @@ void piDC::DrawPolygonsPattern(int n, int npoint[], wxPoint points[],
   glBindTexture(GL_TEXTURE_2D, textureID);
 
   // Set up the texture sampler to texture unit 0
-  GLint texUni = glGetUniformLocation(program, "uTexture");
+  GLint texUni = glGetUniformLocation(program, "uTex");
   glUniform1i(texUni, 0);
 
   //        GLint texPOTWidth  = glGetUniformLocation( program, "texPOTWidth" );
@@ -3224,6 +3262,7 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
             SetPen(*wxTRANSPARENT_PEN);
             SetBrush(wxBrush(m_textbackgroundcolour));
             DrawRoundedRectangle(x, y, w, h, 3);
+            //DrawRectangle(x, y, w, h);
             SetPen(p);
             SetBrush(b);
         }
@@ -3527,7 +3566,7 @@ void piDC::DrawTexture(wxRect texRect, int width, int height, float scaleFactor,
   glActiveTexture(GL_TEXTURE0);
 
   // Set up the texture sampler to texture unit 0
-  GLint texUni = glGetUniformLocation(program, "uTexture");
+  GLint texUni = glGetUniformLocation(program, "uTex");
   glUniform1i(texUni, 0);
 
   // Disable VBO's (vertex buffer objects) for attributes.
@@ -3631,7 +3670,7 @@ void piDC::DrawTextureAlpha(wxRect texRect, int width, int height,
   glActiveTexture(GL_TEXTURE0);
 
   // Set up the texture sampler to texture unit 0
-  GLint texUni = glGetUniformLocation(program, "uTexture");
+  GLint texUni = glGetUniformLocation(program, "uTex");
   glUniform1i(texUni, 0);
 
   // Disable VBO's (vertex buffer objects) for attributes.
