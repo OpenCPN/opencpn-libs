@@ -7,19 +7,15 @@ submodule.
 TRANSITION UNDER WAY
 --------------------
 
-opencpn-libs has been available as https://github.com/leamas/opencpn-libs. It will
-be moved to the new location https://github.com/opencpn/opencpn-libs. During the
-transition time both of these locations will be kept in sync.
+opencpn-libs is available at https://github.com/opencpn/opencpn-libs.
 
 NOTE: Changes are done to the devel branch in github.com/opencpn/opencpn-libs.
-https://github.com/leamas/opencpn-libs should be considered being a read-only
-mirror.
 
 
 Adding the submodule
 --------------------
 
-    $ git submodule add https://github.com/leamas/opencpn-libs.git
+    $ git submodule add https://github.com/OpenCPN/opencpn-libs.git
     $ git commit -m "Adding opencpn-libs submodule"
 
 
@@ -79,5 +75,5 @@ flow is
 
 The commit will be part of the submodule, not the main repo. If the need of
 such a change is deemed necessary, please make a PR against
-https://github.com/leamas/opencpn-libs/ so it can be integrated in the main
+https://github.com/OpenCPN/opencpn-libs/ so it can be integrated in the main
 set of plugins.
