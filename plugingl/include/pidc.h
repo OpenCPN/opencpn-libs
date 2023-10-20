@@ -31,6 +31,7 @@
 
 #ifdef __ANDROID__
 #include <qopengl.h>
+typedef double GLdouble;
 #include "GL/gl_private.h"
 
 #elif defined(__WXOSX__)
@@ -54,6 +55,7 @@ typedef void (*_GLUfuncptr)();
 #ifdef ocpnUSE_GL
 #include <wx/glcanvas.h>
 #endif
+
 
 class ViewPort;
 class GLUtesselator;
