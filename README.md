@@ -6,10 +6,13 @@ submodule.
 
 TRANSITION UNDER WAY
 --------------------
-
-opencpn-libs is available at https://github.com/opencpn/opencpn-libs.
+opencpn-libs has been available as https://github.com/leamas/opencpn-libs. It
+has been moved to the new location https://github.com/opencpn/opencpn-libs.
+During a transition window both of these locations will be kept in sync.
 
 NOTE: Changes are done to the devel branch in github.com/opencpn/opencpn-libs.
+https://github.com/leamas/opencpn-libs should be considered being a read-only
+mirror.
 
 
 Adding the submodule
