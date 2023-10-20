@@ -51,4 +51,9 @@ else ()
   endif ()
 endif ()
 
+if (QT_ANDROID)
+  target_include_directories(PLUGINGL PRIVATE include/android)
+endif ()
+
+
 target_include_directories(PLUGINGL PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
