@@ -2256,10 +2256,7 @@ void APIENTRY piDCvertexCallback(GLvoid *arg) {
   glVertex2f((float)vertex->info.x, (float)vertex->info.y);
 }
 
-void APIENTRY piDCerrorCallback(GLenum errorCode) {
-  const GLubyte *estring;
-  estring = gluErrorString(errorCode);
-}
+void APIENTRY piDCerrorCallback(GLenum errorCode) {}
 
 void APIENTRY piDCbeginCallback(GLenum type) { glBegin(type); }
 
@@ -2560,10 +2557,7 @@ void __CALL_CONVENTION piDCPatternvertexCallback(GLvoid *arg) {
   glVertex2d(vertex->info.x, vertex->info.y);
 }
 
-void __CALL_CONVENTION piDCPatternerrorCallback(GLenum errorCode) {
-  const GLubyte *estring;
-  estring = gluErrorString(errorCode);
-}
+void __CALL_CONVENTION piDCPatternerrorCallback(GLenum errorCode) {}
 
 void __CALL_CONVENTION piDCPatternbeginCallback(GLenum type) { glBegin(type); }
 

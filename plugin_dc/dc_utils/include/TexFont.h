@@ -75,8 +75,8 @@ private:
   int m_maxglyphh;
   bool m_built;
 
-  float m_dx;
-  float m_dy;
+//  float m_dx;
+//  float m_dy;
   wxColor m_color;
 };
 #endif  // guard
