@@ -1,28 +1,18 @@
-#
-# Ensure that glu libraries and headers are present.
-# - On Linux and Macos do nothing, the OS provides glu.
-# - On Flatpak, bundle the header which corresponds the libglu
-#   which comes with main OpenCPN
-# - On Windows: Link to utility library and use WindowsHeaders.
-# - On Android: Provide a header, qt libraries provide the functions.
-
 cmake_minimum_required(VERSION 3.5)
 
-if (TARGET opencpn::glu)
-  return ()
-endif ()
+project(old_glu)
 
-add_library(_glu_if INTERFACE)
-add_library(opencpn::glu ALIAS _glu_if)
+message(FATAL_ERROR [=[
+Inclusion of the opencpn-libs/opencpn-glu subdirectory has been disabled.
+Any statements like "add_subdirectory opencpn-libs/opencpn-glu" should
+hence be removed.
 
-if (DEFINED ENV{FLATPAK_ID})
-  target_include_directories(_glu_if INTERFACE include-flatpak)
-elseif (WIN32)
-  find_package(OpenGL)
-  target_link_libraries(_glu_if INTERFACE OpenGL::GLU)
-  target_link_libraries(_glu_if INTERFACE windows::headers)
-elseif (QT_ANDROID)
-  target_include_directories(_glu_if INTERFACE include-android)
-else ()
-  message(STATUS "Using system GL/glu.h and libraries")
-endif ()
+If the plugin already includes  opencpn-libs/plugin_dc no more action
+needs to be taken.
+
+Otherwise, the inclusion of opencpn-libs/opencpn-glu can be replaced by
+
+    add_subdirectory(opencpn-libs/plugin_dc)
+    target_link_libraries(SOME_PLUGIN_TARGET PRIVATE ocpn::plugin-dc)
+
+]=])
