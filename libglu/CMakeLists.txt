@@ -1,30 +1,16 @@
-#
-# One Debian/armhf bundle libGLU.so with the plugin to resolve
-# an indirect dependency. Since the dependency is indirect, there
-# is no need to link to headers or library. Despite this, an
-# empty interface library is defined for symmetry.
-#
-# Exports
-#    ocpn:glu       Interface link library (empty).
-#
-# Bundles:
-#    libGLU.so on raspbian
-
 cmake_minimum_required(VERSION 3.5)
 
-include(PluginSetup)
+project(old_glu)
 
-if (TARGET ocpn::glu)
-    return ()
-endif ()
+message(FATAL_ERROR [=[
+Inclusion of the opencpn-libs/opencpn-glu subdirectory has been disabled.
+Any statements like "add_subdirectory opencpn-libs/opencpn-glu" should
+hence be removed.
 
-add_library(_LIBGLU INTERFACE)
-add_library(ocpn::glu ALIAS _LIBGLU)
+The glu library is provided by the new plugin_dc library which usually
+is included using
 
-if (WIN32 OR MINGW)
-  if (OPENGL_GLU_FOUND)
-    target_link_libraries(_LIBGLU INTERFACE OpenGL::GLU)
-  else ()
-    message(WARNING "OpenGL GLU library not found.")
-  endif ()
-endif ()
+    add_subdirectory(opencpn-libs/plugin_dc)
+    target_link_libraries(SOME_PLUGIN_TARGET PRIVATE ocpn::plugin-dc)
+
+]=])
