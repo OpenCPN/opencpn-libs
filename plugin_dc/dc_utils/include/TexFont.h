@@ -74,9 +74,10 @@ private:
   int m_maxglyphw;
   int m_maxglyphh;
   bool m_built;
-
+  wxColor m_color;
+#ifdef __ANDROID__
   float m_dx;
   float m_dy;
-  wxColor m_color;
+#endif
 };
 #endif  // guard

@@ -53,6 +53,10 @@
 #include "qdebug.h"
 #endif
 
+#if wxUSE_GRAPHICS_CONTEXT
+#pragma message "Compiling with wxUSE_GRAPHICS_CONTEXT"
+#endif
+
 static float GLMinSymbolLineWidth;
 static wxArrayPtrVoid pi_gTesselatorVertices;
 
@@ -138,12 +142,6 @@ void checkGlError(const char* op, const char* filename, int linenumber) {
 /* pass the dc to the constructor, or NULL to use opengl */
 piDC::piDC(wxGLCanvas &canvas)
     : glcanvas(&canvas), dc(NULL), m_pen(wxNullPen), m_brush(wxNullBrush) {
-#if wxUSE_GRAPHICS_CONTEXT
-#define VALUE_TO_STRING(x) #x
-#define VALUE(x) VALUE_TO_STRING(x)
-#define VAR_NAME_VALUE(var) #var "=" VALUE(var)
-#pragma message(VAR_NAME_VALUE(wxUSE_GRAPHICS_CONTEXT))
-#endif
   Init();
 }
 
