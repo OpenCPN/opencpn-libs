@@ -26,7 +26,7 @@ add_library(_DC_UTILS STATIC ${SRC})
 add_library(ocpn::dc-utils ALIAS _DC_UTILS)
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
-  set_property(TARGET _DC_UTILS PROPERTY COMPILE_FLAGS "-fvisibility=default")
+  set_property(TARGET _DC_UTILS PROPERTY COMPILE_FLAGS "-fvisibility=hidden")
 endif ()
 set_target_properties(_DC_UTILS PROPERTIES POSITION_INDEPENDENT_CODE True)
 
