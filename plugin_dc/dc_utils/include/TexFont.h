@@ -46,10 +46,10 @@ struct TexGlyphInfo {
   float advance;
 };
 
-class TexFont {
+class TexFontPI {
 public:
-  TexFont();
-  ~TexFont();
+  TexFontPI();
+  ~TexFontPI();
 
   void Build(wxFont &font, bool blur = false);
   void Delete();

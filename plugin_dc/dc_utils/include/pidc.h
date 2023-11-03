@@ -242,7 +242,7 @@ protected:
   wxFont m_font;
 
 #ifdef ocpnUSE_GL
-  TexFont m_texfont;
+  TexFontPI m_texfont;
 #endif
 
   bool m_buseTex;

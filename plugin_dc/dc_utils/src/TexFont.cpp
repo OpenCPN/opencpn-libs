@@ -39,16 +39,16 @@
 #include <GL/gl.h>
 #endif
 
-TexFont::TexFont() {
+TexFontPI::TexFontPI() {
   texobj = 0;
   m_blur = false;
   m_built = false;
   m_color = wxColor(0, 0, 0);
 }
 
-TexFont::~TexFont() { Delete(); }
+TexFontPI::~TexFontPI() { Delete(); }
 
-void TexFont::Build(wxFont &font, bool blur) {
+void TexFontPI::Build(wxFont &font, bool blur) {
   /* avoid rebuilding if the parameters are the same */
   if (font == m_font && blur == m_blur && m_built) return;
 
@@ -180,7 +180,7 @@ void TexFont::Build(wxFont &font, bool blur) {
   m_built = true;
 }
 
-void TexFont::Delete() {
+void TexFontPI::Delete() {
   if (texobj) {
     glDeleteTextures(1, &texobj);
     texobj = 0;
@@ -188,7 +188,7 @@ void TexFont::Delete() {
   m_built = false;
 }
 
-void TexFont::GetTextExtent(const char *string, int *width, int *height) {
+void TexFontPI::GetTextExtent(const char *string, int *width, int *height) {
   int w = 0, h = 0;
 
   for (int i = 0; string[i]; i++) {
@@ -211,11 +211,11 @@ void TexFont::GetTextExtent(const char *string, int *width, int *height) {
   if (height) *height = h;
 }
 
-void TexFont::GetTextExtent(const wxString &string, int *width, int *height) {
+void TexFontPI::GetTextExtent(const wxString &string, int *width, int *height) {
   GetTextExtent((const char *)string.ToUTF8(), width, height);
 }
 
-void TexFont::RenderGlyph(int c) {
+void TexFontPI::RenderGlyph(int c) {
   if (c < MIN_GLYPH || c >= MAX_GLYPH) return;
 
   TexGlyphInfo &tgic = tgi[c];
@@ -359,7 +359,7 @@ void TexFont::RenderGlyph(int c) {
 #endif
 }
 
-void TexFont::RenderString(const char *string, int x, int y) {
+void TexFontPI::RenderString(const char *string, int x, int y) {
 #ifndef USE_ANDROID_GLES2
 
   glPushMatrix();
@@ -411,7 +411,7 @@ void TexFont::RenderString(const char *string, int x, int y) {
 #endif
 }
 
-void TexFont::RenderString(const wxString &string, int x, int y) {
+void TexFontPI::RenderString(const wxString &string, int x, int y) {
   RenderString((const char *)string.ToUTF8(), x, y);
 }
 
