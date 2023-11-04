@@ -87,6 +87,7 @@ static const GLchar* texture_2D_fragment_shader_source =
     "   gl_FragColor = texture2D(uTex, varCoord);\n"
     "}\n";
 
+
 // Alpah 2D texture shader
 static const GLchar* pi_texture_2DA_vertex_shader_source =
     "attribute vec2 aPos;\n"
@@ -107,6 +108,10 @@ static const GLchar* pi_texture_2DA_fragment_shader_source =
     "void main() {\n"
     "   gl_FragColor = texture2D(uTex, varCoord) + color;\n"
     "}\n";
+
+// Or    "   gl_FragColor = (texture2D(uTexture, varTextureCoord) + vec4(uColour.rgb,0.0)) * vec4(1.0,1.0,1.0,uColour.a);\n"
+
+
 
 static const GLchar* pi_texture_text_vertex_shader_source =
     "attribute vec2 aPos;\n"
