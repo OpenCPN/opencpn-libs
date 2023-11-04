@@ -88,7 +88,7 @@ static const GLchar* texture_2D_fragment_shader_source =
     "}\n";
 
 
-// Alpah 2D texture shader
+// Color/Alpha 2D texture shader, used for area pattern rendering
 static const GLchar* pi_texture_2DA_vertex_shader_source =
     "attribute vec2 aPos;\n"
     "attribute vec2 aUV;\n"
@@ -108,9 +108,6 @@ static const GLchar* pi_texture_2DA_fragment_shader_source =
     "void main() {\n"
     "   gl_FragColor = (texture2D(uTex, varCoord) + vec4(color.rgb,0.0)) * vec4(1.0,1.0,1.0,color.a);\n"
     "}\n";
-
-//    "   gl_FragColor = texture2D(uTex, varCoord) + color;\n"
-// Or    "   gl_FragColor = (texture2D(uTexture, varTextureCoord) + vec4(uColour.rgb,0.0)) * vec4(1.0,1.0,1.0,uColour.a);\n"
 
 
 
