@@ -3005,7 +3005,7 @@ void piDC::DrawPolygonsPattern(int n, int npoint[], wxPoint points[],
   // Pre-configure the GLES program
   // GLint program = pi_colorv_tri_shader_program;
   //GLint program = pi_texture_2D_shader_program;
-  GLint program = pi_texture_2DA_shader_program
+  GLint program = pi_texture_2DA_shader_program;
   s_odc_activeProgram = program;
 
   glUseProgram(program);
