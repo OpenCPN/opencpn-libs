@@ -106,9 +106,10 @@ static const GLchar* pi_texture_2DA_fragment_shader_source =
     "varying vec2 varCoord;\n"
     "uniform vec4 color;\n"
     "void main() {\n"
-    "   gl_FragColor = texture2D(uTex, varCoord) + color;\n"
+    "   gl_FragColor = (texture2D(uTex, varCoord) + vec4(color.rgb,0.0)) * vec4(1.0,1.0,1.0,color.a);\n"
     "}\n";
 
+//    "   gl_FragColor = texture2D(uTex, varCoord) + color;\n"
 // Or    "   gl_FragColor = (texture2D(uTexture, varTextureCoord) + vec4(uColour.rgb,0.0)) * vec4(1.0,1.0,1.0,uColour.a);\n"
 
 
