@@ -2613,7 +2613,7 @@ void piDC::DrawPolygonTessellatedPattern(int n, wxPoint points[], int textureID,
 //
 #else
     // GLint program = pi_colorv_tri_shader_program;
-    GLint program = pi_texture_2D_shader_program;
+    GLint program = pi_texture_2DA_shader_program;
     s_odc_activeProgram = program;
     glUseProgram(program);
     checkGlError("glUseProgram", "piDC", __LINE__);
@@ -2643,7 +2643,7 @@ void piDC::DrawPolygonTessellatedPattern(int n, wxPoint points[], int textureID,
     checkGlError("glBindTexture", "piDC", __LINE__);
 
     // Set up the texture sampler to texture unit 0
-    GLint texUni = glGetUniformLocation(program, "uTexture");
+    GLint texUni = glGetUniformLocation(program, "uTex");
     checkGlError("texUni", "piDC", __LINE__);
     glUniform1i(texUni, 0);
     checkGlError("texUni", "piDC", __LINE__);
@@ -2665,7 +2665,7 @@ void piDC::DrawPolygonTessellatedPattern(int n, wxPoint points[], int textureID,
     bcolorv[1] = m_brush.GetColour().Green() / float(256);
     bcolorv[2] = m_brush.GetColour().Blue() / float(256);
     bcolorv[3] = m_brush.GetColour().Alpha() / float(256);
-    GLint bcolloc = glGetUniformLocation(program, "uColour");
+    GLint bcolloc = glGetUniformLocation(program, "color");
     checkGlError("bcoloc", "piDC", __LINE__);
     glUniform4fv(bcolloc, 1, bcolorv);
 #endif
