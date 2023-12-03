@@ -98,6 +98,8 @@ NMEA0183::NMEA0183(const NmeaContext &ctx) : caller_ctx(ctx) {
   response_table.Append((RESPONSE *)&Vwt);
   response_table.Append((RESPONSE *)&Xdr);
   response_table.Append((RESPONSE *)&Zda);
+  response_table.Append((RESPONSE *)&Dpt);
+  response_table.Append((RESPONSE *)&Dbt);
 
   /*
      response_table.Add( (RESPONSE *) &Rot );
