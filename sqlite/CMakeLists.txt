@@ -12,10 +12,10 @@ if(CMAKE_VERSION VERSION_LESS 3.14.0)
   list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR/cmake)
   find_package(Sqlite)
 else ()
-  find_package(Sqlite3)
+  find_package(SQLite3)
 endif ()
 
-if (NOT SQLITE_FOUND OR APPLE OR WIN32 OR QT_ANDROID)
+if (NOT (SQLITE_FOUND OR SQLite3_FOUND) OR APPLE OR WIN32 OR QT_ANDROID)
   message(STATUS "Using bundled sqlite3 library.")
   add_library(
     SQLITE3 STATIC ${CMAKE_CURRENT_LIST_DIR}/src/sqlite3.c
@@ -33,6 +33,10 @@ if (NOT SQLITE_FOUND OR APPLE OR WIN32 OR QT_ANDROID)
   endif (UNIX AND NOT APPLE)
 
 else ()
+  if( SQLite3_FOUND)
+    set(SQLITE_INCLUDE_DIR ${SQLite3_INCLUDE_DIR})
+    set(SQLITE_LIBRARIES ${SQLite3_LIBRARIES})
+  endif()
   target_include_directories(_SQLITE INTERFACE ${SQLITE_INCLUDE_DIR})
   target_link_libraries(_SQLITE INTERFACE ${SQLITE_LIBRARIES})
   file(STRINGS "${SQLITE_INCLUDE_DIR}/sqlite3.h" SQLITE_VERSION_LINE
