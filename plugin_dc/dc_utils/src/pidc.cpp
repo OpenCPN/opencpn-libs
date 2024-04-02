@@ -206,12 +206,15 @@ void piDC::Init() {
 
   g_textureId = -1;
   m_tobj = NULL;
+#ifdef ocpnUSE_GL
+  if (glcanvas) {
+    GLint parms[2];
+    glGetIntegerv(GL_SMOOTH_LINE_WIDTH_RANGE, &parms[0]);
+    GLMinSymbolLineWidth = wxMax(parms[0], 1);
 
-  GLint parms[2];
-  glGetIntegerv(GL_SMOOTH_LINE_WIDTH_RANGE, &parms[0]);
-  GLMinSymbolLineWidth = wxMax(parms[0], 1);
-
-  pi_loadShaders();
+    pi_loadShaders();
+  }
+#endif
 }
 
 void piDC::SetVP(PlugIn_ViewPort *vp) {
