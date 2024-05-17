@@ -32,7 +32,7 @@
 #endif
 
 #ifdef __MSVC__
-//#include <windows.h>
+// #include <windows.h>
 #endif
 
 #ifdef ocpnUSE_GL
@@ -65,13 +65,13 @@ extern GLint pi_color_tri_shader_program;
 extern GLint pi_circle_filled_shader_program;
 #endif
 
-//#ifdef USE_ANDROID_GLES2
-//#include "pi_shaders.h"
-//#include <gl2.h>
-//#include "linmath.h"
-//#endif
+// #ifdef USE_ANDROID_GLES2
+// #include "pi_shaders.h"
+// #include <gl2.h>
+// #include "linmath.h"
+// #endif
 
-//#include "georef.h"
+// #include "georef.h"
 #ifndef PI
 #define PI 3.1415926535897931160E0 /* pi */
 #endif
@@ -104,34 +104,34 @@ static int NextPow2(int size) {
   return n + 1;
 }
 
-void checkGlError(const char* op, const char* filename, int linenumber) {
+void checkGlError(const char *op, const char *filename, int linenumber) {
 #ifdef ANDROID
-    bool berror = false;
+  bool berror = false;
 
-    wxString l_ErrorTxt = "";
-    for (GLint error = glGetError(); error; error = glGetError()) {
-        berror = true;
-        switch(error) {
-            case GL_INVALID_ENUM:
-                l_ErrorTxt +=_("GL_INVALID_ENUM ");
-                break;
-            case GL_INVALID_VALUE:
-                l_ErrorTxt += _("GL_INVALID_VALUE ");
-                break;
-            case GL_INVALID_OPERATION:
-                l_ErrorTxt += _("GL_INVALID_OPERATION ");
-                break;
-            case GL_INVALID_FRAMEBUFFER_OPERATION:
-                l_ErrorTxt += _("GL_INVALID_FRAMEBUFFER_OPERATION ");
-                break;
-            case GL_OUT_OF_MEMORY:
-                l_ErrorTxt += _("GL_OUT_OF_MEMORY ");
-                break;
-        }
+  wxString l_ErrorTxt = "";
+  for (GLint error = glGetError(); error; error = glGetError()) {
+    berror = true;
+    switch (error) {
+      case GL_INVALID_ENUM:
+        l_ErrorTxt += _("GL_INVALID_ENUM ");
+        break;
+      case GL_INVALID_VALUE:
+        l_ErrorTxt += _("GL_INVALID_VALUE ");
+        break;
+      case GL_INVALID_OPERATION:
+        l_ErrorTxt += _("GL_INVALID_OPERATION ");
+        break;
+      case GL_INVALID_FRAMEBUFFER_OPERATION:
+        l_ErrorTxt += _("GL_INVALID_FRAMEBUFFER_OPERATION ");
+        break;
+      case GL_OUT_OF_MEMORY:
+        l_ErrorTxt += _("GL_OUT_OF_MEMORY ");
+        break;
     }
+  }
 #ifdef _DEBUG
-    if(berror == true)
-        wxLogMessage( _("%s:%i %s(), %s\n"), filename, linenumber, op, l_ErrorTxt);
+  if (berror == true)
+    wxLogMessage(_("%s:%i %s(), %s\n"), filename, linenumber, op, l_ErrorTxt);
 #endif
 #endif
 }
@@ -206,15 +206,12 @@ void piDC::Init() {
 
   g_textureId = -1;
   m_tobj = NULL;
-#ifdef ocpnUSE_GL
-  if (glcanvas) {
-    GLint parms[2];
-    glGetIntegerv(GL_SMOOTH_LINE_WIDTH_RANGE, &parms[0]);
-    GLMinSymbolLineWidth = wxMax(parms[0], 1);
 
-    pi_loadShaders();
-  }
-#endif
+  GLint parms[2];
+  glGetIntegerv(GL_SMOOTH_LINE_WIDTH_RANGE, &parms[0]);
+  GLMinSymbolLineWidth = wxMax(parms[0], 1);
+
+  pi_loadShaders();
 }
 
 void piDC::SetVP(PlugIn_ViewPort *vp) {
@@ -307,11 +304,11 @@ void piDC::SetTextForeground(const wxColour &colour) {
     m_textforegroundcolour = colour;
 }
 
-void piDC::SetTextBackground( const wxColour &colour )
-{
-    if( dc ) dc->SetTextBackground( colour );
-    else
-        m_textbackgroundcolour = colour;
+void piDC::SetTextBackground(const wxColour &colour) {
+  if (dc)
+    dc->SetTextBackground(colour);
+  else
+    m_textbackgroundcolour = colour;
 }
 
 void piDC::SetFont(const wxFont &font) {
@@ -2387,7 +2384,7 @@ void odc_endCallbackD_GLSL(void *data) {
 }
 #endif
 
-#endif  //#ifdef ocpnUSE_GL
+#endif  // #ifdef ocpnUSE_GL
 
 void piDC::DrawPolygonTessellated(int n, wxPoint points[], wxCoord xoffset,
                                   wxCoord yoffset) {
@@ -2478,7 +2475,7 @@ void piDC::DrawPolygonTessellated(int n, wxPoint points[], wxCoord xoffset,
 
     for (std::list<double *>::iterator i = odc_combine_work_data.begin();
          i != odc_combine_work_data.end(); ++i)
-      delete[] * i;
+      delete[] *i;
     odc_combine_work_data.clear();
   }
 #else  // USE_ANDROID_GLES2
@@ -2759,7 +2756,7 @@ void piDC::DrawPolygonTessellatedPattern(int n, wxPoint points[], int textureID,
 
     for (std::list<double *>::iterator i = odc_combine_work_data.begin();
          i != odc_combine_work_data.end(); i++)
-      delete[] * i;
+      delete[] *i;
     odc_combine_work_data.clear();
 
     glUseProgram(0);
@@ -3006,7 +3003,7 @@ void piDC::DrawPolygonsPattern(int n, int npoint[], wxPoint points[],
 #else
   // Pre-configure the GLES program
   // GLint program = pi_colorv_tri_shader_program;
-  //GLint program = pi_texture_2D_shader_program;
+  // GLint program = pi_texture_2D_shader_program;
   GLint program = pi_texture_2DA_shader_program;
   s_odc_activeProgram = program;
 
@@ -3218,7 +3215,7 @@ void piDC::DrawBitmap(const wxBitmap &bitmap, wxCoord x, wxCoord y,
 
       glColor4f(1, 1, 1, 1);
       GLDrawBlendData(x, y, w, h, GL_RGBA, e);
-      delete[](e);
+      delete[] (e);
     } else {
       glRasterPos2i(x, y);
       glPixelZoom(1, -1); /* draw data from top to bottom */
@@ -3249,15 +3246,15 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
       m_texfont.SetColor(m_textforegroundcolour);
 
       if (w && h) {
-        if(m_textbackgroundcolour.Alpha() != 0) {
-            wxPen p = m_pen;
-            wxBrush b = m_brush;
-            SetPen(*wxTRANSPARENT_PEN);
-            SetBrush(wxBrush(m_textbackgroundcolour));
-            DrawRoundedRectangle(x, y, w, h, 3);
-            //DrawRectangle(x, y, w, h);
-            SetPen(p);
-            SetBrush(b);
+        if (m_textbackgroundcolour.Alpha() != 0) {
+          wxPen p = m_pen;
+          wxBrush b = m_brush;
+          SetPen(*wxTRANSPARENT_PEN);
+          SetBrush(wxBrush(m_textbackgroundcolour));
+          DrawRoundedRectangle(x, y, w, h, 3);
+          // DrawRectangle(x, y, w, h);
+          SetPen(p);
+          SetBrush(b);
         }
 
         glEnable(GL_BLEND);
@@ -3345,7 +3342,7 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
 #else
       unsigned int texobj;
 
-      if(m_textbackgroundcolour.Alpha() != 0) {
+      if (m_textbackgroundcolour.Alpha() != 0) {
         wxPen p = m_pen;
         wxBrush b = m_brush;
         SetPen(*wxTRANSPARENT_PEN);
@@ -3398,6 +3395,11 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
     }
   }
 #endif  // ocpnUSE_GL
+}
+
+void piDC::DrawRotatedText(const wxString &text, wxCoord x, wxCoord y,
+                           double angle) {
+  if (dc) dc->DrawRotatedText(text, x, y, angle);
 }
 
 void piDC::GetTextExtent(const wxString &string, wxCoord *w, wxCoord *h,

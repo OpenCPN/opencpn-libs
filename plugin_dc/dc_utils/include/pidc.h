@@ -165,6 +165,9 @@ public:
   void DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
                   float scaleFactor);
 
+  void DrawRotatedText(const wxString &text, wxCoord x, wxCoord y,
+                       double angle);
+
   void GetTextExtent(const wxString &string, wxCoord *w, wxCoord *h,
                      wxCoord *descent = NULL, wxCoord *externalLeading = NULL,
                      wxFont *font = NULL);
