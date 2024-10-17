@@ -79,7 +79,7 @@ class wxGLCanvas;
 
 class piDC {
 public:
-  piDC(wxGLCanvas &canvas);
+  piDC(wxGLContext *context);
   piDC(wxDC &pdc);
   piDC();
 
@@ -233,7 +233,7 @@ protected:
                         wxCoord yoffset, wxPen pen, bool b_hiqual);
   void DrawEndCap(float x1, float y1, float t1, float angle);
 
-  wxGLCanvas *glcanvas;
+  wxGLContext *glcontext;
   wxDC *dc;
   wxPen m_pen;
   wxBrush m_brush;

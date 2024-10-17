@@ -140,13 +140,13 @@ void checkGlError(const char* op, const char* filename, int linenumber) {
 
 //----------------------------------------------------------------------------
 /* pass the dc to the constructor, or NULL to use opengl */
-piDC::piDC(wxGLCanvas &canvas)
-    : glcanvas(&canvas), dc(NULL), m_pen(wxNullPen), m_brush(wxNullBrush) {
+piDC::piDC(wxGLContext *context)
+    : glcontext(context), dc(NULL), m_pen(wxNullPen), m_brush(wxNullBrush) {
   Init();
 }
 
 piDC::piDC(wxDC &pdc)
-    : glcanvas(NULL), dc(&pdc), m_pen(wxNullPen), m_brush(wxNullBrush) {
+    : glcontext(NULL), dc(&pdc), m_pen(wxNullPen), m_brush(wxNullBrush) {
   Init();
 #if wxUSE_GRAPHICS_CONTEXT
   pgc = NULL;
@@ -161,7 +161,7 @@ piDC::piDC(wxDC &pdc)
 }
 
 piDC::piDC()
-    : glcanvas(NULL), dc(NULL), m_pen(wxNullPen), m_brush(wxNullBrush) {
+    : glcontext(NULL), dc(NULL), m_pen(wxNullPen), m_brush(wxNullBrush) {
   Init();
 }
 
@@ -207,7 +207,7 @@ void piDC::Init() {
   g_textureId = -1;
   m_tobj = NULL;
 #ifdef ocpnUSE_GL
-  if (glcanvas) {
+  if (glcontext) {
     GLint parms[2];
     glGetIntegerv(GL_SMOOTH_LINE_WIDTH_RANGE, &parms[0]);
     GLMinSymbolLineWidth = wxMax(parms[0], 1);
@@ -227,25 +227,25 @@ void piDC::SetVP(PlugIn_ViewPort *vp) {
 void piDC::Clear() {
   if (dc)
     dc->Clear();
-  else {
-#ifdef ocpnUSE_GL
-    wxBrush tmpBrush = m_brush;
-    int w, h;
-    SetBrush(wxBrush(glcanvas->GetBackgroundColour()));
-    glcanvas->GetSize(&w, &h);
-    DrawRectangle(0, 0, w, h);
-    SetBrush(tmpBrush);
-#endif
-  }
+//  else {
+//#ifdef ocpnUSE_GL
+//    wxBrush tmpBrush = m_brush;
+//    int w, h;
+//    SetBrush(wxBrush(glcanvas->GetBackgroundColour()));
+//    glcanvas->GetSize(&w, &h);
+//    DrawRectangle(0, 0, w, h);
+//    SetBrush(tmpBrush);
+//#endif
+//  }
 }
 
 void piDC::SetBackground(const wxBrush &brush) {
   if (dc)
     dc->SetBackground(brush);
   else {
-#ifdef ocpnUSE_GL
-    glcanvas->SetBackgroundColour(brush.GetColour());
-#endif
+//#ifdef ocpnUSE_GL
+//    glcanvas->SetBackgroundColour(brush.GetColour());
+//#endif
   }
 }
 
@@ -340,9 +340,9 @@ void piDC::GetSize(wxCoord *width, wxCoord *height) const {
   if (dc)
     dc->GetSize(width, height);
   else {
-#ifdef ocpnUSE_GL
-    glcanvas->GetSize(width, height);
-#endif
+//#ifdef ocpnUSE_GL
+//    glcanvas->GetSize(width, height);
+//#endif
   }
 }
 
