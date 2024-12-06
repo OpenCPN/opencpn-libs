@@ -1,4 +1,4 @@
 Open CPN API linkage library
 ----------------------------
 
-Beta version built from 43d90aab using ci\appveour.bat
+Built from OCPN 5.11, git commit a37253e0865eff12195072346e1a92c7d5d5e431
