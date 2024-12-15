@@ -1,11 +1,5 @@
-/***************************************************************************
- *
- * Project:  OpenCPN
- * Purpose:  PlugIn Object Definition/API
- * Author:   David Register
- *
- ***************************************************************************
- *   Copyright (C) 2010 by David S. Register                               *
+/**************************************************************************
+ *   Copyright (C) 2010 - 2024 by David S. Register                        *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -23,7 +17,10 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
  **************************************************************************/
 
-/** \file ocpn_plugin.h. */
+/**
+ * \file
+ * PlugIn Object Definition/API
+ */
 
 #ifndef _PLUGIN_H_
 #define _PLUGIN_H_
@@ -1830,11 +1827,14 @@ extern DECL_EXP const std::unordered_map<std::string, std::string>
 GetAttributes(DriverHandle handle);
 
 /* Writing to a specific driver  */
-
-/* Comm drivers on bus protocols other than NMEA2000 may write directly to the
- * port * using  a simple call.  The physical write operation will be queued,
- * and executed in order as bandwidth allows.
- * Return value is number of bytes queued for transmission.
+/**
+ * Send a non-NMEA2000 message. The call is not blocking.
+ * @param handle Obtained from GetActiveDrivers()
+ * @param payload Message data, for example a complete Nmea0183 message.
+ *        From 1.19: if the handle "protocol" attribute is "internal" it is
+ *        parsed as <id><space><message> where the id is used when listening/
+ *        subscribing to message.
+ * @return value number of bytes queued for transmission.
  */
 extern DECL_EXP CommDriverResult WriteCommDriver(
     DriverHandle handle, const std::shared_ptr<std::vector<uint8_t>> &payload);
@@ -1872,9 +1872,17 @@ struct PluginMsgId {
   PluginMsgId(const std::string &s) : id(s) {};
 };
 
+/**
+ *  Return listener for plugin messages, internal or received on the REST
+ *  interface.
+ */
 extern DECL_EXP std::shared_ptr<ObservableListener> GetListener(
     PluginMsgId id, wxEventType ev, wxEvtHandler *handler);
 
+/**
+ *  Retrieve the string in a plugin message, internal or received on the
+ *  REST insterface.
+ */
 extern DECL_EXP std::string GetPluginMsgPayload(PluginMsgId id, ObservedEvt ev);
 
 //  Assorted GUI utility functions
@@ -1889,7 +1897,8 @@ extern DECL_EXP void EnableStatusBar(bool enable);
 extern DECL_EXP void EnableChartBar(bool enable);
 extern DECL_EXP void EnableMenu(bool enable);
 
-extern DECL_EXP void SetGlobalColor(std::string table, std::string name, wxColor color);
+extern DECL_EXP void SetGlobalColor(std::string table, std::string name,
+                                    wxColor color);
 
 /*
  *  Allow plugin control of "Chart Panel Options" dialog
@@ -1908,5 +1917,43 @@ extern DECL_EXP void EnableLightsDisplay(bool enable);
 extern DECL_EXP void EnableLightDescriptionsDisplay(bool enable);
 extern DECL_EXP void SetENCDisplayCategory(PI_DisCat cat);
 extern DECL_EXP void SetNavigationMode(PI_NavMode mode);
+
+extern DECL_EXP bool GetEnableLatLonGrid();
+extern DECL_EXP bool GetEnableChartOutlines();
+extern DECL_EXP bool GetEnableDepthUnitDisplay();
+extern DECL_EXP bool GetEnableAisTargetDisplay();
+extern DECL_EXP bool GetEnableTideStationsDisplay();
+extern DECL_EXP bool GetEnableCurrentStationsDisplay();
+extern DECL_EXP bool GetEnableENCTextDisplay();
+extern DECL_EXP bool GetEnableENCDepthSoundingsDisplay();
+extern DECL_EXP bool GetEnableBuoyLightLabelsDisplay();
+extern DECL_EXP bool GetEnableLightsDisplay();
+extern DECL_EXP bool GetEnableLightDescriptionsDisplay();
+extern DECL_EXP PI_DisCat GetENCDisplayCategory();
+extern DECL_EXP PI_NavMode GetNavigationMode();
+
+extern DECL_EXP bool GetEnableMUIBar();
+extern DECL_EXP bool GetEnableCompassGPSIcon();
+extern DECL_EXP bool GetEnableStatusBar();
+extern DECL_EXP bool GetEnableChartBar();
+extern DECL_EXP bool GetEnableMenu();
+
+extern DECL_EXP void CenterOnOwnship();
+extern DECL_EXP bool GetCenterOnOwnship();
+
+extern DECL_EXP void SetTrackingMode(bool enable);
+extern DECL_EXP bool GetTrackingMode();
+
+extern DECL_EXP void EnableLookaheadMode(bool enable);
+extern DECL_EXP bool GetEnableLookaheadMode();
+
+extern DECL_EXP void EnableTouchMode(bool enable);
+extern DECL_EXP bool GetTouchMode();
+
+extern DECL_EXP void SetAppColorScheme(PI_ColorScheme cs);
+extern DECL_EXP PI_ColorScheme GetAppColorScheme();
+
+extern "C" DECL_EXP void RequestWindowRefresh(wxWindow *win,
+                                              bool eraseBackground);
 
 #endif  //_PLUGIN_H_
