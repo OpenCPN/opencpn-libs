@@ -1,19 +1,26 @@
 opencpn-libs README
 ===================
 
-This is a set of libraries aimed to be used in opencpn plugins as a git
-submodule.
+This is a set of libraries used by OpenCPN plugins, managed as a git submodule.
+It provides a standardized way to share common functionality across plugins
+while maintaining version control and consistency.
 
-TRANSITION UNDER WAY
---------------------
-opencpn-libs has been available as https://github.com/leamas/opencpn-libs. It
-has been moved to the new location https://github.com/opencpn/opencpn-libs.
-During a transition window both of these locations will be kept in sync.
+Overview
+--------
 
-NOTE: Changes are done to the devel branch in github.com/opencpn/opencpn-libs.
-https://github.com/leamas/opencpn-libs should be considered being a read-only
-mirror.
+The repository contains several types of libraries:
 
+1. API Libraries (api-16, api-17, api-18):
+   - Core interfaces for plugin-OpenCPN communication
+   - Different versions support various OpenCPN releases
+   - Plugins should use the latest API version compatible with their minimum supported OpenCPN version
+2. Utility Libraries:
+   - Data Processing: jsoncpp, json-schema-validator, pugixml, tinyxml
+   - Compression: bzip2, lz4, zlib
+   - Navigation: nmea0183, n2kparser
+   - Graphics: wxsvg, opencpn-glu
+   - Network: curl, wxcurl
+   - And more specialized libraries for specific functionality
 
 Adding the submodule
 --------------------
@@ -21,14 +28,12 @@ Adding the submodule
     $ git submodule add https://github.com/OpenCPN/opencpn-libs.git
     $ git commit -m "Adding opencpn-libs submodule"
 
-
 Updating to latest status
 -------------------------
 
     $ git submodule update --remote --merge opencpn-libs
     $ git add opencpn-libs
     $ git commit -m "Updating opencpn-libs to latest version."
-
 
 Using it
 --------
@@ -46,9 +51,8 @@ Note:  the name _target_link_libraries_ is somewhat misleading. It is not
 just about linkage, running it means importing all sorts of include paths,
 compile constants and libraries required when using the library.
 
-
-Removing the submodule.
------------------------
+Removing the submodule
+----------------------
 
 Normally not required, but if:
 
@@ -61,7 +65,6 @@ Normally not required, but if:
     $ git commit -m "Remove opencpn-libs submodule."
 
 More: https://stackoverflow.com/questions/1260748
-
 
 Updating libraries
 ------------------
