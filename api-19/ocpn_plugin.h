@@ -1891,7 +1891,6 @@ extern DECL_EXP void ExitOCPN();
 extern "C" DECL_EXP void RequestWindowRefresh(wxWindow *win,
                                               bool eraseBackground);
 
-
 extern DECL_EXP bool GetFullScreen();
 extern DECL_EXP void SetFullScreen(bool full_screen_on);
 
@@ -1913,7 +1912,7 @@ extern DECL_EXP bool GetEnableLookaheadMode(int CanvasIndex);
 
 extern DECL_EXP void EnableMUIBar(bool enable, int CanvasIndex);
 extern DECL_EXP void EnableCompassGPSIcon(bool enable, int CanvasIndex);
-extern DECL_EXP void EnableChartBar(bool enable,int CanvasIndex);
+extern DECL_EXP void EnableChartBar(bool enable, int CanvasIndex);
 extern DECL_EXP bool GetEnableMUIBar(int CanvasIndex);
 extern DECL_EXP bool GetEnableCompassGPSIcon(int CanvasIndex);
 extern DECL_EXP bool GetEnableChartBar(int CanvasIndex);
@@ -1929,10 +1928,12 @@ extern DECL_EXP void EnableAisTargetDisplay(bool enable, int CanvasIndex);
 extern DECL_EXP void EnableTideStationsDisplay(bool enable, int CanvasIndex);
 extern DECL_EXP void EnableCurrentStationsDisplay(bool enable, int CanvasIndex);
 extern DECL_EXP void EnableENCTextDisplay(bool enable, int CanvasIndex);
-extern DECL_EXP void EnableENCDepthSoundingsDisplay(bool enable, int CanvasIndex);
+extern DECL_EXP void EnableENCDepthSoundingsDisplay(bool enable,
+                                                    int CanvasIndex);
 extern DECL_EXP void EnableBuoyLightLabelsDisplay(bool enable, int CanvasIndex);
 extern DECL_EXP void EnableLightsDisplay(bool enable, int CanvasIndex);
-extern DECL_EXP void EnableLightDescriptionsDisplay(bool enable, int CanvasIndex);
+extern DECL_EXP void EnableLightDescriptionsDisplay(bool enable,
+                                                    int CanvasIndex);
 extern DECL_EXP void SetENCDisplayCategory(PI_DisCat cat, int CanvasIndex);
 
 extern DECL_EXP bool GetEnableLatLonGrid(int CanvasIndex);
@@ -1951,12 +1952,17 @@ extern DECL_EXP PI_DisCat GetENCDisplayCategory(int CanvasIndex);
 extern DECL_EXP void CenterOnOwnship(int CanvasIndex);
 extern DECL_EXP bool GetCenterOnOwnship(int CanvasIndex);
 
-
 extern DECL_EXP void SetTrackingMode(bool enable);
 extern DECL_EXP bool GetTrackingMode();
 
 extern DECL_EXP void SetAppColorScheme(PI_ColorScheme cs);
 extern DECL_EXP PI_ColorScheme GetAppColorScheme();
 
+// Create an unmanaged ChartCanvas
+extern DECL_EXP int
+PluginCreateChartCanvas();  // The wxWindow is created at a nominal size,
+                            // hidden.
+                            //  Return value is index of new canvas wxWindow
+extern DECL_EXP void PluginDeleteChartCanvas(wxWindow *win);
 
 #endif  //_PLUGIN_H_
