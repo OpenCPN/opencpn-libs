@@ -221,6 +221,8 @@ public:
   double Var;  // Variation, typically from RMC message
   double Hdm;
   double Hdt;
+  // The time obtained from the most recent GNSS message, or the system time if
+  // the GNSS watchdog has expired.
   time_t FixTime;
   int nSats;
 };
@@ -2215,5 +2217,8 @@ extern DECL_EXP void SetEnableMainToolbar(bool enable);
 extern DECL_EXP void ShowGlobalSettingsDialog();
 
 extern DECL_EXP void PluginCenterOwnship(int CanvasIndex);
+
+extern DECL_EXP bool GetEnableTenHertzUpdate();
+extern DECL_EXP void EnableTenHertzUpdate(bool enable);
 
 #endif  //_PLUGIN_H_
