@@ -4640,7 +4640,7 @@ extern DECL_EXP wxEventType wxEVT_DOWNLOAD_EVENT;
 /* API 1.14  adds some more common functions to avoid unnecessary code
  * duplication */
 
-bool LaunchDefaultBrowser_Plugin(wxString url);
+extern DECL_EXP bool LaunchDefaultBrowser_Plugin(wxString url);
 
 // API 1.14 Extra canvas Support
 
@@ -5073,7 +5073,7 @@ public:
                      const double ScaMin = 1e9, const bool bNameVisible = false,
                      const int nRanges = 0, const double RangeDistance = 1.0,
                      const wxColor RangeColor = wxColor(255, 0, 0));
-  virtual ~PlugIn_Waypoint_Ex();
+  ~PlugIn_Waypoint_Ex();
   /**
    * Initializes waypoint properties to default values.
    *
@@ -5139,27 +5139,6 @@ public:
 
 WX_DECLARE_LIST(PlugIn_Waypoint_Ex, Plugin_WaypointExList);
 
-class DECL_EXP PlugIn_Waypoint_ExV2 : public PlugIn_Waypoint_Ex {
-public:
-  PlugIn_Waypoint_ExV2();
-  PlugIn_Waypoint_ExV2(double lat, double lon, const wxString &icon_ident,
-                       const wxString &wp_name, const wxString &GUID = "",
-                       const double ScaMin = 1e9,
-                       const bool bNameVisible = false, const int nRanges = 0,
-                       const double RangeDistance = 1.0,
-                       const wxColor RangeColor = wxColor(255, 0, 0));
-  virtual ~PlugIn_Waypoint_ExV2();
-  double scamax;  //!< Maximum display scale (1:X) for waypoint visibility
-  double m_PlannedSpeed;           //!< Planned speed for next leg (knots)
-  bool m_bShowWaypointRangeRings;  //!< True to show range rings on chart
-  double m_WaypointArrivalRadius;  //!< Arrival radius in nautical miles
-  /** Estimated departure time, or wxInvalidDateTime if not set. */
-  wxDateTime m_ETD;
-
-private:
-  void InitExV2Defaults();
-};
-
 /**
  * Extended route class for managing complex route features.
  *
@@ -5185,7 +5164,7 @@ private:
 class DECL_EXP PlugIn_Route_Ex {
 public:
   PlugIn_Route_Ex(void);
-  virtual ~PlugIn_Route_Ex(void);
+  ~PlugIn_Route_Ex(void);
 
   wxString m_NameString;   //!< User-visible name of the route
   wxString m_StartString;  //!< Description of route start point
@@ -6350,15 +6329,18 @@ enum class PI_NotificationSeverity : int {
 class PI_Notification {
 public:
   PI_Notification(PI_NotificationSeverity _severity,
-                  const std::string &_message, int _timeout_secs,
-                  std::string _guid);
+                  const std::string &_message, int _timeout_start,
+                  int _timeout_left, std::string _guid);
   virtual ~PI_Notification() {};
 
-private:
   PI_NotificationSeverity severity;
   std::string message;
-  int auto_timeout_secs;
+  int auto_timeout_left;
+  int auto_timeout_start;
   std::string guid;
+  std::string action_verb;  // Either "ACK" or "POST", when set by a
+                            // PI_Notification message payload.
+                            // Empty otherwise
 };
 
 extern DECL_EXP int GetActiveNotificationCount();
@@ -6366,9 +6348,59 @@ extern DECL_EXP PI_NotificationSeverity GetMaxActiveNotificationLevel();
 extern DECL_EXP std::string RaiseNotification(
     const PI_NotificationSeverity _severity, const std::string &_message,
     int timeout_secs = -1);
-extern DECL_EXP bool AcknowledgePINotification(const std::string &guid);
+extern DECL_EXP bool AcknowledgeNotification(const std::string &guid);
 extern DECL_EXP std::vector<std::shared_ptr<PI_Notification>>
 GetActiveNotifications();
 extern DECL_EXP void EnableNotificationCanvasIcon(bool enable);
+
+/*
+ * Messaging interface for Notification Framework
+ *
+ */
+
+/*
+ * Typical use pattern
+ *
+ * 1)  Establish listener
+  wxDEFINE_EVENT(EVT_NOTIFICATION_FRAME, ObservedEvt);
+  static std::shared_ptr<ObservableListener> listener_note;
+  NotificationMsgId note_id = NotificationMsgId();
+  listener_note = GetListener(note_id, EVT_NOTIFICATION_FRAME, this);
+  Bind(EVT_NOTIFICATION_FRAME, [&](ObservedEvt ev) { HandleNotification(ev); });
+ *
+ *
+ *
+ * 2)  Define actions on receipt
+  static void HandleNotification(ObservedEvt &ev) {
+    NotificationMsgId id;
+    std::shared_ptr<PI_Notification>payload=GetNotificationMsgPayload(id, ev);
+    if (payload->action_verb == "ACK"){
+      // Do Acknowledge notification actions
+    }
+    else if (payload->action_verb == "POST") {
+      // Do Add Notification actions
+    }
+  }
+
+*/
+/** Facade for NotificationMsg. */
+struct NotificationMsgId {
+  const std::string id;
+  NotificationMsgId(const std::string &s) : id(s) {};
+  NotificationMsgId() {};
+};
+
+/**
+ * Return listener for Notification Framework messages
+ * interface.
+ */
+extern DECL_EXP std::shared_ptr<ObservableListener> GetListener(
+    NotificationMsgId id, wxEventType ev, wxEvtHandler *handler);
+
+/**
+ * Retrieve the Notification Event in a Notification message
+ */
+extern DECL_EXP std::shared_ptr<PI_Notification> GetNotificationMsgPayload(
+    NotificationMsgId id, ObservedEvt ev);
 
 #endif  //_PLUGIN_H_
