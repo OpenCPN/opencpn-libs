@@ -54,6 +54,7 @@ void XTE::Empty(void) {
 
   CrossTrackErrorDistance = 0.0;
   DirectionToSteer = LR_Unknown;
+  FAAModeIndicator.Empty();
 }
 
 bool XTE::Parse(const SENTENCE& sentence) {
@@ -62,34 +63,46 @@ bool XTE::Parse(const SENTENCE& sentence) {
   wxString field_data;
 
   /*
-  ** XTE - Autopilot Sentence
+  ** XTE - Cross Track Error, Measured
   **
   **        1 2 3   4 5 6
   **        | | |   | | |
   ** $--XTE,A,A,x.x,a,N*hh<CR><LF>
   **
-  **  1) Status
-  **     V = LORAN-C Blink or SNR warning
-  **     V = general warning flag or other navigation systems when a reliable
-  **         fix is not available
-  **  2) Status
-  **     V = Loran-C Cycle Lock warning flag
-  **     A = OK or not used
+  ** NMEA 2.3:
+  **        1 2 3   4 5 6 7
+  **        | | |   | | | |
+  ** $--XTE,A,A,x.x,a,N,m*hh<CR><LF>
+  **
+  ** Field Number:
+  **  1) Status - A = Valid, V = Loran-C Blink or SNR warning
+  **  2) Status - V = Loran-C Cycle Lock warning flag, A = Valid
   **  3) Cross Track Error Magnitude
   **  4) Direction to steer, L or R
   **  5) Cross Track Units, N = Nautical Miles
-  **  6) Checksum
+  **  6) FAA mode indicator (NMEA 2.3 and later, optional)
+  **  7) Checksum
   */
 
   /*
   ** First we check the checksum...
   */
 
-  NMEA0183_BOOLEAN check = sentence.IsChecksumBad(15);
-
-  if (check == NTrue) {
-    SetErrorMessage(_T("Invalid Checksum"));
-    return (FALSE);
+  wxString field6 = sentence.Field(6);
+  if (sentence.IsChecksumBad(6) == TRUE) {
+    /*
+     * This may be an NMEA Version 2.3 sentence, with "FAA Mode Indicator" field
+     */
+    if (field6.StartsWith("*"))  // Field is a valid erroneous checksum
+    {
+      SetErrorMessage("Invalid Checksum");
+      return (FALSE);
+    } else {
+      if (sentence.IsChecksumBad(7) == TRUE) {
+        SetErrorMessage("Invalid Checksum");
+        return (FALSE);
+      }
+    }
   }
 
   /*
@@ -101,6 +114,15 @@ bool XTE::Parse(const SENTENCE& sentence) {
   CrossTrackErrorDistance = sentence.Double(3);
   DirectionToSteer = sentence.LeftOrRight(4);
   CrossTrackUnits = sentence.Field(5);
+
+  // Check if FAA Mode Indicator is present (NMEA 2.3 and later)
+  if (!field6.StartsWith(_T("*"))) {
+    // Field 6 is not the checksum, so it should be FAA Mode Indicator
+    FAAModeIndicator = field6;
+  } else {
+    // Field 6 is the checksum, no FAA Mode Indicator
+    FAAModeIndicator.Empty();
+  }
 
   return (TRUE);
 }
@@ -125,6 +147,11 @@ bool XTE::Write(SENTENCE& sentence) {
 
   sentence += CrossTrackUnits;
 
+  // Add FAA Mode Indicator if present
+  if (!FAAModeIndicator.IsEmpty()) {
+    sentence += FAAModeIndicator;
+  }
+
   sentence.Finish();
 
   return (TRUE);
@@ -138,6 +165,7 @@ const XTE& XTE::operator=(const XTE& source) {
   CrossTrackErrorDistance = source.CrossTrackErrorDistance;
   DirectionToSteer = source.DirectionToSteer;
   CrossTrackUnits = source.CrossTrackUnits;
+  FAAModeIndicator = source.FAAModeIndicator;
 
   return (*this);
 }

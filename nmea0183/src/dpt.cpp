@@ -71,7 +71,7 @@ bool DPT::Parse(const SENTENCE& sentence) {
   ** Field Number:
   **  1) Depth, meters
   **  2) Offset from transducer,
-  **     positive means distance from tansducer to water line
+  **     positive means distance from transducer to water line
   **     negative means distance from transducer to keel
   **  3) Checksum
   */
