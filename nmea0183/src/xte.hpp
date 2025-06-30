@@ -59,6 +59,7 @@ class XTE : public RESPONSE
       double           CrossTrackErrorDistance;
       LEFTRIGHT        DirectionToSteer;
       wxString          CrossTrackUnits;
+      wxString          FAAModeIndicator;
 
       /*
       ** Methods
