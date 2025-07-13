@@ -177,7 +177,7 @@ piDC::~piDC() {
 }
 
 void piDC::Init() {
-  m_buseTex = GetLocaleCanonicalName().IsSameAs(_T("en_US"));
+  m_buseTex = false; //GetLocaleCanonicalName().IsSameAs(_T("en_US"));
 
 #if wxUSE_GRAPHICS_CONTEXT
   pgc = NULL;
