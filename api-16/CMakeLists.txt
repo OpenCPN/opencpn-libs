@@ -7,7 +7,7 @@
 # API_OCPN_MIN_VERSION
 # ~~~
 
-cmake_minimum_required(VERSION 4.0)
+cmake_minimum_required(VERSION 3.22)
 
 if (TARGET ocpn::api)
   return ()
