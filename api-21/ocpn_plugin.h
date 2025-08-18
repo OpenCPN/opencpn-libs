@@ -2260,6 +2260,7 @@ public:
 class DECL_EXP opencpn_plugin_121 : public opencpn_plugin_120 {
 public:
   opencpn_plugin_121(void *pmgr);
+  virtual void UpdateFollowState(int canvas_index, bool state);
 };
 
 //------------------------------------------------------------------
@@ -7151,6 +7152,9 @@ extern DECL_EXP void SetMinZoomScale(double min_scale);
 extern DECL_EXP void SetMaxZoomScale(double max_scale);
 
 extern DECL_EXP wxBitmap GetObjectIcon_PlugIn(const wxString &name);
+
+extern DECL_EXP void SetDepthUnitVisible(bool bviz);
+extern DECL_EXP void SetOverzoomFlagVisible(bool bviz);
 
 extern DECL_EXP bool IsRouteActive(wxString route_guid);
 extern DECL_EXP void SetBoatPosition(double zlat, double zlon);
