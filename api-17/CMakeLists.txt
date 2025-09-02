@@ -2,7 +2,7 @@
 # Include API header and, on win32, link import libs. Set API_VERSION  and
 # API_OCPN_MIN_VERSION
 #
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
 if (TARGET ocpn::api)
   return ()
