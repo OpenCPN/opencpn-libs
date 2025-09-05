@@ -262,3 +262,37 @@ bool ParseN2kPGN129793(std::vector<unsigned char> &v, uint8_t &MessageID,
   return ParseN2kPGN129793(msg, MessageID, Repeat, UserID, Longitude, Latitude,
                            SecondsSinceMidnight, DaysSinceEpoch);
 }
+
+bool ParseN2kPGN128777(std::vector<unsigned char> &v, unsigned char &SID,
+                       unsigned char &WindlassIdentifier,
+                       double &RodeCounterValue, double &WindlassLineSpeed,
+                       tN2kWindlassMotionStates &WindlassMotionStatus,
+                       tN2kRodeTypeStates &RodeTypeStatus,
+                       tN2kAnchorDockingStates &AnchorDockingStatus,
+                       tN2kWindlassOperatingEvents &WindlassOperatingEvents) {
+  tN2kMsg msg = MakeN2kMsg(v);
+
+  return ParseN2kPGN128777(msg, SID,
+                           WindlassIdentifier,
+                           RodeCounterValue, WindlassLineSpeed,
+                           WindlassMotionStatus,
+                           RodeTypeStatus,
+                           AnchorDockingStatus,
+                           WindlassOperatingEvents);
+}
+
+bool ParseN2kPGN130313(std::vector<unsigned char> &v, unsigned char &SID,
+                       unsigned char &HumidityInstance,
+                       tN2kHumiditySource &HumiditySource,
+                       double &ActualHumidity, double &SetHumidity) {
+  tN2kMsg msg = MakeN2kMsg(v);
+
+  return ParseN2kPGN130313(msg, SID,
+                           HumidityInstance,
+                           HumiditySource,
+                           ActualHumidity, SetHumidity);
+}
+
+
+
+
