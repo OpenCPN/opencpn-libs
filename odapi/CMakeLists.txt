@@ -5,7 +5,13 @@
 #
 # ~~~
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
+
+set(VERSION_MAJOR "1")
+set(VERSION_MINOR "2")
+set(VERSION_PATCH "0")
+set(VERSION_TWEAK "0")
+set(VERSION_DATE "20/09/2025") # DD/MM/YYYY format
 
 if (TARGET ocpn::odapi)
   return ()
