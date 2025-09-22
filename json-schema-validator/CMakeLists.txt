@@ -19,7 +19,7 @@ if (NOT CMAKE_MODULE_PATH)
 endif ()
 
 set(SRC_JSONSCHEMAVALIDATOR json-schema-draft7.json.cpp json-uri.cpp
-                            json-validator.cpp
+                            json-validator.cpp  json-patch.cpp
 )
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
