@@ -21,14 +21,14 @@
 #	define JSON_SCHEMA_VALIDATOR_API
 #endif
 
-#include <json.hpp>
+#include <nlohmann/json.hpp>
 
 #ifdef NLOHMANN_JSON_VERSION_MAJOR
-#	if NLOHMANN_JSON_VERSION_MAJOR < 3 || NLOHMANN_JSON_VERSION_MINOR < 5 || NLOHMANN_JSON_VERSION_PATCH < 0
-#		error "Please use this library with NLohmann's JSON version 3.5.0 or higher"
+#	if (NLOHMANN_JSON_VERSION_MAJOR * 10000 + NLOHMANN_JSON_VERSION_MINOR * 100 + NLOHMANN_JSON_VERSION_PATCH) < 30800
+#		error "Please use this library with NLohmann's JSON version 3.8.0 or higher"
 #	endif
 #else
-#	error "expected existing NLOHMANN_JSON_VERSION_MAJOR preproc variable, please update to NLohmann's JSON 3.5.0"
+#	error "expected existing NLOHMANN_JSON_VERSION_MAJOR preproc variable, please update to NLohmann's JSON 3.8.0"
 #endif
 
 // make yourself a home - welcome to nlohmann's namespace
@@ -48,18 +48,20 @@ class JSON_SCHEMA_VALIDATOR_API json_uri
 {
 	std::string urn_;
 
-	std::string proto_;
-	std::string hostname_;
+	std::string scheme_;
+	std::string authority_;
 	std::string path_;
-	nlohmann::json::json_pointer pointer_;
+
+	json::json_pointer pointer_; // fragment part if JSON-Pointer
+	std::string identifier_;     // fragment part if Locatation Independent ID
 
 protected:
 	// decodes a JSON uri and replaces all or part of the currently stored values
 	void update(const std::string &uri);
 
-	std::tuple<std::string, std::string, std::string, std::string, std::string> tie() const
+	std::tuple<std::string, std::string, std::string, std::string, std::string> as_tuple() const
 	{
-		return std::tie(urn_, proto_, hostname_, path_, pointer_);
+		return std::make_tuple(urn_, scheme_, authority_, path_, identifier_ != "" ? identifier_ : pointer_.to_string());
 	}
 
 public:
@@ -68,14 +70,23 @@ public:
 		update(uri);
 	}
 
-	const std::string protocol() const { return proto_; }
-	const std::string hostname() const { return hostname_; }
-	const std::string path() const { return path_; }
+	const std::string &scheme() const { return scheme_; }
+	const std::string &authority() const { return authority_; }
+	const std::string &path() const { return path_; }
 
-	const nlohmann::json::json_pointer pointer() const { return pointer_; }
+	const json::json_pointer &pointer() const { return pointer_; }
+	const std::string &identifier() const { return identifier_; }
 
-	const std::string url() const { return location(); }
-	const std::string location() const;
+	std::string fragment() const
+	{
+		if (identifier_ == "")
+			return pointer_.to_string();
+		else
+			return identifier_;
+	}
+
+	std::string url() const { return location(); }
+	std::string location() const;
 
 	static std::string escape(const std::string &);
 
@@ -91,8 +102,11 @@ public:
 	// append a pointer-field to the pointer-part of this uri
 	json_uri append(const std::string &field) const
 	{
+		if (identifier_ != "")
+			return *this;
+
 		json_uri u = *this;
-		u.pointer_ = nlohmann::json::json_pointer(u.pointer_.to_string() + '/' + escape(field));
+		u.pointer_ /= field;
 		return u;
 	}
 
@@ -100,12 +114,12 @@ public:
 
 	friend bool operator<(const json_uri &l, const json_uri &r)
 	{
-		return l.tie() < r.tie();
+		return l.as_tuple() < r.as_tuple();
 	}
 
 	friend bool operator==(const json_uri &l, const json_uri &r)
 	{
-		return l.tie() == r.tie();
+		return l.as_tuple() == r.as_tuple();
 	}
 
 	friend std::ostream &operator<<(std::ostream &os, const json_uri &u);
@@ -116,19 +130,36 @@ namespace json_schema
 
 extern json draft7_schema_builtin;
 
-class basic_error_handler
+typedef std::function<void(const json_uri & /*id*/, json & /*value*/)> schema_loader;
+typedef std::function<void(const std::string & /*format*/, const std::string & /*value*/)> format_checker;
+typedef std::function<void(const std::string & /*contentEncoding*/, const std::string & /*contentMediaType*/, const json & /*instance*/)> content_checker;
+
+// Interface for validation error handlers
+class JSON_SCHEMA_VALIDATOR_API error_handler
+{
+public:
+	virtual ~error_handler() {}
+	virtual void error(const json::json_pointer & /*ptr*/, const json & /*instance*/, const std::string & /*message*/) = 0;
+};
+
+class JSON_SCHEMA_VALIDATOR_API basic_error_handler : public error_handler
 {
 	bool error_{false};
 
 public:
-	virtual void error(const std::string & /*path*/, const json & /* instance */, const std::string & /*message*/)
+	void error(const json::json_pointer & /*ptr*/, const json & /*instance*/, const std::string & /*message*/) override
 	{
 		error_ = true;
 	}
 
-	void reset() { error_ = false; }
+	virtual void reset() { error_ = false; }
 	operator bool() const { return error_; }
 };
+
+/**
+ * Checks validity of JSON schema built-in string format specifiers like 'date-time', 'ipv4', ...
+ */
+void JSON_SCHEMA_VALIDATOR_API default_string_format_check(const std::string &format, const std::string &value);
 
 class root_schema;
 
@@ -137,18 +168,28 @@ class JSON_SCHEMA_VALIDATOR_API json_validator
 	std::unique_ptr<root_schema> root_;
 
 public:
-	json_validator(std::function<void(const json_uri &, json &)> loader = nullptr,
-	               std::function<void(const std::string &, const std::string &)> format = nullptr);
+	json_validator(schema_loader = nullptr, format_checker = nullptr, content_checker = nullptr);
+
+	json_validator(const json &, schema_loader = nullptr, format_checker = nullptr, content_checker = nullptr);
+	json_validator(json &&, schema_loader = nullptr, format_checker = nullptr, content_checker = nullptr);
+
+	json_validator(json_validator &&);
+	json_validator &operator=(json_validator &&);
+
+	json_validator(json_validator const &) = delete;
+	json_validator &operator=(json_validator const &) = delete;
+
 	~json_validator();
 
-	// insert and set thea root-schema
+	// insert and set the root-schema
 	void set_root_schema(const json &);
+	void set_root_schema(json &&);
 
 	// validate a json-document based on the root-schema
-	void validate(const json &);
+	json validate(const json &) const;
 
 	// validate a json-document based on the root-schema with a custom error-handler
-	void validate(const json &, basic_error_handler &);
+	json validate(const json &, error_handler &, const json_uri &initial_uri = json_uri("#")) const;
 };
 
 } // namespace json_schema

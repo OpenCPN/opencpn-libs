@@ -28,7 +28,7 @@
 #define _ODAPI_H_
 
 #define ODAPI_VERSION_MAJOR 1
-#define ODAPI_VERSION_MINOR 1
+#define ODAPI_VERSION_MINOR 2
 
 #include <list>
 
@@ -39,7 +39,6 @@ enum {
   TEXTPOINT_DISPLAY_TEXT_SHOW_ON_ROLLOVER,
   TEXTPOINT_DISPLAY_TEXT_SHOW_NEVER,
   TEXTPOINT_DISPLAY_TEXT_SHOW_DEFAULT,
-
   TEXTPOINT_DISPLAY_TEXT_SHOW_LAST
 };
 
@@ -52,7 +51,6 @@ enum {
   TEXT_RIGHT,
   TEXT_LEFT,
   TEXT_DEFAULT,
-
   TEXT_POSTION_LAST
 };
 
@@ -113,7 +111,7 @@ struct CreateBoundaryPoint_t : public ODAPIVersion_t {
   bool defaultRingColour;
   wxColour ringscolour;
   wxString GUID;
-  std::list<HyperLinkList_t *> BoundaryPointHyperLinkList;
+  std::list<HyperLinkList_t*> BoundaryPointHyperLinkList;
 };
 
 struct DeleteBoundaryPoint_t : public ODAPIVersion_t {
@@ -131,7 +129,7 @@ struct CreateBoundary_t : public ODAPIVersion_t {
   wxColour fillColour;
   wxString GUID;
   bool temporary;
-  std::list<CreateBoundaryPoint_t *> BoundaryPointsList;
+  std::list<CreateBoundaryPoint_t*> BoundaryPointsList;
 };
 
 struct DeleteBoundary_t : public ODAPIVersion_t {
@@ -162,7 +160,7 @@ struct CreateTextPoint_t : public ODAPIVersion_t {
   bool defaultRingColour;
   wxString ringscolour;
   wxString GUID;
-  std::list<HyperLinkList_t *> TextPointHyperLinkList;
+  std::list<HyperLinkList_t*> TextPointHyperLinkList;
   bool temporary;
 };
 
@@ -177,46 +175,57 @@ struct AddPointIcon_t : ODAPIVersion_t {
 };
 
 struct DeletePointIcon_t : ODAPIVersion_t {
+  wxString GUIDType;
   wxString PointIconName;
+};
+
+struct GUIDList_t : ODAPIVersion_t {
+  wxString GUIDType;
+  bool InLayer;
+  wxArrayString GUIDList;
 };
 
 class ODAPI {
 public:
   ODAPI();
   ~ODAPI();
-  static bool OD_FindPathByGUID(wxString sGUID, wxString *sName,
-                                wxString *sDescription);
-  static bool OD_FindPointInAnyBoundary(FindPointInAnyBoundary_t *pFPIAB);
+  static bool OD_FindPathByGUID(wxString sGUID, wxString* sName,
+                                wxString* sDescription);
+  static bool OD_FindPointInAnyBoundary(FindPointInAnyBoundary_t* pFPIAB);
   static bool OD_FindClosestBoundaryLineCrossing(
-      FindClosestBoundaryLineCrossing_t *pFCBLC);
+      FindClosestBoundaryLineCrossing_t* pFCBLC);
   static bool OD_FindFirstBoundaryLineCrossing(
-      FindClosestBoundaryLineCrossing_t *pFCBLC);
-  static bool OD_CreateBoundary(CreateBoundary_t *pCB);
-  static bool OD_CreateBoundaryPoint(CreateBoundaryPoint_t *pCBP);
-  static bool OD_CreateTextPoint(CreateTextPoint_t *pCTP);
-  static bool OD_AddPointIcon(AddPointIcon_t *pAPI);
-  static bool OD_DeletePointIcon(DeletePointIcon_t *pDPI);
-  static bool OD_DeleteBoundary(DeleteBoundary_t *pDB);
-  static bool OD_DeleteBoundaryPoint(DeleteBoundaryPoint_t *pDBP);
-  static bool OD_DeleteTextPoint(DeleteTextPoint_t *pDTP);
+      FindClosestBoundaryLineCrossing_t* pFCBLC);
+  static bool OD_CreateBoundary(CreateBoundary_t* pCB);
+  static bool OD_CreateBoundaryPoint(CreateBoundaryPoint_t* pCBP);
+  static bool OD_CreateTextPoint(CreateTextPoint_t* pCTP);
+  static bool OD_AddPointIcon(AddPointIcon_t* pAPI);
+  static bool OD_DeletePointIcon(DeletePointIcon_t* pDPI);
+  static bool OD_DeleteBoundary(DeleteBoundary_t* pDB);
+  static bool OD_DeleteBoundaryPoint(DeleteBoundaryPoint_t* pDBP);
+  static bool OD_DeleteTextPoint(DeleteTextPoint_t* pDTP);
+  static wxArrayString OD_FindAllPathsGUIDS(GUIDList_t* pGL);
+  static wxArrayString OD_FindAllPointsGUIDS(GUIDList_t* pGL);
 
 protected:
 private:
 };
 
-typedef bool (*OD_FindPathByGUID)(wxString, wxString *, wxString *);
-typedef bool (*OD_FindPointInAnyBoundary)(FindPointInAnyBoundary_t *);
+typedef bool (*OD_FindPathByGUID)(wxString, wxString*, wxString*);
+typedef bool (*OD_FindPointInAnyBoundary)(FindPointInAnyBoundary_t*);
 typedef bool (*OD_FindClosestBoundaryLineCrossing)(
-    FindClosestBoundaryLineCrossing_t *);
+    FindClosestBoundaryLineCrossing_t*);
 typedef bool (*OD_FindFirstBoundaryLineCrossing)(
-    FindClosestBoundaryLineCrossing_t *);
-typedef bool (*OD_CreateBoundary)(CreateBoundary_t *);
-typedef bool (*OD_CreateBoundaryPoint)(CreateBoundaryPoint_t *);
-typedef bool (*OD_CreateTextPoint)(CreateTextPoint_t *);
-typedef bool (*OD_AddPointIcon)(AddPointIcon_t *);
-typedef bool (*OD_DeletePointIcon)(DeletePointIcon_t *);
-typedef bool (*OD_DeleteBoundary)(DeleteBoundary_t *);
-typedef bool (*OD_DeleteBoundaryPoint)(DeleteBoundaryPoint_t *);
-typedef bool (*OD_DeleteTextPoint)(DeleteTextPoint_t *);
+    FindClosestBoundaryLineCrossing_t*);
+typedef bool (*OD_CreateBoundary)(CreateBoundary_t*);
+typedef bool (*OD_CreateBoundaryPoint)(CreateBoundaryPoint_t*);
+typedef bool (*OD_CreateTextPoint)(CreateTextPoint_t*);
+typedef bool (*OD_AddPointIcon)(AddPointIcon_t*);
+typedef bool (*OD_DeletePointIcon)(DeletePointIcon_t*);
+typedef bool (*OD_DeleteBoundary)(DeleteBoundary_t*);
+typedef bool (*OD_DeleteBoundaryPoint)(DeleteBoundaryPoint_t*);
+typedef bool (*OD_DeleteTextPoint)(DeleteTextPoint_t*);
+typedef wxArrayString (*OD_FindAllPathsGUIDS)(GUIDList_t*);
+typedef wxArrayString (*OD_FindAllPointsGUIDS)(GUIDList_t*);
 
 #endif  //_ODAPI_H_
