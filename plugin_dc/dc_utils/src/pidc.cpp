@@ -3249,6 +3249,9 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
       m_texfont.SetColor(m_textforegroundcolour);
 
       if (w && h) {
+        w *= scaleFactor;
+        h *= scaleFactor;
+
         if(m_textbackgroundcolour.Alpha() != 0) {
             wxPen p = m_pen;
             wxBrush b = m_brush;
@@ -3284,6 +3287,9 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
       wxScreenDC sdc;
       sdc.SetFont(m_font);
       sdc.GetTextExtent(text, &w, &h, NULL, NULL, &m_font);
+
+      w *= scaleFactor;
+      h *= scaleFactor;
 
       /* create bitmap of appropriate size and select it */
       wxBitmap bmp(w, h);
@@ -3498,6 +3504,9 @@ void piDC::DrawTexture(wxRect texRect, int width, int height, float scaleFactor,
   float w = width;
   float h = height;
 
+  w *= scaleFactor;
+  h *= scaleFactor;
+
 #ifndef USE_ANDROID_GLES2
 #ifndef __ANDROID__
   glColor3f(1, 1, 1);
@@ -3604,7 +3613,10 @@ void piDC::DrawTextureAlpha(wxRect texRect, int width, int height,
   float w = width;
   float h = height;
 
-#ifndef USE_ANDROID_GLES2
+  w *= scaleFactor;
+  h *= scaleFactor;
+
+  #ifndef USE_ANDROID_GLES2
   ConfigurePen();
 
   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
