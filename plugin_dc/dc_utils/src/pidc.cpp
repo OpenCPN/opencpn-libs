@@ -3286,7 +3286,10 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
     } else {
       wxScreenDC sdc;
       sdc.SetFont(m_font);
-      sdc.GetTextExtent(text, &w, &h, NULL, NULL, &m_font);
+      if(text.Contains(_T("\n")))
+        sdc.GetMultiLineTextExtent(text, &w, &h, NULL, &m_font);
+      else
+        sdc.GetTextExtent(text, &w, &h, NULL, NULL, &m_font);
 
       w *= scaleFactor;
       h *= scaleFactor;
