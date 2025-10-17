@@ -3285,6 +3285,7 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
       }
     } else {
       wxScreenDC sdc;
+      sdc.SetUserScale(scaleFactor, scaleFactor);
       sdc.SetFont(m_font);
       sdc.GetTextExtent(text, &w, &h, NULL, NULL, &m_font);
 
@@ -3292,7 +3293,12 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
       h *= scaleFactor;
 
       /* create bitmap of appropriate size and select it */
-      wxBitmap bmp(w, h);
+      wxBitmap bmp;
+      #ifdef __WXMSW__
+        bmp.CreateWithDIPSize(w, h, OCPN_GetWinDIPScaleFactor());
+      #else
+        bmp.Create(w, h);
+      #endif
       wxMemoryDC temp_dc;
       temp_dc.SelectObject(bmp);
 
