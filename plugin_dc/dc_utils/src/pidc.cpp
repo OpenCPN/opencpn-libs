@@ -3288,11 +3288,11 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
       sdc.SetUserScale(scaleFactor, scaleFactor);
       #ifdef __WXMSW__
         wxFont *pfsave;
-        pfsave = m_Font;
+        pfsave = m_font;
         double factor = (double)(GetOCPNCanvasWindow()->ToDIP(100)) / 100.;
-        wxFont sFont(*m_Font);
-        m_Font = &sFont;
-        m_Font->Scale(1. / factor);
+        wxFont sFont(*m_font);
+        m_font = &sFont;
+        m_font->Scale(1. / factor);
       #endif
       sdc.SetFont(m_font);
       sdc.GetTextExtent(text, &w, &h, NULL, NULL, &m_font);
