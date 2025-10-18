@@ -3320,9 +3320,9 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
       temp_dc.SetTextForeground(wxColour(255, 255, 255));
       temp_dc.DrawText(text, 0, 0);
       temp_dc.SelectObject(wxNullBitmap);
-#ifdef __WXMSW__
-      m_font = pfsave;
-#endif
+//#ifdef __WXMSW__
+//      m_font = pfsave;
+//#endif
       /* use the data in the bitmap for alpha channel,
        and set the color to text foreground */
       wxImage image = bmp.ConvertToImage();
