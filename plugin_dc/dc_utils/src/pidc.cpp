@@ -3299,16 +3299,9 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
       sdc.SetFont(m_font);
       sdc.GetTextExtent(text, &w, &h, NULL, NULL, &m_font);
 
-      //w *= scaleFactor;
-      //h *= scaleFactor;
-
       /* create bitmap of appropriate size and select it */
       wxBitmap bmp;
-//      #ifdef __WXMSW__
-//        bmp.CreateWithDIPSize(w, h, 1.0/OCPN_GetWinDIPScaleFactor());
-//      #else
-        bmp.Create(w, h);
-//      #endif
+      bmp.Create(w, h);
       wxMemoryDC temp_dc;
       temp_dc.SelectObject(bmp);
 
