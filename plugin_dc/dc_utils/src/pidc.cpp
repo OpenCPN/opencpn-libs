@@ -3285,6 +3285,17 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
       }
     } else {
       wxScreenDC sdc;
+      sdc.SetUserScale(scaleFactor, scaleFactor);
+
+      #ifdef __WXMSW__
+        wxFont pfsave;
+        pfsave = m_font;
+        double factor = (double)(GetOCPNCanvasWindow()->ToDIP(100)) / 100.;
+        wxFont sFont(m_font);
+        m_font = sFont;
+        m_font.Scale(1. / factor);
+      #endif
+
       sdc.SetFont(m_font);
       sdc.GetTextExtent(text, &w, &h, NULL, NULL, &m_font);
 
@@ -3292,7 +3303,8 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
       h *= scaleFactor;
 
       /* create bitmap of appropriate size and select it */
-      wxBitmap bmp(w, h);
+      wxBitmap bmp;
+      bmp.Create(w, h);
       wxMemoryDC temp_dc;
       temp_dc.SelectObject(bmp);
 
@@ -3305,7 +3317,9 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
       temp_dc.SetTextForeground(wxColour(255, 255, 255));
       temp_dc.DrawText(text, 0, 0);
       temp_dc.SelectObject(wxNullBitmap);
-
+#ifdef __WXMSW__
+      m_font = pfsave;
+#endif
       /* use the data in the bitmap for alpha channel,
        and set the color to text foreground */
       wxImage image = bmp.ConvertToImage();
