@@ -3290,16 +3290,16 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
       #ifdef __WXMSW__
         wxFont pfsave;
         pfsave = m_font;
-        double factor = (double)(GetOCPNCanvasWindow()->ToDIP(100)) / 100.;
-        m_font.Scale(1. / factor);
+        double dDIPScalefactor = (double)(GetOCPNCanvasWindow()->ToDIP(100)) / 100.;
+        m_font.Scale(1. / dDIPScalefactor);
       #endif
 
       sdc.SetFont(m_font);
       sdc.GetTextExtent(text, &w, &h, NULL, NULL, &m_font);
 
       #ifdef __WXMSW__
-        w *= scaleFactor;
-        h *= scaleFactor;
+        w *= dDIPScaleFactor;
+        h *= dDIPScaleFactor;
       #endif
 
       /* create bitmap of appropriate size and select it */
