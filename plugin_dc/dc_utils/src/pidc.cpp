@@ -54,7 +54,7 @@
 #endif
 
 #if wxUSE_GRAPHICS_CONTEXT
-#pragma message() "Compiling with wxUSE_GRAPHICS_CONTEXT")
+#pragma message("Compiling with wxUSE_GRAPHICS_CONTEXT")
 #endif
 
 static float GLMinSymbolLineWidth;
