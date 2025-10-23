@@ -3306,9 +3306,21 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
       sdc.GetTextExtent(text, &w, &h, NULL, NULL, &m_font);
 
       #ifdef __WXMSW__
+        wxString sLogMessage = "";
+        sLogMessage.append(_T("pidc: w: "));
+        sLogMessage<<w;
+        sLogMessage.append(_T(", h: "));
+        sLogMessage<<h;
+        wxLogMessage(sLogMessage);
         w *= scaleFactor;
         h *= scaleFactor;
-      #endif
+        sLogMessage = "";
+        sLogMessage.append(_T("pidc - new: w: "));
+        sLogMessage<<w;
+        sLogMessage.append(_T(", h: "));
+        sLogMessage<<h;
+        wxLogMessage(sLogMessage);
+        #endif
 
       /* create bitmap of appropriate size and select it */
       wxBitmap bmp;
