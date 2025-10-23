@@ -3290,37 +3290,16 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
       #ifdef __WXMSW__
         wxFont pfsave;
         pfsave = m_font;
-        double dDIPScaleFactor = 1.0/((double)(GetOCPNCanvasWindow()->ToDIP(100)) / 100.);
         m_font.Scale(scaleFactor);
-        wxString sLogMessage = "";
-        sLogMessage.append(_T("pidc: dDIPScaleFactor: "));
-        sLogMessage<<dDIPScaleFactor;
-        wxLogMessage(sLogMessage);
-        sLogMessage = "";
-        sLogMessage.append(_T("pidc: scaleFactor: "));
-        sLogMessage<<scaleFactor;
-        wxLogMessage(sLogMessage);
       #endif
 
       sdc.SetFont(m_font);
       sdc.GetTextExtent(text, &w, &h, NULL, NULL, &m_font);
 
       #ifdef __WXMSW__
-        sLogMessage = "";
-        sLogMessage.append(_T("pidc: w: "));
-        sLogMessage<<w;
-        sLogMessage.append(_T(", h: "));
-        sLogMessage<<h;
-        wxLogMessage(sLogMessage);
         w *= scaleFactor;
         h *= scaleFactor;
-        sLogMessage = "";
-        sLogMessage.append(_T("pidc - new: w: "));
-        sLogMessage<<w;
-        sLogMessage.append(_T(", h: "));
-        sLogMessage<<h;
-        wxLogMessage(sLogMessage);
-        #endif
+      #endif
 
       /* create bitmap of appropriate size and select it */
       wxBitmap bmp;
