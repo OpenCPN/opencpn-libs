@@ -3292,6 +3292,14 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
         pfsave = m_font;
         double dDIPScaleFactor = 1.0/((double)(GetOCPNCanvasWindow()->ToDIP(100)) / 100.);
         m_font.Scale(scaleFactor);
+        wxString sLogMessage = "";
+        sLogMessage.append(_T("pidc: dDIPScaleFactor: "));
+        sLogMessage<<dDIPScaleFactor;
+        wxLogMessage(sLogMessage);
+        sLogMessage = "";
+        sLogMessage.append(_T("pidc: scaleFactor: "));
+        sLogMessage<<scaleFactor;
+        wxLogMessage(sLogMessage);
       #endif
 
       sdc.SetFont(m_font);
