@@ -54,7 +54,7 @@
 #endif
 
 #if wxUSE_GRAPHICS_CONTEXT
-#pragma message "Compiling with wxUSE_GRAPHICS_CONTEXT"
+#pragma message() "Compiling with wxUSE_GRAPHICS_CONTEXT")
 #endif
 
 static float GLMinSymbolLineWidth;
@@ -3296,7 +3296,7 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
         sLogMessage.append(_T("pidc: dDIPScaleFactor: "));
         sLogMessage<<dDIPScaleFactor;
         wxLogMessage(sLogMessage);
-        sLogMessage = "";
+        sLogMessage "";
         sLogMessage.append(_T("pidc: scaleFactor: "));
         sLogMessage<<scaleFactor;
         wxLogMessage(sLogMessage);
@@ -3306,7 +3306,7 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
       sdc.GetTextExtent(text, &w, &h, NULL, NULL, &m_font);
 
       #ifdef __WXMSW__
-        wxString sLogMessage = "";
+        sLogMessage = "";
         sLogMessage.append(_T("pidc: w: "));
         sLogMessage<<w;
         sLogMessage.append(_T(", h: "));
