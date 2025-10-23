@@ -3296,7 +3296,7 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
         sLogMessage.append(_T("pidc: dDIPScaleFactor: "));
         sLogMessage<<dDIPScaleFactor;
         wxLogMessage(sLogMessage);
-        sLogMessage "";
+        sLogMessage = "";
         sLogMessage.append(_T("pidc: scaleFactor: "));
         sLogMessage<<scaleFactor;
         wxLogMessage(sLogMessage);
