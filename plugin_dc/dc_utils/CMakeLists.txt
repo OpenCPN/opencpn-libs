@@ -4,7 +4,7 @@
 # Copyright (c) 2021 Alec Leamas
 # ~~~
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
 if (TARGET ocpn::dc-utils)
   return ()
@@ -20,7 +20,7 @@ set(SRC
   include/pidc.h
   include/qtstylesheet.h
   include/TexFont.h
-)   
+)
 
 add_library(_DC_UTILS STATIC ${SRC})
 add_library(ocpn::dc-utils ALIAS _DC_UTILS)
@@ -34,7 +34,7 @@ if (PLUGINDC_USE_GL)
   target_compile_definitions(_DC_UTILS PRIVATE ocpnUSE_GL)
 endif ()
 
-if (WIN32) 
+if (WIN32)
   if (TARGET windows::headers)
     target_link_libraries(_DC_UTILS PRIVATE windows::headers)
   else ()

@@ -8,7 +8,7 @@ if (TARGET ocpn::jsoncpp)
   return()
 endif ()
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 project("jsoncpp")
 
 option(USE_SYSTEM_JSONCPP "Use system copy of library if available" OFF)
