@@ -4,7 +4,7 @@
 # Copyright (c) 2021 Alec Leamas
 # ~~~
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
 if (TARGET ocpn::wxjson)
   return ()
@@ -22,7 +22,7 @@ set(SRC
     include/wx/jsonreader.h
     include/wx/jsonval.h
     include/wx/jsonwriter.h
-)   
+)
 
 # Library is used also in the plugins, so:
 set(CMAKE_POSITION_INDEPENDENT_CODE "ON")
