@@ -7242,12 +7242,14 @@ public:
   // Extended plugin route
   class Route : public PlugIn_Route_ExV2 {
   public:
-    Route() : m_PlannedSpeed(0), m_Colour(""),
-              m_style(wxPENSTYLE_SOLID),
-              m_PlannedDeparture(wxDateTime::Now()),
-              m_TimeDisplayFormat("UTC"){}
+    Route()
+        : m_PlannedSpeed(0),
+          m_Colour(""),
+          m_style(wxPENSTYLE_SOLID),
+          m_PlannedDeparture(wxDateTime::Now()),
+          m_TimeDisplayFormat("UTC") {}
 
-    ~Route() {
+    ~Route() override {
       if (pWaypointList) {
         pWaypointList->DeleteContents(true);
         delete pWaypointList;
