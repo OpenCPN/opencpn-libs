@@ -221,9 +221,9 @@ void piDC::Init() {
     glGetIntegerv(GL_SMOOTH_LINE_WIDTH_RANGE, &parms[0]);
     GLMinSymbolLineWidth = wxMax(parms[0], 1);
 
-//#ifdef __WXGTK__
+#ifdef __WXGTK__
     glewInit();
-//#endif
+#endif
     pi_loadShaders();
   }
 #endif
