@@ -35,6 +35,15 @@
 //#include <windows.h>
 #endif
 
+// Include tha appropriate GL headers
+#ifdef ocpnUSE_GL
+#ifdef __WXGTK__
+#include <GL/glew.h>
+#endif
+#endif
+
+#include "pidc.h"
+
 #ifdef ocpnUSE_GL
 #include <wx/glcanvas.h>
 #endif
@@ -44,7 +53,6 @@
 
 #include <vector>
 
-#include "pidc.h"
 
 #include "linmath.h"
 #include "pi_shaders.h"
@@ -207,20 +215,24 @@ void piDC::Init() {
   g_textureId = -1;
   m_tobj = NULL;
 #ifdef ocpnUSE_GL
-  if (glcontext) {
+  //if (glcontext)
+  {
     GLint parms[2];
     glGetIntegerv(GL_SMOOTH_LINE_WIDTH_RANGE, &parms[0]);
     GLMinSymbolLineWidth = wxMax(parms[0], 1);
 
+//#ifdef __WXGTK__
+    glewInit();
+//#endif
     pi_loadShaders();
   }
 #endif
 }
 
 void piDC::SetVP(PlugIn_ViewPort *vp) {
-#ifdef USE_ANDROID_GLES2
+//#ifdef USE_ANDROID_GLES2
   configureShaders(vp->pix_width, vp->pix_height);
-#endif
+//#endif
   m_vpSize = wxSize(vp->pix_width, vp->pix_height);
 }
 
@@ -2225,6 +2237,8 @@ typedef union {
 
 #ifndef USE_ANDROID_GLES2
 
+#define APIENTRY
+
 #ifdef __WXMAC__
 #ifndef APIENTRY
 #define APIENTRY
@@ -3235,8 +3249,7 @@ void piDC::DrawText(const wxString &text, wxCoord x, wxCoord y) {
   DrawTextEx(text, x, y, 1.0);
 }
 
-void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
-                      float scaleFactor) {
+void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,float scaleFactor) {
   if (dc) dc->DrawText(text, x, y);
 #ifdef ocpnUSE_GL
   else {
@@ -3253,16 +3266,15 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
         h *= scaleFactor;
 
         if(m_textbackgroundcolour.Alpha() != 0) {
-            wxPen p = m_pen;
-            wxBrush b = m_brush;
-            SetPen(*wxTRANSPARENT_PEN);
-            SetBrush(wxBrush(m_textbackgroundcolour));
-            DrawRoundedRectangle(x, y, w, h, 3);
-            //DrawRectangle(x, y, w, h);
-            SetPen(p);
-            SetBrush(b);
+          wxPen p = m_pen;
+          wxBrush b = m_brush;
+          SetPen(*wxTRANSPARENT_PEN);
+          SetBrush(wxBrush(m_textbackgroundcolour));
+          DrawRoundedRectangle(x, y, w, h, 3);
+          //DrawRectangle(x, y, w, h);
+          SetPen(p);
+          SetBrush(b);
         }
-
         glEnable(GL_BLEND);
         glEnable(GL_TEXTURE_2D);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -3287,19 +3299,28 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
       wxScreenDC sdc;
       sdc.SetUserScale(scaleFactor, scaleFactor);
 
-      #ifdef __WXMSW__
-        wxFont pfsave;
-        pfsave = m_font;
-        m_font.Scale(scaleFactor);
-      #endif
+#ifdef __WXMSW__
+      wxFont pfsave;
+      pfsave = m_font;
+      m_font.Scale(scaleFactor);
+#endif
 
       sdc.SetFont(m_font);
-      sdc.GetTextExtent(text, &w, &h, NULL, NULL, &m_font);
+      sdc.GetMultiLineTextExtent(text, &w, &h, nullptr,
+                                 &m_font); /*we need to handle multiline*/
+      int ww, hw;
+      sdc.GetTextExtent("W", &ww, &hw);  // metric
+      w += ww;                           // RHS padding.
+      w *= OCPN_GetWinDIPScaleFactor();
+      h *= OCPN_GetWinDIPScaleFactor();
 
-      #ifdef __WXMSW__
-        w *= scaleFactor;
-        h *= scaleFactor;
-      #endif
+      h *= 2;  // TODO //Some trouble with math or text sizing.
+               //  Add "fluff" to text bitmap size.
+
+#ifdef __WXMSW__
+      w *= scaleFactor;
+      h *= scaleFactor;
+#endif
 
       /* create bitmap of appropriate size and select it */
       wxBitmap bmp;
@@ -3319,6 +3340,7 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
 #ifdef __WXMSW__
       m_font = pfsave;
 #endif
+
       /* use the data in the bitmap for alpha channel,
        and set the color to text foreground */
       wxImage image = bmp.ConvertToImage();
@@ -3352,18 +3374,7 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
           }
         }
       }
-#if 0
-            glColor4ub( 255, 255, 255, 255 );
-            glEnable( GL_BLEND );
-            glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-            glRasterPos2i( x, y );
-            glPixelZoom( 1, -1 );
-            glDrawPixels( w, h, GL_RGBA, GL_UNSIGNED_BYTE, data );
-            glPixelZoom( 1, 1 );
-            glDisable( GL_BLEND );
-#else
       unsigned int texobj;
-
       if(m_textbackgroundcolour.Alpha() != 0) {
         wxPen p = m_pen;
         wxBrush b = m_brush;
@@ -3393,30 +3404,110 @@ void piDC::DrawTextEx(const wxString &text, wxCoord x, wxCoord y,
 
       float u = (float)w / TextureWidth, v = (float)h / TextureHeight;
 
-#ifndef USE_ANDROID_GLES2
-      glColor3ub(0, 0, 0);
+      float uv[8];
+      float coords[8];
 
-      glBegin(GL_QUADS);
-      glTexCoord2f(0, 0);
-      glVertex2f(x, y);
-      glTexCoord2f(u, 0);
-      glVertex2f(x + w, y);
-      glTexCoord2f(u, v);
-      glVertex2f(x + w, y + h);
-      glTexCoord2f(0, v);
-      glVertex2f(x, y + h);
-      glEnd();
-#else
-#endif
+      // normal uv
+      uv[0] = 0;
+      uv[1] = 0;
+      uv[2] = u;
+      uv[3] = 0;
+      uv[4] = u;
+      uv[5] = v;
+      uv[6] = 0;
+      uv[7] = v;
+
+      // pixels
+      coords[0] = 0;
+      coords[1] = 0;
+      coords[2] = w;
+      coords[3] = 0;
+      coords[4] = w;
+      coords[5] = h;
+      coords[6] = 0;
+      coords[7] = h;
+
+      glUseProgram(pi_texture_2D_shader_program);
+
+      // Get pointers to the attributes in the program.
+      GLint mPosAttrib =
+          glGetAttribLocation(pi_texture_2D_shader_program, "aPos");
+      GLint mUvAttrib =
+          glGetAttribLocation(pi_texture_2D_shader_program, "aUV");
+
+      // Set up the texture sampler to texture unit 0
+      GLint texUni = glGetUniformLocation(pi_texture_2D_shader_program, "uTex");
+      glUniform1i(texUni, 0);
+
+      // Disable VBO's (vertex buffer objects) for attributes.
+      glBindBuffer(GL_ARRAY_BUFFER, 0);
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+      // Set the attribute mPosAttrib with the vertices in the screen
+      // coordinates...
+      glVertexAttribPointer(mPosAttrib, 2, GL_FLOAT, GL_FALSE, 0, coords);
+      // ... and enable it.
+      glEnableVertexAttribArray(mPosAttrib);
+
+      // Set the attribute mUvAttrib with the vertices in the GL coordinates...
+      glVertexAttribPointer(mUvAttrib, 2, GL_FLOAT, GL_FALSE, 0, uv);
+      // ... and enable it.
+      glEnableVertexAttribArray(mUvAttrib);
+
+      // Rotate
+      float angle = 0;
+      mat4x4 I, Q;
+      mat4x4_identity(I);
+      mat4x4_rotate_Z(Q, I, angle);
+
+      // Translate
+      Q[3][0] = x;
+      Q[3][1] = y;
+
+      GLint matloc =
+          glGetUniformLocation(pi_texture_2D_shader_program, "TransformMatrix");
+      glUniformMatrix4fv(matloc, 1, GL_FALSE, (const GLfloat *)Q);
+
+      // Select the active texture unit.
+      glActiveTexture(GL_TEXTURE0);
+
+      float co1[8];
+      co1[0] = coords[0];
+      co1[1] = coords[1];
+      co1[2] = coords[2];
+      co1[3] = coords[3];
+      co1[4] = coords[6];
+      co1[5] = coords[7];
+      co1[6] = coords[4];
+      co1[7] = coords[5];
+
+      float tco1[8];
+      tco1[0] = uv[0];
+      tco1[1] = uv[1];
+      tco1[2] = uv[2];
+      tco1[3] = uv[3];
+      tco1[4] = uv[6];
+      tco1[5] = uv[7];
+      tco1[6] = uv[4];
+      tco1[7] = uv[5];
+
+      glVertexAttribPointer(mPosAttrib, 2, GL_FLOAT, GL_FALSE, 0, co1);
+      glVertexAttribPointer(mUvAttrib, 2, GL_FLOAT, GL_FALSE, 0, tco1);
+
+      glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+      glDisableVertexAttribArray(mPosAttrib);
+      glDisableVertexAttribArray(mUvAttrib);
+
+      glUseProgram(0);
+
       glDisable(GL_BLEND);
       glDisable(GL_TEXTURE_2D);
 
       glDeleteTextures(1, &texobj);
-#endif
       delete[] data;
     }
   }
-#endif  // ocpnUSE_GL
+#endif
 }
 
 void piDC::GetTextExtent(const wxString &string, wxCoord *w, wxCoord *h,

@@ -21,12 +21,35 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
  **************************************************************************/
 
-#ifdef USE_ANDROID_GLES2
-#include "qdebug.h"
+#include <stdio.h>
 
+#ifdef __ANDROID__
 #include "GLES2/gl2.h"
+
+#elif defined(__WXOSX__)
+#include "OpenGL/gl.h"
+//#include "OpenGL/glu.h"
+//#include "OpenGL/glext.h"
+//typedef void (*_GLUfuncptr)();
+
+#else
+#include <GL/glew.h>
+#endif
+
 #include "pi_shaders.h"
 #include "linmath.h"
+
+
+#ifdef USE_ANDROID_GLES2
+  #define CPREAMBLE "\n"
+#else
+  #define CPREAMBLE \
+  "#version 120\n" \
+  "#define precision\n" \
+  "#define lowp\n" \
+  "#define mediump\n" \
+  "#define highp\n"
+#endif
 
 // Simple colored triangle shader
 
@@ -42,6 +65,7 @@ static const GLchar* color_tri_vertex_shader_source =
     "}\n";
 
 static const GLchar* color_tri_fragment_shader_source =
+    CPREAMBLE
     "precision lowp float;\n"
     "varying vec4 fragColor;\n"
     "void main() {\n"
@@ -61,6 +85,7 @@ static const GLchar* colorv_tri_vertex_shader_source =
     "}\n";
 
 static const GLchar* colorv_tri_fragment_shader_source =
+    CPREAMBLE
     "precision lowp float;\n"
     "varying vec4 fragColor;\n"
     "void main() {\n"
@@ -80,6 +105,7 @@ static const GLchar* texture_2D_vertex_shader_source =
     "}\n";
 
 static const GLchar* texture_2D_fragment_shader_source =
+    CPREAMBLE
     "precision lowp float;\n"
     "uniform sampler2D uTex;\n"
     "varying vec2 varCoord;\n"
@@ -101,6 +127,7 @@ static const GLchar* pi_texture_2DA_vertex_shader_source =
     "}\n";
 
 static const GLchar* pi_texture_2DA_fragment_shader_source =
+    CPREAMBLE
     "precision lowp float;\n"
     "uniform sampler2D uTex;\n"
     "varying vec2 varCoord;\n"
@@ -123,6 +150,7 @@ static const GLchar* pi_texture_text_vertex_shader_source =
     "}\n";
 
 static const GLchar* pi_texture_text_fragment_shader_source =
+    CPREAMBLE
     "precision lowp float;\n"
     "uniform sampler2D uTex;\n"
     "varying vec2 varCoord;\n"
@@ -134,6 +162,7 @@ static const GLchar* pi_texture_text_fragment_shader_source =
 
 // Fade Texture shader
 static const GLchar* fade_texture_2D_vertex_shader_source =
+    CPREAMBLE
     "precision highp float;\n"
     "attribute vec2 aPos;\n"
     "attribute vec2 aUV;\n"
@@ -148,6 +177,7 @@ static const GLchar* fade_texture_2D_vertex_shader_source =
     "}\n";
 
 static const GLchar* fade_texture_2D_fragment_shader_source =
+    CPREAMBLE
     "precision highp float;\n"
     "uniform sampler2D uTex;\n"
     "uniform sampler2D uTex2;\n"
@@ -164,6 +194,7 @@ static const GLchar* fade_texture_2D_fragment_shader_source =
 //  Circle shader
 
 static const GLchar* circle_filled_vertex_shader_source =
+    CPREAMBLE
     "precision highp float;\n"
     "attribute vec2 aPos;\n"
     "uniform mat4 MVMatrix;\n"
@@ -173,6 +204,7 @@ static const GLchar* circle_filled_vertex_shader_source =
     "}\n";
 
 static const GLchar* circle_filled_fragment_shader_source =
+    CPREAMBLE
     "precision highp float;\n"
     "uniform float border_width;\n"
     "uniform float circle_radius;\n"
@@ -198,6 +230,7 @@ static const GLchar* FBO_texture_2D_vertex_shader_source =
     "}\n";
 
 static const GLchar* FBO_texture_2D_fragment_shader_source =
+    CPREAMBLE
     "precision lowp float;\n"
     "uniform sampler2D uTex;\n"
     "varying vec2 varCoord;\n"
@@ -400,7 +433,6 @@ bool pi_loadShaders() {
       glGetShaderInfoLog(pi_texture_2DA_vertex_shader, INFOLOG_LEN, NULL,
                          infoLog);
       printf("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n%s\n", infoLog);
-      qDebug() << infoLog;
       ret_val = false;
     }
   }
@@ -416,7 +448,6 @@ bool pi_loadShaders() {
       glGetShaderInfoLog(pi_texture_2DA_fragment_shader, INFOLOG_LEN, NULL,
                          infoLog);
       printf("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n%s\n", infoLog);
-      qDebug() << infoLog;
       ret_val = false;
     }
   }
@@ -433,7 +464,6 @@ bool pi_loadShaders() {
       glGetProgramInfoLog(pi_texture_2DA_shader_program, INFOLOG_LEN, NULL,
                           infoLog);
       printf("ERROR::SHADER::PROGRAM::LINKING_FAILED\n%s\n", infoLog);
-      qDebug() << infoLog;
       ret_val = false;
     }
   }
@@ -449,7 +479,6 @@ bool pi_loadShaders() {
       glGetShaderInfoLog(pi_texture_text_vertex_shader, INFOLOG_LEN, NULL,
                          infoLog);
       printf("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n%s\n", infoLog);
-      qDebug() << infoLog;
       ret_val = false;
     }
   }
@@ -465,7 +494,6 @@ bool pi_loadShaders() {
       glGetShaderInfoLog(pi_texture_text_fragment_shader, INFOLOG_LEN, NULL,
                          infoLog);
       printf("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n%s\n", infoLog);
-      qDebug() << infoLog;
       ret_val = false;
     }
   }
@@ -483,7 +511,6 @@ bool pi_loadShaders() {
       glGetProgramInfoLog(pi_texture_text_shader_program, INFOLOG_LEN, NULL,
                           infoLog);
       printf("ERROR::SHADER::PROGRAM::LINKING_FAILED\n%s\n", infoLog);
-      qDebug() << infoLog;
       ret_val = false;
     }
   }
@@ -544,7 +571,6 @@ bool pi_loadShaders() {
       glGetShaderInfoLog(pi_circle_filled_vertex_shader, INFOLOG_LEN, NULL,
                          infoLog);
       printf("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n%s\n", infoLog);
-      qDebug() << infoLog;
       ret_val = false;
     }
   }
@@ -561,7 +587,6 @@ bool pi_loadShaders() {
       glGetShaderInfoLog(pi_circle_filled_fragment_shader, INFOLOG_LEN, NULL,
                          infoLog);
       printf("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n%s\n", infoLog);
-      qDebug() << infoLog;
       ret_val = false;
     }
   }
@@ -579,56 +604,11 @@ bool pi_loadShaders() {
       glGetProgramInfoLog(pi_circle_filled_shader_program, INFOLOG_LEN, NULL,
                           infoLog);
       printf("ERROR::SHADER::PROGRAM::LINKING_FAILED\n%s\n", infoLog);
-      qDebug() << infoLog;
       ret_val = false;
     }
   }
 
-#if 0
-    // FBO 2D texture shader
-    
-    if(!FBO_texture_2D_vertex_shader){
-        /* Vertex shader */
-        FBO_texture_2D_vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(FBO_texture_2D_vertex_shader, 1, &FBO_texture_2D_vertex_shader_source, NULL);
-        glCompileShader(FBO_texture_2D_vertex_shader);
-        glGetShaderiv(FBO_texture_2D_vertex_shader, GL_COMPILE_STATUS, &success);
-        if (!success) {
-            glGetShaderInfoLog(FBO_texture_2D_vertex_shader, INFOLOG_LEN, NULL, infoLog);
-            printf("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n%s\n", infoLog);
-            ret_val = false;
-        }
-    }
-    
-    if(!FBO_texture_2D_fragment_shader){
-        /* Fragment shader */
-        FBO_texture_2D_fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(FBO_texture_2D_fragment_shader, 1, &FBO_texture_2D_fragment_shader_source, NULL);
-        glCompileShader(FBO_texture_2D_fragment_shader);
-        glGetShaderiv(FBO_texture_2D_fragment_shader, GL_COMPILE_STATUS, &success);
-        if (!success) {
-            glGetShaderInfoLog(FBO_texture_2D_fragment_shader, INFOLOG_LEN, NULL, infoLog);
-            printf("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n%s\n", infoLog);
-            ret_val = false;
-        }
-    }
-    
-    if(!FBO_texture_2D_shader_program){
-        /* Link shaders */
-        FBO_texture_2D_shader_program = glCreateProgram();
-        glAttachShader(FBO_texture_2D_shader_program, FBO_texture_2D_vertex_shader);
-        glAttachShader(FBO_texture_2D_shader_program, FBO_texture_2D_fragment_shader);
-        glLinkProgram(FBO_texture_2D_shader_program);
-        glGetProgramiv(FBO_texture_2D_shader_program, GL_LINK_STATUS, &success);
-        if (!success) {
-            glGetProgramInfoLog(FBO_texture_2D_shader_program, INFOLOG_LEN, NULL, infoLog);
-            printf("ERROR::SHADER::PROGRAM::LINKING_FAILED\n%s\n", infoLog);
-            ret_val = false;
-        }
-    }
-#endif
 
-  // qDebug() << "pi_loadShaders: " << ret_val;
   return ret_val;
 }
 
@@ -652,16 +632,12 @@ void configureShaders(float width, float height) {
       glGetUniformLocation(pi_color_tri_shader_program, "TransformMatrix");
   glUniformMatrix4fv(transloc, 1, GL_FALSE, (const GLfloat*)I);
 
-  // qDebug() << pi_color_tri_shader_program << transloc;
-
   glUseProgram(pi_circle_filled_shader_program);
   matloc = glGetUniformLocation(pi_circle_filled_shader_program, "MVMatrix");
   glUniformMatrix4fv(matloc, 1, GL_FALSE, (const GLfloat*)vp_transform);
   transloc =
       glGetUniformLocation(pi_circle_filled_shader_program, "TransformMatrix");
   glUniformMatrix4fv(transloc, 1, GL_FALSE, (const GLfloat*)I);
-
-  // qDebug() << pi_circle_filled_shader_program << transloc;
 
   glUseProgram(pi_texture_2D_shader_program);
   matloc = glGetUniformLocation(pi_texture_2D_shader_program, "MVMatrix");
@@ -684,8 +660,6 @@ void configureShaders(float width, float height) {
       glGetUniformLocation(pi_texture_text_shader_program, "TransformMatrix");
   glUniformMatrix4fv(transloc, 1, GL_FALSE, (const GLfloat*)I);
 
-  // qDebug() << pi_texture_2D_shader_program << transloc;
-
   glUseProgram(pi_colorv_tri_shader_program);
   matloc = glGetUniformLocation(pi_colorv_tri_shader_program, "MVMatrix");
   glUniformMatrix4fv(matloc, 1, GL_FALSE, (const GLfloat*)vp_transform);
@@ -693,8 +667,3 @@ void configureShaders(float width, float height) {
       glGetUniformLocation(pi_colorv_tri_shader_program, "TransformMatrix");
   glUniformMatrix4fv(transloc, 1, GL_FALSE, (const GLfloat*)I);
 }
-#else
-bool pi_loadShaders() { return true; }
-void configureShaders(float width, float height) {}
-
-#endif
