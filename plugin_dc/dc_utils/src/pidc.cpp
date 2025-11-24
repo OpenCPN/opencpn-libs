@@ -177,7 +177,14 @@ piDC::~piDC() {
 }
 
 void piDC::Init() {
-  m_buseTex = false; //GetLocaleCanonicalName().IsSameAs(_T("en_US"));
+  //m_buseTex = false 
+  //GetLocaleCanonicalName().IsSameAs(_T("en_US"));
+
+#ifdef __ANDROID__
+  m_buseTex = true;
+#else
+  m_buseTex = false;
+#endif
 
 #if wxUSE_GRAPHICS_CONTEXT
   pgc = NULL;
