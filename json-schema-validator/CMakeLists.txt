@@ -5,7 +5,7 @@
 # License:     GPLv3+
 # ---------------------------------------------------------------------------
 # ~~~
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.10.0)
 
 if (TARGET ocpn::json-schema-validator)
   return()
