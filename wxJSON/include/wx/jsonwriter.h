@@ -11,16 +11,8 @@
 #if !defined(_WX_JSONWRITER_H)
 #define _WX_JSONWRITER_H
 
-//#ifdef __GNUG__
-//    #pragma interface "jsonwriter.h"
-//#endif
-
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
 
 // for all others, include the necessary headers (this file is usually all you
 // need because it includes almost all "standard" wxWidgets headers)

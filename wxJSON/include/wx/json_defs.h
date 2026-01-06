@@ -63,6 +63,7 @@
 
 // dsr
 
+
 // the __PRETTY_FUNCTION__ macro expands to the full class's
 // member name in the GNU GCC.
 // For other compilers we use the standard __wxFUNCTION__ macro
