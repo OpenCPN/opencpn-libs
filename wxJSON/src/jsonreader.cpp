@@ -1773,10 +1773,10 @@ int wxJSONReader::ConvertCharByChar(wxString& s,
  @return the last char read or -1 in case of EOF
 */
 
-union byte {
-  unsigned char c[2];
-  short int b;
-};
+//union byte {
+//  unsigned char c[2];
+//  short int b;
+//};
 
 int wxJSONReader::ReadMemoryBuff(wxInputStream& is, wxJSONValue& val) {
   static const wxChar* membuffError =
