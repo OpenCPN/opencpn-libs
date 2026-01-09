@@ -1063,6 +1063,7 @@ class DECL_EXP PI_S57Obj {
 public:
   //  Public Methods
   PI_S57Obj();
+  ~PI_S57Obj();
 
 public:
   // Instance Data
