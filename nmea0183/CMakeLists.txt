@@ -80,13 +80,6 @@ SET(SRC
     src/zda.cpp
         )
 
-if (NOT QT_ANDROID)
-if (NOT wxWidgets_INCLUDE_DIRS)
-    include(SimpleWxConfig)
-    SimpleWxConfig()
-endif ()
-endif ()
-
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 add_library(NMEA0183 STATIC ${SRC})
