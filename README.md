@@ -83,3 +83,12 @@ The commit will be part of the submodule, not the main repo. If the need of
 such a change is deemed necessary, please make a PR against
 https://github.com/OpenCPN/opencpn-libs/ so it can be integrated in the main
 set of plugins.
+
+Windows 64-bit dependencies
+---------------------------
+On 64-bit Windows, the zlib, libusb and pthread wrappers use vcpkg instead of
+the bundled binaries (32-bit builds still use the bundled ones for ABI
+compatibility with OpenCPN). Copy `vcpkg.json` to the plugin's source root
+(add its own dependencies) and configure with
+`-DCMAKE_TOOLCHAIN_FILE=<vcpkg>/scripts/buildsystems/vcpkg.cmake
+-DVCPKG_TARGET_TRIPLET=x64-windows`. Bump `builtin-baseline` to match OpenCPN's vcpkg.

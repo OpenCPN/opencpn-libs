@@ -33,7 +33,8 @@ project(ocpn_libusb)
 add_library(libusb_if INTERFACE)
 add_library(ocpn::libusb ALIAS libusb_if)
 
-if (WIN32)
+# 32-bit Windows uses bundled binaries, 64-bit uses vcpkg (libusb, getopt ports)
+if (WIN32 AND CMAKE_SIZEOF_VOID_P EQUAL 4)
   set(LibUSB_LIBRARY ${CMAKE_CURRENT_LIST_DIR}/win32/lib/libusb-1.0.lib)
   set(Getopt_LIBRARY ${CMAKE_CURRENT_LIST_DIR}/win32/lib/getopt.lib)
   set(LIBUSB_1_LIBRARIES ${LibUSB_LIBRARY} ${Getopt_LIBRARY}

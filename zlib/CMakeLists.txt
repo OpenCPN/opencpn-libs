@@ -7,7 +7,8 @@ endif ()
 add_library(_ZLIB_IF INTERFACE)
 add_library(ocpn::zlib ALIAS _ZLIB_IF)
 
-if (WIN32)
+# ponytail: 32-bit keeps bundled binaries (ABI match with OpenCPN x86), 64-bit uses vcpkg
+if (WIN32 AND CMAKE_SIZEOF_VOID_P EQUAL 4)
   add_library(_ZLIB_MSVC STATIC IMPORTED)
   set_property(
     TARGET _ZLIB_MSVC
