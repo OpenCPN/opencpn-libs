@@ -66,45 +66,61 @@ class FailError(Exception):
     def __init__(self, msg):
         super(Exception, self).__init__(msg)
 
-def runAllTests(jsontest_executable_path, input_dir = None,
+def runAllTests(jsontest_executable_path, input_path = None,
                  use_valgrind=False, with_json_checker=False,
                  writerClass='StyledWriter'):
-    if not input_dir:
-        input_dir = os.path.join(os.getcwd(), 'data')
-    tests = glob(os.path.join(input_dir, '*.json'))
-    if with_json_checker:
-        all_tests = glob(os.path.join(input_dir, '../jsonchecker', '*.json'))
-        # These tests fail with strict json support, but pass with JsonCPP's
-        # extra leniency features. When adding a new exclusion to this list,
-        # remember to add the test's number and reasoning here:
-        known = ["fail{}.json".format(n) for n in [
-            4, 9, # fail because we allow trailing commas
-            7,    # fails because we allow commas after close
-            8,    # fails because we allow extra close
-            10,   # fails because we allow extra values after close
-            13,   # fails because we allow leading zeroes in numbers
-            18,   # fails because we allow deeply nested values
-            25,   # fails because we allow tab characters in strings
-            27,   # fails because we allow string line breaks
-        ]]
-        test_jsonchecker = [ test for test in all_tests
-                             if os.path.basename(test) not in known]
+    if not input_path:
+        input_path = os.path.join(os.getcwd(), 'data')
 
+    if os.path.isdir(input_path):
+        tests = [
+            os.path.normpath(os.path.abspath(test))
+            for test in glob(os.path.join(input_path, '*.json'))
+        ]
+
+        if with_json_checker:
+            tests += [
+                os.path.normpath(os.path.abspath(test))
+                for test in glob(os.path.join(input_path, '../jsonchecker', '*.json'))
+            ]
     else:
-        test_jsonchecker = []
+        tests = [input_path]
+
+    # These tests fail with strict json support, but pass with JsonCPP's
+    # extra leniency features. When adding a new exclusion to this list,
+    # remember to add the test's number and reasoning here:
+    known = ["fail{}.json".format(n) for n in [
+        4, 9, # fail because we allow trailing commas
+        7,    # fails because we allow commas after close
+        8,    # fails because we allow extra close
+        10,   # fails because we allow extra values after close
+        13,   # fails because we allow leading zeroes in numbers
+        18,   # fails because we allow deeply nested values
+        25,   # fails because we allow tab characters in strings
+        27,   # fails because we allow string line breaks
+    ]]
+
+    tests = [
+        test for test in tests
+        if os.path.basename(test) not in known or
+            os.path.basename(os.path.dirname(test)) != "jsonchecker"
+    ]
 
     failed_tests = []
     valgrind_path = use_valgrind and VALGRIND_CMD or ''
-    for input_path in tests + test_jsonchecker:
+    for input_path in tests:
         expect_failure = os.path.basename(input_path).startswith('fail')
-        is_json_checker_test = (input_path in test_jsonchecker) or expect_failure
+        is_json_checker_test = os.path.basename(os.path.dirname(input_path)) == "jsonchecker"
+        is_parse_only = is_json_checker_test or expect_failure
+        is_strict_test = ('_strict_' in os.path.basename(input_path)) or is_json_checker_test
         print('TESTING:', input_path, end=' ')
-        options = is_json_checker_test and '--json-checker' or ''
+        options = is_parse_only and '--parse-only' or ''
+        options += is_strict_test and ' --strict' or ''
         options += ' --json-writer %s'%writerClass
         cmd = '%s%s %s "%s"' % (            valgrind_path, jsontest_executable_path, options,
             input_path)
         status, process_output = getStatusOutput(cmd)
-        if is_json_checker_test:
+        if is_parse_only:
             if expect_failure:
                 if not status:
                     print('FAILED')
