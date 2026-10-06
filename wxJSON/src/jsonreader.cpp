@@ -8,14 +8,6 @@
 // Licence:     wxWidgets licence
 /////////////////////////////////////////////////////////////////////////////
 
-//#ifdef __GNUG__
-//    #pragma implementation "jsonreader.cpp"
-//#endif
-
-// make wxLogTrace a noop, it's really slow
-// must be defined before including debug.h
-#define wxDEBUG_LEVEL 0
-
 #include <wx/jsonreader.h>
 
 #include <wx/mstream.h>
@@ -172,10 +164,8 @@
 // trace messages by setting the:
 // WXTRACE=traceReader StoreComment
 // environment variable
-#if wxDEBUG_LEVEL > 0
 static const wxChar* traceMask = _T("traceReader");
 static const wxChar* storeTraceMask = _T("StoreComment");
-#endif
 
 //! Ctor
 /*!
@@ -250,7 +240,7 @@ wxJSONReader::wxJSONReader(int flags, int maxErrors) {
 }
 
 //! Dtor - does nothing
-wxJSONReader::~wxJSONReader() {}
+wxJSONReader::~wxJSONReader() = default;
 
 //! Parse the JSON document.
 /*!
@@ -307,7 +297,7 @@ int wxJSONReader::Parse(const wxString& doc, wxJSONValue* val) {
 
   // convert the string to a UTF-8 / ANSI memory stream and calls overloaded
   // Parse()
-  char* readBuff = 0;
+  char* readBuff = nullptr;
   wxCharBuffer utf8CB = doc.ToUTF8();  // the UTF-8 buffer
 #if !defined(wxJSON_USE_UNICODE)
   wxCharBuffer ansiCB(doc.c_str());  // the ANSI buffer
@@ -346,7 +336,7 @@ int wxJSONReader::Parse(wxInputStream& is, wxJSONValue* val) {
   // if a wxJSONValue is not passed to the Parse function
   // we set the temparary object created on the stack
   // I know this will slow down the validation of input
-  if (val == 0) {
+  if (val == nullptr) {
     val = &temp;
   }
   wxASSERT(val);
@@ -354,8 +344,8 @@ int wxJSONReader::Parse(wxInputStream& is, wxJSONValue* val) {
   // set the wxJSONValue object's pointers for comment storage
   m_next = val;
   m_next->SetLineNo(-1);
-  m_lastStored = 0;
-  m_current = 0;
+  m_lastStored = nullptr;
+  m_current = nullptr;
 
   int ch = GetStart(is);
   switch (ch) {
@@ -408,7 +398,7 @@ int wxJSONReader::GetStart(wxInputStream& is) {
         break;
       case '/':
         ch = SkipComment(is);
-        StoreComment(0);
+        StoreComment(nullptr);
         break;
       default:
         ch = ReadChar(is);
@@ -546,7 +536,7 @@ int wxJSONReader::DoRead(wxInputStream& is, wxJSONValue& parent) {
   m_next = &value;
   m_current = &parent;
   m_current->SetLineNo(m_lineNo);
-  m_lastStored = 0;
+  m_lastStored = nullptr;
 
   // the 'key' string is stored from 'value' when a ':' is encontered
   wxString key;
@@ -602,7 +592,7 @@ int wxJSONReader::DoRead(wxInputStream& is, wxJSONValue& parent) {
         // close-object: store the current value, if any
         StoreValue(ch, key, value, parent);
         m_current = &parent;
-        m_next = 0;
+        m_next = nullptr;
         m_current->SetLineNo(m_lineNo);
         ch = ReadChar(is);
         return ch;
@@ -637,7 +627,7 @@ int wxJSONReader::DoRead(wxInputStream& is, wxJSONValue& parent) {
         }
         StoreValue(ch, key, value, parent);
         m_current = &parent;
-        m_next = 0;
+        m_next = nullptr;
         m_current->SetLineNo(m_lineNo);
         return 0;  // returning ZERO for reading the next char
         break;
@@ -652,19 +642,19 @@ int wxJSONReader::DoRead(wxInputStream& is, wxJSONValue& parent) {
       case '\"':
         ch = ReadString(is, value);  // read a JSON string type
         m_current = &value;
-        m_next = 0;
+        m_next = nullptr;
         break;
 
       case '\'':
         ch = ReadMemoryBuff(is, value);  // read a memory buffer type
         m_current = &value;
-        m_next = 0;
+        m_next = nullptr;
         break;
 
       case ':':  // key / value separator
         m_current = &value;
         m_current->SetLineNo(m_lineNo);
-        m_next = 0;
+        m_next = nullptr;
         if (!parent.IsObject()) {
           AddError(_T( "\':\' can only used in object's values" ));
         } else if (!value.IsString()) {
@@ -686,7 +676,7 @@ int wxJSONReader::DoRead(wxInputStream& is, wxJSONValue& parent) {
         // errors are checked in the 'ReadValue()' function.
         m_current = &value;
         m_current->SetLineNo(m_lineNo);
-        m_next = 0;
+        m_next = nullptr;
         ch = ReadValue(is, ch, value);
         break;
     }  // end switch
@@ -736,15 +726,15 @@ void wxJSONReader::StoreValue(int ch, const wxString& key, wxJSONValue& value,
   wxLogTrace(traceMask, _T("(%s) value=%s"), __PRETTY_FUNCTION__,
              value.AsString().c_str());
 
-  m_current = 0;
+  m_current = nullptr;
   m_next = &value;
-  m_lastStored = 0;
+  m_lastStored = nullptr;
   m_next->SetLineNo(-1);
 
   if (!value.IsValid() && key.empty()) {
     // OK, if the char read is a close-object or close-array
     if (ch == '}' || ch == ']') {
-      m_lastStored = 0;
+      m_lastStored = nullptr;
       wxLogTrace(traceMask, _T("(%s) key and value are empty, returning"),
                  __PRETTY_FUNCTION__);
     } else {
@@ -1055,7 +1045,8 @@ int wxJSONReader::SkipComment(wxInputStream& is) {
 
  \li in ANSI builds, if the reader is constructed with the
  wxJSONREADER_NOUTF8_STREAM then no conversion takes place and the UTF-8
- temporary buffer is simply \b copied to the \b wxString object
+ temporary buffer is simply
+     \b copied to the \b wxString object
 
  The string is, finally, stored in the provided wxJSONValue argument
  provided that it is empty or it contains a string value.
@@ -1148,8 +1139,8 @@ int wxJSONReader::ReadString(wxInputStream& is, wxJSONValue& val) {
     // UTF-8 code points.
     // this works in both ANSI and Unicode builds.
     size_t convLen =
-        wxConvUTF8.ToWChar(0,  // wchar_t destination
-                           0,  // size_t  destLenght
+        wxConvUTF8.ToWChar(nullptr,  // wchar_t destination
+                           0,        // size_t  destLenght
                            (const char*)utf8Buff.GetData(),  // char_t  source
                            utf8Buff.GetDataLen());  // size_t  sourceLenght
 
@@ -1441,7 +1432,6 @@ int wxJSONReader::ReadValue(wxInputStream& is, int ch, wxJSONValue& val) {
   // the value is not syntactically correct
   AddError(_T( "Literal \'%s\' is incorrect (did you forget quotes?)"), s);
   return nextCh;
-  return nextCh;
 }
 
 //! Read a 4-hex-digit unicode character.
@@ -1545,9 +1535,9 @@ int wxJSONReader::AppendUES(wxMemoryBuffer& utf8Buff, const char* uesBuffer) {
  \li if the comment is on the same line as one of the values, the comment
     refer to that value and it is stored as \b inline.
  \li otherwise, if the comment flag is wxJSONREADER_COMMENTS_BEFORE, the comment
- lines are stored in the value pointed to by \c m_next \li otherwise, if the
- comment flag is wxJSONREADER_COMMENTS_AFTER, the comment lines are stored in
- the value pointed to by \c m_current or m_latStored
+ lines are stored in the value pointed to by \c m_next
+ \li otherwise, if the comment flag is wxJSONREADER_COMMENTS_AFTER, the comment
+ lines are stored in the value pointed to by \c m_current or m_latStored
 
  Note that the comment line is only stored if the wxJSONREADER_STORE_COMMENTS
  flag was used when the parser object was constructed; otherwise, the
@@ -1575,7 +1565,7 @@ void wxJSONReader::StoreComment(const wxJSONValue* parent) {
 
   // check if the comment is on the same line of one of the
   // 'current', 'next' or 'lastStored' value
-  if (m_current != 0) {
+  if (m_current != nullptr) {
     wxLogTrace(storeTraceMask, _T("(%s) m_current->lineNo=%d"),
                __PRETTY_FUNCTION__, m_current->GetLineNo());
     if (m_current->GetLineNo() == m_commentLine) {
@@ -1587,7 +1577,7 @@ void wxJSONReader::StoreComment(const wxJSONValue* parent) {
       return;
     }
   }
-  if (m_next != 0) {
+  if (m_next != nullptr) {
     wxLogTrace(storeTraceMask, _T("(%s) m_next->lineNo=%d"),
                __PRETTY_FUNCTION__, m_next->GetLineNo());
     if (m_next->GetLineNo() == m_commentLine) {
@@ -1598,7 +1588,7 @@ void wxJSONReader::StoreComment(const wxJSONValue* parent) {
       return;
     }
   }
-  if (m_lastStored != 0) {
+  if (m_lastStored != nullptr) {
     wxLogTrace(storeTraceMask, _T("(%s) m_lastStored->lineNo=%d"),
                __PRETTY_FUNCTION__, m_lastStored->GetLineNo());
     if (m_lastStored->GetLineNo() == m_commentLine) {
@@ -1783,10 +1773,10 @@ int wxJSONReader::ConvertCharByChar(wxString& s,
  @return the last char read or -1 in case of EOF
 */
 
-union byte_union {
-  unsigned char cu[2];
-  short int bu;
-};
+//union byte {
+//  unsigned char c[2];
+//  short int b;
+//};
 
 int wxJSONReader::ReadMemoryBuff(wxInputStream& is, wxJSONValue& val) {
   static const wxChar* membuffError =
@@ -1897,26 +1887,24 @@ bool wxJSONReader::Strtoll(const wxString& str, wxInt64* i64) {
   wxUint64 ui64;
   bool r = DoStrto_ll(str, &ui64, &sign);
 
-  if (r) {
-    // check overflow for signed long long
-    switch (sign) {
-      case '-':
-        if (ui64 > (wxUint64)LLONG_MAX + 1) {
-          r = false;
-        } else {
-          *i64 = (wxInt64)(ui64 * -1);
-        }
-        break;
+  // check overflow for signed long long
+  switch (sign) {
+    case '-':
+      if (ui64 > (wxUint64)LLONG_MAX + 1) {
+        r = false;
+      } else {
+        *i64 = (wxInt64)(ui64 * -1);
+      }
+      break;
 
-      // case '+' :
-      default:
-        if (ui64 > LLONG_MAX) {
-          r = false;
-        } else {
-          *i64 = (wxInt64)ui64;
-        }
-        break;
-    }
+    // case '+' :
+    default:
+      if (ui64 > LLONG_MAX) {
+        r = false;
+      } else {
+        *i64 = (wxInt64)ui64;
+      }
+      break;
   }
   return r;
 }
@@ -2028,13 +2016,13 @@ bool wxJSONReader::DoStrto_ll(const wxString& str, wxUint64* ui64,
   // corresponding power of 10
   int exponent = 0;
   for (int i = strLen - 1; i >= index; i--) {
-    wxChar ch = str[i];
-    if (ch < '0' || ch > '9') {
+    wxChar c = str[i];
+    if (c < '0' || c > '9') {
       return false;
     }
-    ch = ch - '0';
+    c = c - '0';
     // compute the new temporary value
-    temp1 += ch * power10[exponent];
+    temp1 += c * power10[exponent];
     ++exponent;
   }
   *ui64 = temp1;

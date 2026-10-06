@@ -8,14 +8,6 @@
 // Licence:     wxWidgets licence
 /////////////////////////////////////////////////////////////////////////////
 
-//#ifdef __GNUG__
-//    #pragma implementation "jsonwriter.cpp"
-//#endif
-
-// make wxLogTrace a noop, it's really slow
-// must be defined before including debug.h
-#define wxDEBUG_LEVEL 0
-
 #include <wx/jsonwriter.h>
 
 #include <wx/sstream.h>
@@ -23,9 +15,7 @@
 #include <wx/debug.h>
 #include <wx/log.h>
 
-#if wxDEBUG_LEVEL > 0
 static const wxChar* writerTraceMask = _T("traceWriter");
-#endif
 
 /*! \class wxJSONWriter
  \brief The JSON document writer
@@ -62,8 +52,10 @@ static const wxChar* writerTraceMask = _T("traceWriter");
 
  To write a JSON value object using a four-spaces indentation and forcing all
  comment strings to apear before the value they refer to, use the following
- code: \code wxJSONWriter writer( wxJSONWRITER_STYLED |   // want a styled
- output wxJSONWRITER_WRITE_COMMENTS |  // want comments in the document
+ code:
+ \code
+  wxJSONWriter writer( wxJSONWRITER_STYLED |   // want a styled output
+                wxJSONWRITER_WRITE_COMMENTS |  // want comments in the document
                 wxJSONWRITER_COMMENTS_BEFORE,  // force comments before value
                 0,                             // initial indentation
                 4);                            // indentation step
@@ -149,28 +141,29 @@ static const wxChar* writerTraceMask = _T("traceWriter");
     \li wxJSONWRITER_WRITE_COMMENTS: this flag force the writer to write C/C++
         comment strings, if any. The comments will be written in their original
  position. C/C++ comments may not be recognized by other JSON implementations
- because they are not strict JSON text. \li wxJSONWRITER_COMMENTS_BEFORE: this
- flag force the writer to write C/C++ comments always before the value they
- refer to. In order for this style to take effect, you also have to specify the
-        wxJSONWRITER_WRITE_COMMENTS flag.
+ because they are not strict JSON text.
+    \li wxJSONWRITER_COMMENTS_BEFORE: this flag force the writer to write C/C++
+ comments always before the value they refer to. In order for this style to take
+ effect, you also have to specify the wxJSONWRITER_WRITE_COMMENTS flag.
     \li wxJSONWRITER_COMMENTS_AFTER: this flag force the writer to write C/C++
  comments always after the value they refer to. In order for this style to take
- effect, you also have to specify the wxJSONWRITER_WRITE_COMMENTS flag. \li
- wxJSONWRITER_SPLIT_STRINGS: this flag cause the writer to split strings in more
- than one line if they are too long. \li wxJSONWRITER_NO_LINEFEEDS: this flag
- cause the JSON writer to not add newlines between values. It is ignored if
- wxJSONWRITER_STYLED is not set. This style produces strict JSON text. \li
- wxJSONWRITER_ESCAPE_SOLIDUS: the solidus character (/) should only be escaped
- if the JSON text is meant for embedding in HTML. Unlike in older 0.x versions,
- it is disabled by default and this flag cause the solidus char to be escaped.
-        This style produces strict JSON text.
+ effect, you also have to specify the wxJSONWRITER_WRITE_COMMENTS flag.
+    \li wxJSONWRITER_SPLIT_STRINGS: this flag cause the writer to split strings
+        in more than one line if they are too long.
+    \li wxJSONWRITER_NO_LINEFEEDS: this flag cause the JSON writer to not add
+        newlines between values. It is ignored if wxJSONWRITER_STYLED is not
+ set. This style produces strict JSON text.
+    \li wxJSONWRITER_ESCAPE_SOLIDUS: the solidus character (/) should only be
+        escaped if the JSON text is meant for embedding in HTML.
+        Unlike in older 0.x versions, it is disabled by default and this flag
+ cause the solidus char to be escaped. This style produces strict JSON text.
     \li wxJSONWRITER_MULTILINE_STRING:this is a multiline-string mode where
  newlines and tabs are not escaped. This is not strict JSON, but it helps
- immensely when manually editing json files with multiline strings \li
- wxJSONWRITER_RECOGNIZE_UNSIGNED: this flag cause the JSON writer to prepend a
- plus sign (+) to unsigned integer values. This is used by the wxJSON reader to
-        force the integer to be stored in an \b unsigned \b int. Note that this
-        feature may be incompatible with other JSON implementations.
+ immensely when manually editing json files with multiline strings
+    \li wxJSONWRITER_RECOGNIZE_UNSIGNED: this flag cause the JSON writer to
+ prepend a plus sign (+) to unsigned integer values. This is used by the wxJSON
+ reader to force the integer to be stored in an \b unsigned \b int. Note that
+ this feature may be incompatible with other JSON implementations.
     \li wxJSONWRITER_TAB_INDENT: this flag cause the indentation of sub-objects
  / arrays to be done using a TAB character instead of SPACES. In order for this
  style to take effect, you also have to specify the wxJSONWRITER_STYLED flag.
@@ -180,8 +173,8 @@ static const wxChar* writerTraceMask = _T("traceWriter");
         This style produces strict JSON text.
     \li wxJSONWRITER_NOUTF8_STREAM: suppress UTF-8 conversion when writing
  string values to the stream thus producing ANSI text output; only meaningfull
- in ANSI builds, this flag is simply ignored in Unicode builds. \li
- wxJSONWRITER_MEMORYBUFF:
+ in ANSI builds, this flag is simply ignored in Unicode builds.
+    \li wxJSONWRITER_MEMORYBUFF:
 
 
  Note that for the style wxJSONWRITER_NONE the JSON text output is a bit
@@ -213,7 +206,7 @@ wxJSONWriter::wxJSONWriter(int style, int indent, int step) {
 }
 
 //! Dtor - does nothing
-wxJSONWriter::~wxJSONWriter() {}
+wxJSONWriter::~wxJSONWriter() = default;
 
 //! Write the JSONvalue object to a JSON text.
 /*!
@@ -284,7 +277,7 @@ void wxJSONWriter::Write(const wxJSONValue& value, wxString& str) {
 //! \overload Write( const wxJSONValue&, wxString& )
 void wxJSONWriter::Write(const wxJSONValue& value, wxOutputStream& os) {
   m_level = 0;
-  DoWrite(os, value, 0, false);
+  DoWrite(os, value, nullptr, false);
 }
 
 //! Set the format string for double values.
@@ -326,7 +319,7 @@ int wxJSONWriter::DoWrite(wxOutputStream& os, const wxJSONValue& value,
   // note that this function is recursive
 
   // some variables that cannot be allocated in the switch statement
-  const wxJSONInternalMap* map = 0;
+  const wxJSONInternalMap* map = nullptr;
   int size;
   m_colNo = 1;
   m_lineNo = 1;
@@ -442,12 +435,12 @@ int wxJSONWriter::DoWrite(wxOutputStream& os, const wxJSONValue& value,
       // now iterate through all sub-items and call DoWrite() recursively
       size = value.Size();
       for (int i = 0; i < size; i++) {
-        bool comma = false;
+        bool addComma = false;
         if (i < size - 1) {
-          comma = true;
+          addComma = true;
         }
         wxJSONValue v = value.ItemAt(i);
-        lastChar = DoWrite(os, v, 0, comma);
+        lastChar = DoWrite(os, v, nullptr, addComma);
         if (lastChar < 0) {
           return lastChar;
         }
@@ -483,13 +476,13 @@ int wxJSONWriter::DoWrite(wxOutputStream& os, const wxJSONValue& value,
       count = 0;
       for (it = map->begin(); it != map->end(); ++it) {
         // get the key and the value
-        wxString key = it->first;
+        wxString nextKey = it->first;
         const wxJSONValue& v = it->second;
-        bool comma = false;
+        bool addComma = false;
         if (count < size - 1) {
-          comma = true;
+          addComma = true;
         }
-        lastChar = DoWrite(os, v, &key, comma);
+        lastChar = DoWrite(os, v, &nextKey, addComma);
         if (lastChar < 0) {
           return lastChar;
         }
@@ -641,7 +634,7 @@ int wxJSONWriter::WriteStringValue(wxOutputStream& os, const wxString& str) {
 
   // the buffer that has to be written is either UTF-8 or ANSI c_str() depending
   // on the 'm_noUtf8' flag
-  char* writeBuff = 0;
+  char* writeBuff = nullptr;
   wxCharBuffer utf8CB = str.ToUTF8();  // the UTF-8 buffer
 #if !defined(wxJSON_USE_UNICODE)
   wxCharBuffer ansiCB(str.c_str());  // the ANSI buffer
@@ -656,7 +649,7 @@ int wxJSONWriter::WriteStringValue(wxOutputStream& os, const wxString& str) {
 
   // NOTE: in ANSI builds UTF-8 conversion may fail (see samples/test5.cpp,
   // test 7.3) although I do not know why
-  if (writeBuff == 0) {
+  if (writeBuff == nullptr) {
     const char* err =
         "<wxJSONWriter::WriteStringValue(): error converting the string to a "
         "UTF8 buffer>";
@@ -797,7 +790,7 @@ int wxJSONWriter::WriteStringValue(wxOutputStream& os, const wxString& str) {
         }
       }
     }
-  }               // end for
+  }  // end for
   os.PutC('\"');  // close quotes
   return 0;
 }
@@ -813,7 +806,7 @@ int wxJSONWriter::WriteString(wxOutputStream& os, const wxString& str) {
   wxLogTrace(writerTraceMask, _T("(%s) string to write=%s"),
              __PRETTY_FUNCTION__, str.c_str());
   int lastChar = 0;
-  char* writeBuff = 0;
+  char* writeBuff = nullptr;
 
   // the buffer that has to be written is either UTF-8 or ANSI c_str() depending
   // on the 'm_noUtf8' flag
@@ -832,7 +825,7 @@ int wxJSONWriter::WriteString(wxOutputStream& os, const wxString& str) {
 
   // NOTE: in ANSI builds UTF-8 conversion may fail (see samples/test5.cpp,
   // test 7.3) although I do not know why
-  if (writeBuff == 0) {
+  if (writeBuff == nullptr) {
     const char* err =
         "<wxJSONWriter::WriteComment(): error converting the string to UTF-8>";
     os.Write(err, strlen(err));
@@ -1051,10 +1044,16 @@ int wxJSONWriter::WriteInvalid(wxOutputStream& os) {
 /*!
  The type wxJSONTYPE_MEMORYBUFF is a \b wxJSON extension that is not correctly
  read by other JSON implementations. By default, the function writes such a type
- as an array of INTs as follows: \code [ 0,32,45,255,6,...] \endcode If the
- writer object was constructed using the \c wxJSONWRITER_MEMORYBUFF flag, then
- the output is much more compact and recognized by the \b wxJSON reader as a
- memory buffer type: \code '00203FFF06..' \endcode
+ as an array of INTs as follows:
+ \code
+   [ 0,32,45,255,6,...]
+ \endcode
+ If the writer object was constructed using the \c wxJSONWRITER_MEMORYBUFF flag,
+ then the output is much more compact and recognized by the \b wxJSON reader as
+ a memory buffer type:
+ \code
+   '00203FFF06..'
+ \endcode
 
 */
 int wxJSONWriter::WriteMemoryBuff(wxOutputStream& os,

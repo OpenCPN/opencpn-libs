@@ -11,16 +11,8 @@
 #if !defined(_WX_JSONVAL_H)
 #define _WX_JSONVAL_H
 
-//#ifdef __GNUG__
-//    #pragma interface "jsonval.h"
-//#endif
-
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
 
 // for all others, include the necessary headers (this file is usually all you
 // need because it includes almost all "standard" wxWidgets headers)
@@ -165,7 +157,7 @@ public:
   bool AsBool(bool& b) const;
   bool AsDouble(double& d) const;
   bool AsString(wxString& str) const;
-  bool AsCString(wxChar* ch) const;
+  bool AsCString(wxChar*& ch) const;
   wxMemoryBuffer AsMemoryBuff() const;
   bool AsMemoryBuff(wxMemoryBuffer& buff) const;
 
