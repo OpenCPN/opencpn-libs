@@ -1,0 +1,11 @@
+{
+  "name": "opencpn-libs-deps",
+  "version-string": "1",
+  "builtin-baseline": "434307da09bc05b2c86996dccc8b2351fc0d5d37",
+  "dependencies": [
+    { "name": "zlib", "platform": "windows & x64" },
+    { "name": "libusb", "platform": "windows & x64" },
+    { "name": "getopt", "platform": "windows & x64" },
+    { "name": "pthreads", "platform": "windows & x64" }
+  ]
+}

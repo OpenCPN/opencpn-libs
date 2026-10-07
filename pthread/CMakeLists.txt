@@ -28,7 +28,11 @@ project(ocpn_pthread)
 add_library(pthread_if INTERFACE)
 add_library(ocpn::pthread ALIAS pthread_if)
 
-if (WIN32)
+if (WIN32 AND CMAKE_SIZEOF_VOID_P EQUAL 8)
+  # vcpkg port: pthreads
+  find_package(PThreads4W REQUIRED)
+  target_link_libraries(pthread_if INTERFACE PThreads4W::PThreads4W)
+elseif (WIN32)
   set(PTHREAD_LIBRARIES ${CMAKE_CURRENT_LIST_DIR}/win32/lib/pthreadVC2.lib
     CACHE STRING "Windows pthread library location"
   )

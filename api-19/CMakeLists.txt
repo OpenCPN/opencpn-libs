@@ -19,9 +19,14 @@ target_include_directories(
     INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 if (WIN32 AND MSVC)
+  if (CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(_msvc_lib_dir msvc-wx32-x64)
+  else ()
+    set(_msvc_lib_dir msvc-wx32)
+  endif ()
   target_link_libraries(
     OCPN_API_WX32
-      INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/msvc-wx32/opencpn.lib"
+      INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/${_msvc_lib_dir}/opencpn.lib"
   )
   # Assuming unicode build, required for mingw headers
   target_compile_definitions(OCPN_API_WX32 INTERFACE -DUNICODE)
