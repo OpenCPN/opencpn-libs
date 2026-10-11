@@ -8,41 +8,22 @@
 // Licence:     wxWidgets licence
 /////////////////////////////////////////////////////////////////////////////
 
-//#ifdef __GNUG__
-//    #pragma implementation "jsonval.cpp"
-//#endif
-
-// make wxLogTrace a noop, it's really slow
-// must be defined before including debug.h
-#define wxDEBUG_LEVEL 0
-
 // For compilers that support precompilation, includes "wx.h".
 #include "wx/wxprec.h"
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
 #include <wx/log.h>
+#include <wx/debug.h>
 #include <wx/arrimpl.cpp>
 
 #include <wx/jsonval.h>
 
 WX_DEFINE_OBJARRAY(wxJSONInternalArray);
 
-#if wxCHECK_VERSION(3, 0, 0)
-#define compatibleLongLongFmtSpec _T(wxLongLongFmtSpec)
-#else
-#define compatibleLongLongFmtSpec wxLongLongFmtSpec
-#endif
-
-#if wxDEBUG_LEVEL > 0
 // the trace mask used in wxLogTrace() function
 // static const wxChar* traceMask = _T("jsonval");
 static const wxChar* traceMask = _T("jsonval");
 static const wxChar* compareTraceMask = _T("sameas");
 static const wxChar* cowTraceMask = _T("traceCOW" );
-#endif
 
 /*******************************************************************
 
@@ -70,7 +51,7 @@ int wxJSONRefData::sm_progr = 1;
 wxJSONRefData::wxJSONRefData() {
   m_lineNo = -1;
   m_refCount = 1;
-  m_memBuff = 0;
+  m_memBuff = nullptr;
 
 #if defined(WXJSON_USE_VALUE_COUNTER)
   m_progr = sm_progr;
@@ -179,7 +160,7 @@ int wxJSONValue::sm_progr = 1;
  \endcode
 */
 wxJSONValue::wxJSONValue() {
-  m_refData = 0;
+  m_refData = nullptr;
   Init(wxJSONTYPE_NULL);
 }
 
@@ -193,7 +174,7 @@ wxJSONValue::wxJSONValue() {
 */
 wxJSONRefData* wxJSONValue::Init(wxJSONType type) {
   wxJSONRefData* data = GetRefData();
-  if (data != 0) {
+  if (data != nullptr) {
     UnRef();
   }
 
@@ -220,16 +201,16 @@ wxJSONRefData* wxJSONValue::Init(wxJSONType type) {
 
 //! \overload wxJSONValue()
 wxJSONValue::wxJSONValue(wxJSONType type) {
-  m_refData = 0;
+  m_refData = nullptr;
   Init(type);
 }
 
 //! \overload wxJSONValue()
 wxJSONValue::wxJSONValue(int i) {
-  m_refData = 0;
+  m_refData = nullptr;
   wxJSONRefData* data = Init(wxJSONTYPE_INT);
   wxJSON_ASSERT(data);
-  if (data != 0) {
+  if (data != nullptr) {
     // the 'VAL_INT' macro expands to 'm_valLong' or 'm_valInt64' depending
     // on 64-bits integer support being enabled on not
     data->m_value.VAL_INT = i;
@@ -238,10 +219,10 @@ wxJSONValue::wxJSONValue(int i) {
 
 //! \overload wxJSONValue()
 wxJSONValue::wxJSONValue(unsigned int ui) {
-  m_refData = 0;
+  m_refData = nullptr;
   wxJSONRefData* data = Init(wxJSONTYPE_UINT);
   wxJSON_ASSERT(data);
-  if (data != 0) {
+  if (data != nullptr) {
     // the 'VAL_UINT' macro expands to 'm_valULong' or 'm_valUInt64' depending
     // on 64-bits integer support being enabled on not
     data->m_value.VAL_UINT = ui;
@@ -250,10 +231,10 @@ wxJSONValue::wxJSONValue(unsigned int ui) {
 
 //! \overload wxJSONValue()
 wxJSONValue::wxJSONValue(short int i) {
-  m_refData = 0;
+  m_refData = nullptr;
   wxJSONRefData* data = Init(wxJSONTYPE_INT);
   wxJSON_ASSERT(data);
-  if (data != 0) {
+  if (data != nullptr) {
     // the 'VAL_INT' macro expands to 'm_valLong' or 'm_valInt64' depending
     // on 64-bits integer support being enabled on not
     data->m_value.VAL_INT = i;
@@ -262,10 +243,10 @@ wxJSONValue::wxJSONValue(short int i) {
 
 //! \overload wxJSONValue()
 wxJSONValue::wxJSONValue(unsigned short ui) {
-  m_refData = 0;
+  m_refData = nullptr;
   wxJSONRefData* data = Init(wxJSONTYPE_UINT);
   wxJSON_ASSERT(data);
-  if (data != 0) {
+  if (data != nullptr) {
     // the 'VAL_UINT' macro expands to 'm_valULong' or 'm_valUInt64' depending
     // on 64-bits integer support being enabled on not
     data->m_value.VAL_UINT = ui;
@@ -274,30 +255,30 @@ wxJSONValue::wxJSONValue(unsigned short ui) {
 
 //! \overload wxJSONValue()
 wxJSONValue::wxJSONValue(bool b) {
-  m_refData = 0;
+  m_refData = nullptr;
   wxJSONRefData* data = Init(wxJSONTYPE_BOOL);
   wxJSON_ASSERT(data);
-  if (data != 0) {
+  if (data != nullptr) {
     data->m_value.m_valBool = b;
   }
 }
 
 //! \overload wxJSONValue()
 wxJSONValue::wxJSONValue(double d) {
-  m_refData = 0;
+  m_refData = nullptr;
   wxJSONRefData* data = Init(wxJSONTYPE_DOUBLE);
   wxJSON_ASSERT(data);
-  if (data != 0) {
+  if (data != nullptr) {
     data->m_value.m_valDouble = d;
   }
 }
 
 //! \overload wxJSONValue()
 wxJSONValue::wxJSONValue(const wxChar* str) {
-  m_refData = 0;
+  m_refData = nullptr;
   wxJSONRefData* data = Init(wxJSONTYPE_CSTRING);
   wxJSON_ASSERT(data);
-  if (data != 0) {
+  if (data != nullptr) {
 #if !defined(WXJSON_USE_CSTRING)
     data->m_type = wxJSONTYPE_STRING;
     data->m_valString.assign(str);
@@ -309,30 +290,30 @@ wxJSONValue::wxJSONValue(const wxChar* str) {
 
 //! \overload wxJSONValue()
 wxJSONValue::wxJSONValue(const wxString& str) {
-  m_refData = 0;
+  m_refData = nullptr;
   wxJSONRefData* data = Init(wxJSONTYPE_STRING);
   wxJSON_ASSERT(data);
-  if (data != 0) {
+  if (data != nullptr) {
     data->m_valString.assign(str);
   }
 }
 
 //! \overload wxJSONValue()
 wxJSONValue::wxJSONValue(long int l) {
-  m_refData = 0;
+  m_refData = nullptr;
   wxJSONRefData* data = Init(wxJSONTYPE_INT);
   wxJSON_ASSERT(data);
-  if (data != 0) {
+  if (data != nullptr) {
     data->m_value.VAL_INT = l;
   }
 }
 
 //! \overload wxJSONValue()
 wxJSONValue::wxJSONValue(unsigned long int ul) {
-  m_refData = 0;
+  m_refData = nullptr;
   wxJSONRefData* data = Init(wxJSONTYPE_UINT);
   wxJSON_ASSERT(data);
-  if (data != 0) {
+  if (data != nullptr) {
     data->m_value.VAL_UINT = ul;
   }
 }
@@ -344,10 +325,10 @@ wxJSONValue::wxJSONValue(unsigned long int ul) {
  JSON value.
 */
 wxJSONValue::wxJSONValue(const wxMemoryBuffer& buff) {
-  m_refData = 0;
+  m_refData = nullptr;
   wxJSONRefData* data = Init(wxJSONTYPE_MEMORYBUFF);
   wxJSON_ASSERT(data);
-  if (data != 0) {
+  if (data != nullptr) {
     data->m_memBuff = new wxMemoryBuffer();
     const void* ptr = buff.GetData();
     size_t buffLen = buff.GetDataLen();
@@ -364,10 +345,10 @@ wxJSONValue::wxJSONValue(const wxMemoryBuffer& buff) {
  JSON value.
 */
 wxJSONValue::wxJSONValue(const void* buff, size_t len) {
-  m_refData = 0;
+  m_refData = nullptr;
   wxJSONRefData* data = Init(wxJSONTYPE_MEMORYBUFF);
   wxJSON_ASSERT(data);
-  if (data != 0 && len > 0) {
+  if (data != nullptr && len > 0) {
     data->m_memBuff = new wxMemoryBuffer();
     data->m_memBuff->AppendData(buff, len);
   }
@@ -382,7 +363,7 @@ wxJSONValue::wxJSONValue(const void* buff, size_t len) {
  the reference count of the \c wxJSONRefData structure.
 */
 wxJSONValue::wxJSONValue(const wxJSONValue& other) {
-  m_refData = 0;
+  m_refData = nullptr;
   Ref(other);
 
   // the progressive counter of the ctor is not copied from
@@ -881,16 +862,14 @@ wxString wxJSONValue::AsString() const {
       break;
     case wxJSONTYPE_INT:
 #if defined(wxJSON_64BIT_INT)
-      s.Printf(_T("%") compatibleLongLongFmtSpec _T("i"),
-               data->m_value.m_valInt64);
+      s.Printf(_T("%") wxLongLongFmtSpec _T("i"), data->m_value.m_valInt64);
 #else
       s.Printf(_T("%ld"), data->m_value.m_valLong);
 #endif
       break;
     case wxJSONTYPE_UINT:
 #if defined(wxJSON_64BIT_INT)
-      s.Printf(_T("%") compatibleLongLongFmtSpec _T("u"),
-               data->m_value.m_valUInt64);
+      s.Printf(_T("%") wxLongLongFmtSpec _T("u"), data->m_value.m_valUInt64);
 #else
       s.Printf(_T("%lu"), data->m_value.m_valULong);
 #endif
@@ -943,7 +922,7 @@ wxString wxJSONValue::AsString() const {
 
 */
 const wxChar* wxJSONValue::AsCString() const {
-  const wxChar* s = 0;
+  const wxChar* s = nullptr;
   wxJSONRefData* data = GetRefData();
   wxJSON_ASSERT(data);
   switch (data->m_type) {
@@ -1172,8 +1151,8 @@ bool wxJSONValue::AsDouble(double& d) const {
  string representation of this value is returned. This function, instead,
  returns TRUE only if this object contains a string, that is only if \c
  IsString() returns TRUE. Also note that the string value is only stored in \c
- str if this object actually contains a \b string or \b c-string value. \c str
- will never contain a string representation of other types.
+ str if this object actually contains a \b string or \b c-string value.
+ \c str will never contain a string representation of other types.
 */
 bool wxJSONValue::AsString(wxString& str) const {
   bool r = IsString();
@@ -1183,7 +1162,7 @@ bool wxJSONValue::AsString(wxString& str) const {
   return r;
 }
 
-bool wxJSONValue::AsCString(wxChar* ch) const {
+bool wxJSONValue::AsCString(wxChar*& ch) const {
   bool r = IsCString();
   if (r) {
     ch = (wxChar*)AsCString();
@@ -1262,7 +1241,7 @@ const wxJSONInternalMap* wxJSONValue::AsMap() const {
   wxJSONRefData* data = GetRefData();
   wxJSON_ASSERT(data);
 
-  const wxJSONInternalMap* v = 0;
+  const wxJSONInternalMap* v = nullptr;
   if (data->m_type == wxJSONTYPE_OBJECT) {
     v = &(data->m_valMap);
   }
@@ -1280,7 +1259,7 @@ const wxJSONInternalArray* wxJSONValue::AsArray() const {
   wxJSONRefData* data = GetRefData();
   wxJSON_ASSERT(data);
 
-  const wxJSONInternalArray* v = 0;
+  const wxJSONInternalArray* v = nullptr;
   if (data->m_type == wxJSONTYPE_ARRAY) {
     v = &(data->m_valArray);
   }
@@ -1494,9 +1473,9 @@ bool wxJSONValue::Cat(const wxString& str) {
 
   bool r = false;
   if (data->m_type == wxJSONTYPE_STRING) {
-    wxJSONRefData* data = COW();
-    wxJSON_ASSERT(data);
-    data->m_valString.append(str);
+    wxJSONRefData* dataC = COW();
+    wxJSON_ASSERT(dataC);
+    dataC->m_valString.append(str);
     r = true;
   }
   return r;
@@ -1515,9 +1494,9 @@ bool wxJSONValue::Cat(const wxMemoryBuffer& buff) {
 
   bool r = false;
   if (data->m_type == wxJSONTYPE_MEMORYBUFF) {
-    wxJSONRefData* data = COW();
-    wxJSON_ASSERT(data);
-    data->m_memBuff->AppendData(buff.GetData(), buff.GetDataLen());
+    wxJSONRefData* dataC = COW();
+    wxJSON_ASSERT(dataC);
+    dataC->m_memBuff->AppendData(buff.GetData(), buff.GetDataLen());
     r = true;
   }
   return r;
@@ -1530,9 +1509,9 @@ bool wxJSONValue::Cat(const wxChar* str) {
 
   bool r = false;
   if (data->m_type == wxJSONTYPE_STRING) {
-    wxJSONRefData* data = COW();
-    wxJSON_ASSERT(data);
-    data->m_valString.append(str);
+    wxJSONRefData* dataC = COW();
+    wxJSON_ASSERT(dataC);
+    dataC->m_valString.append(str);
     r = true;
   }
   return r;
@@ -1628,10 +1607,8 @@ wxJSONValue& wxJSONValue::Item(unsigned index) {
 wxJSONValue& wxJSONValue::Item(const wxString& key) {
   wxLogTrace(traceMask, _T("(%s) searched key=\'%s\'"), __PRETTY_FUNCTION__,
              key.c_str());
-#if !wxCHECK_VERSION(2, 9, 0)
   wxLogTrace(traceMask, _T("(%s) actual object: %s"), __PRETTY_FUNCTION__,
              GetInfo().c_str());
-#endif
 
   wxJSONRefData* data = COW();
   wxJSON_ASSERT(data);
@@ -1676,10 +1653,8 @@ wxJSONValue wxJSONValue::ItemAt(unsigned index) const {
 wxJSONValue wxJSONValue::ItemAt(const wxString& key) const {
   wxLogTrace(traceMask, _T("(%s) searched key=\'%s\'"), __PRETTY_FUNCTION__,
              key.c_str());
-#ifndef __WXOSX__
   wxLogTrace(traceMask, _T("(%s) actual object: %s"), __PRETTY_FUNCTION__,
              GetInfo().c_str());
-#endif
 
   wxJSONRefData* data = GetRefData();
   wxJSON_ASSERT(data);
@@ -1907,7 +1882,7 @@ wxJSONValue* wxJSONValue::Find(unsigned index) const {
   wxJSONRefData* data = GetRefData();
   wxJSON_ASSERT(data);
 
-  wxJSONValue* vp = 0;
+  wxJSONValue* vp = nullptr;
 
   if (data->m_type == wxJSONTYPE_ARRAY) {
     size_t size = data->m_valArray.GetCount();
@@ -1929,7 +1904,7 @@ wxJSONValue* wxJSONValue::Find(const wxString& key) const {
   wxJSONRefData* data = GetRefData();
   wxJSON_ASSERT(data);
 
-  wxJSONValue* vp = 0;
+  wxJSONValue* vp = nullptr;
 
   if (data->m_type == wxJSONTYPE_OBJECT) {
     wxJSONInternalMap::iterator it = data->m_valMap.find(key);
@@ -2076,16 +2051,13 @@ wxString wxJSONValue::GetInfo() const {
   wxJSONRefData* data = GetRefData();
   wxJSON_ASSERT(data);
 
-  wxString s;
-#if defined(WXJSON_USE_VALUE_CONTER)
-  s.Printf(_T("Object: Progr=%d Type=%s Size=%d comments=%d\n"), data->m_progr,
-           wxJSONValue::TypeToString(data->m_type).c_str(), Size(),
-           data->m_comments.GetCount());
-#else
-  s.Printf(_T("Object: Type=%s Size=%d comments=%d\n"),
-           wxJSONValue::TypeToString(data->m_type).c_str(), Size(),
-           data->m_comments.GetCount());
+  wxString s("Object:");
+#if defined(WXJSON_USE_VALUE_COUNTER)
+  s << " Progr=" << data->m_progr;
 #endif
+  s << " Type=" << wxJSONValue::TypeToString(data->m_type) << " Size=" << Size()
+    << " comments=" << data->m_comments.GetCount() << '\n';
+
   if (data->m_type == wxJSONTYPE_OBJECT) {
     wxArrayString arr = GetMemberNames();
     for (unsigned int i = 0; i < arr.size(); i++) {
@@ -2501,17 +2473,20 @@ void wxJSONValue::ClearComments() {
   \li wxJSONTYPE_STRING: a wxString object
   \li wxJSONTYPE_ARRAY: an array of wxJSONValue objects
   \li wxJSONTYPE_OBJECT: a hashmap of key/value pairs where \e value is a
- wxJSONValue object \li wxJSONTYPE_LONG: a 32-bits integer value \li
- wxJSONTYPE_ULONG: an unsigned 32-bits integer \li wxJSONTYPE_INT64: a 64-bits
- integer value \li wxJSONTYPE_UINT64: an unsigned 64-bits integer \li
- wxJSONTYPE_SHORT: a signed short integer \li wxJSONTYPE_USHORT: an unsigned
- short integer \li wxJSONTYPE_MEMORYBUFF: a binary memory buffer
+ wxJSONValue object
+  \li wxJSONTYPE_LONG: a 32-bits integer value
+  \li wxJSONTYPE_ULONG: an unsigned 32-bits integer
+  \li wxJSONTYPE_INT64: a 64-bits integer value
+  \li wxJSONTYPE_UINT64: an unsigned 64-bits integer
+  \li wxJSONTYPE_SHORT: a signed short integer
+  \li wxJSONTYPE_USHORT: an unsigned short integer
+  \li wxJSONTYPE_MEMORYBUFF: a binary memory buffer
 
  The integer storage depends on the platform: for platforms that support 64-bits
  integers, integers are always stored as 64-bits integers.
  On platforms that do not support 64-bits integers, ints are stored as \b long
- \b int. To know more about the internal representation of integers, read \ref
- json_internals_integer.
+ \b int. To know more about the internal representation of integers, read
+ \ref json_internals_integer.
 
  Note that there is no need to set a type for the object in order to assign
  a value to it.
@@ -2586,7 +2561,7 @@ wxJSONRefData* wxJSONValue::SetType(wxJSONType type) {
       // we first have to delete the actual memory buffer, if any
       if (data->m_memBuff) {
         delete data->m_memBuff;
-        data->m_memBuff = 0;
+        data->m_memBuff = nullptr;
       }
       break;
     default:
@@ -2618,7 +2593,7 @@ int wxJSONValue::GetLineNo() const {
   // return ZERO if there is not a referenced data structure
   int n = 0;
   wxJSONRefData* data = GetRefData();
-  if (data != 0) {
+  if (data != nullptr) {
     n = data->m_lineNo;
   }
   return n;
@@ -2661,7 +2636,7 @@ void wxJSONValue::UnRef() {
 
     if (--m_refData->m_refCount == 0) {
       delete m_refData;
-      m_refData = NULL;
+      m_refData = nullptr;
     }
   }
 }
@@ -2932,8 +2907,9 @@ int wxJSONValue::CompareMemoryBuff(const wxMemoryBuffer& buff1,
  \li if the \c value array contains elements of type other than INT, those
         elements are ignored
  \li if the \c value array contains elements of type INT which value is outside
- the range 0..255, those elements are ignored \li if the \c value array contains
- only ignored elements an empty wxMemoryBuffer object is returned.
+ the range 0..255, those elements are ignored
+ \li if the \c value array contains only ignored elements an empty
+ wxMemoryBuffer object is returned.
 
  This function can be used to get a memory buffer object from valid JSON text.
  Please note that the wxJSONReader cannot know which array of INTs represent a
@@ -2969,20 +2945,20 @@ wxMemoryBuffer wxJSONValue::ArrayToMemoryBuff(const wxJSONValue& value) {
 
 //! \overload wxJSONValue()
 wxJSONValue::wxJSONValue(wxInt64 i) {
-  m_refData = 0;
+  m_refData = nullptr;
   wxJSONRefData* data = Init(wxJSONTYPE_INT);
   wxJSON_ASSERT(data);
-  if (data != 0) {
+  if (data != nullptr) {
     data->m_value.VAL_INT = i;
   }
 }
 
 //! \overload wxJSONValue()
 wxJSONValue::wxJSONValue(wxUint64 ui) {
-  m_refData = 0;
+  m_refData = nullptr;
   wxJSONRefData* data = Init(wxJSONTYPE_UINT);
   wxJSON_ASSERT(data);
-  if (data != 0) {
+  if (data != nullptr) {
     data->m_value.VAL_UINT = ui;
   }
 }
