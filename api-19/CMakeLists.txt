@@ -20,7 +20,7 @@ target_include_directories(
 )
 if (WIN32 AND MSVC)
   if (CMAKE_SIZEOF_VOID_P EQUAL 8)
-    set(_msvc_lib_dir msvc-wx32-x64)
+    set(_msvc_lib_dir msvc-wx33-x64)
   else ()
     set(_msvc_lib_dir msvc-wx32)
   endif ()
