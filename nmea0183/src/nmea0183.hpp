@@ -117,6 +117,9 @@
 #include "vwt.hpp"
 #include "xdr.hpp"
 #include "zda.hpp"
+#include "mob.hpp"
+#include "dsc.hpp"
+#include "dse.hpp"
 
 
 
@@ -236,7 +239,9 @@ class NMEA0183
        VWT Vwt;
        XDR Xdr;
        ZDA Zda;
-
+	   DSC Dsc;
+	   DSE Dse;
+	   MOB Mob;
 
 
  /*

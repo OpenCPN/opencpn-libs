@@ -80,6 +80,12 @@ SET(SRC
     src/vwt.cpp
     src/xdr.cpp
     src/zda.cpp
+	src/dsc.cpp
+	src/dsc.hpp
+	src/dse.cpp
+	src/dse.hpp
+	src/mob.cpp
+	src/mob.hpp
         )
 
 if (NOT QT_ANDROID)

@@ -80,11 +80,23 @@ typedef enum _NMEA0183_BOOLEAN {
   NFalse
 } NMEA0183_BOOLEAN;
 
-typedef enum _leftright { LR_Unknown = 0, Left, Right } LEFTRIGHT;
+typedef enum _leftright {
+	LR_Unknown = 0,
+	Left, 
+	Right 
+} LEFTRIGHT;
 
-typedef enum _eastwest { EW_Unknown = 0, East, West } EASTWEST;
+typedef enum _eastwest {
+	EW_Unknown = 0,
+	East,
+	West 
+} EASTWEST;
 
-typedef enum _northsouth { NS_Unknown = 0, North, South } NORTHSOUTH;
+typedef enum _northsouth {
+	NS_Unknown = 0,
+	North,
+	South 
+} NORTHSOUTH;
 
 typedef enum _reference {
   ReferenceUnknown = 0,
@@ -123,7 +135,22 @@ typedef enum _transducertype {
   VolumeTransducer = 'V'
 } TRANSDUCER_TYPE;
 
-typedef enum { RouteUnknown = 0, CompleteRoute, WorkingRoute } ROUTE_TYPE;
+typedef enum {
+	MobActive = 0,
+	MobManual = 1,
+	MobTest = 2,
+	MobInActive = 3,
+	MobReserved1 = 4,
+	MobReserved2 = 5,
+	MobError = 6,
+	MobUnknown = 7
+} MOB_STATUS;
+
+typedef enum {
+	RouteUnknown = 0,
+	CompleteRoute,
+	WorkingRoute 
+} ROUTE_TYPE;
 
 /*
 ** Misc Function Prototypes

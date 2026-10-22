@@ -222,6 +222,13 @@ int SENTENCE::Integer(int field_number) const {
   return (::atoi(abuf.data()));
 }
 
+unsigned long long SENTENCE::ULongLong(int field_number) const {
+	wxCharBuffer abuf = Field(field_number).ToUTF8();
+	if (!abuf.data())  // badly formed sentence?
+		return 0;
+	return(::atoll(abuf.data()));
+}
+
 NMEA0183_BOOLEAN SENTENCE::IsChecksumBad(int checksum_field_number) const {
   //   ASSERT_VALID( this );
 
