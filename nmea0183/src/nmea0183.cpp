@@ -92,6 +92,7 @@ NMEA0183::NMEA0183(const NmeaContext &ctx) : caller_ctx(ctx) {
   response_table.Append((RESPONSE *)&Mda);
   response_table.Append((RESPONSE *)&Mtw);
   response_table.Append((RESPONSE *)&Rsa);
+  response_table.Append((RESPONSE *)&Rpm);
   response_table.Append((RESPONSE *)&Vhw);
   response_table.Append((RESPONSE *)&Vlw);
   response_table.Append((RESPONSE *)&Vwr);
@@ -100,6 +101,9 @@ NMEA0183::NMEA0183(const NmeaContext &ctx) : caller_ctx(ctx) {
   response_table.Append((RESPONSE *)&Zda);
   response_table.Append((RESPONSE *)&Dpt);
   response_table.Append((RESPONSE *)&Dbt);
+  response_table.Append((RESPONSE *)&Dsc);
+  response_table.Append((RESPONSE *)&Dse);
+  response_table.Append((RESPONSE *)&Mob);
 
   /*
      response_table.Add( (RESPONSE *) &Rot );

@@ -77,6 +77,7 @@ class SENTENCE
       virtual REFERENCE Reference( int field_number ) const;
       virtual TRANSDUCER_TYPE TransducerType( int field_number ) const;
       virtual SENTENCE& Add ( double value, int precision); // Added to allow precision to be changed
+      virtual unsigned long long ULongLong(int field_number) const; // Added for DSC & DSE MMSI numbers
 
       /*
       ** Operators
@@ -94,6 +95,7 @@ class SENTENCE
       virtual const SENTENCE& operator += ( TRANSDUCER_TYPE transducer );
       virtual const SENTENCE& operator += ( NMEA0183_BOOLEAN boolean );
       virtual const SENTENCE& operator += ( LATLONG& source );
+      virtual const SENTENCE& operator += (unsigned long long value);
 };
 
 #endif // SENTENCE_CLASS_HEADER
