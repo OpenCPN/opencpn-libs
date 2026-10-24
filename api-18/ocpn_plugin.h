@@ -58,6 +58,7 @@
 #include <memory>
 #include <vector>
 #include <unordered_map>
+#include <cstdint>
 
 class wxGLContext;
 
